@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="RestSharp" Version="106.11.4" />
+    <ProjectReference Include="..\CatchTheCovid19.Serial\CatchTheCovid19.Serial.csproj" />
   </ItemGroup>
 
 </Project>

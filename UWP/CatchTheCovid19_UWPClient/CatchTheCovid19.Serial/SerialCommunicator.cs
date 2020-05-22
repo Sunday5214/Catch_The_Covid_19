@@ -54,7 +54,7 @@ namespace CatchTheCovid19.Serial
         /// 컴포트를 인자로주면 Serial을 Connect하는 메소드
         /// </summary>
         /// <param name="comport"></param>
-        private async void ConnectSerial(DeviceInformation comport)
+        public async void ConnectSerial(DeviceInformation comport)
         {
 
             try
@@ -168,7 +168,7 @@ namespace CatchTheCovid19.Serial
         /// <summary>
         /// 시리얼을 통해 데이터를 듣는 메소드
         /// </summary>
-        private async void Listen()
+        public async void Listen()
         {
             try
             {
@@ -253,7 +253,7 @@ namespace CatchTheCovid19.Serial
         /// <summary>
         /// 시리얼 커넥트를 종료하는 메소드
         /// </summary>
-        private void CloseDevice()
+        public void CloseDevice()
         {
             if (serialPort != null)
             {
@@ -265,7 +265,7 @@ namespace CatchTheCovid19.Serial
         /// <summary>
         /// 디바이스와 연결을 종료하고 연결된 디바이스 리스트를 조회하는 메소드
         /// </summary>
-        private async void CloseDeviceAndFindDevice()
+        public async void CloseDeviceAndFindDevice()
         {
             try
             {

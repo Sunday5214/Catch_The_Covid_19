@@ -5,111 +5,108 @@ using RestSharp;
 using System;
 using System.Threading.Tasks;
 
-namespace CatchTheCovid19.IRestClient
+namespace CatchTheCovid19.RestManager
 {
+    public class UrlSegment
+    {
+        public string Name { get; set; }
+        public object Value { get; set; }
+
+        public UrlSegment(string name, object value)
+        {
+            Name = name;
+            Value = value;
+        }
+    }
+    public class QueryParam
+    {
+        public string Name { get; set; }
+        public object Value { get; set; }
+
+        public QueryParam(string name, object value)
+        {
+            Name = name;
+            Value = value;
+        }
+    }
+    public class Header
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+
+        public Header(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+    }
     public class RestManager
     {
-        public class UrlSegment
+        private static RestClient CreateClient()
         {
-            public string Name { get; set; }
-            public object Value { get; set; }
-
-            public UrlSegment(string name, object value)
-            {
-                Name = name;
-                Value = value;
-            }
+            var restClient = new RestClient(NetworkOptions.serverUrl) { Timeout = NetworkOptions.timeOut };
+            return restClient;
         }
-        public class QueryParam
+        public async Task<TResponse<T>> GetResponse<T>(string resource, Method method, string parameterJson = null, QueryParam[] queryParams = null, UrlSegment[] urlSegments = null, Header[] headers = null)
         {
-            public string Name { get; set; }
-            public object Value { get; set; }
-
-            public QueryParam(string name, object value)
+            TResponse<T> resp = null;
+            try
             {
-                Name = name;
-                Value = value;
+                var client = CreateClient();
+                var restRequest = CreateRequest(resource, method, parameterJson, queryParams, urlSegments, headers);
+                var response = await client.ExecuteAsync(restRequest);
+
+                resp = JsonConvert.DeserializeObject<TResponse<T>>(response.Content);
             }
+            catch (Exception e)
+            {
+                resp = new TResponse<T> { Message = e.ToString(), Status = 404, Data = default };
+            }
+
+
+            return resp;
         }
-        public class Header
-        {
-            public string Name { get; set; }
-            public string Value { get; set; }
 
-            public Header(string name, string value)
-            {
-                Name = name;
-                Value = value;
-            }
+        private RestRequest CreateRequest(string resource, Method method, string parameterJson, QueryParam[] queryParams, UrlSegment[] urlSegments, Header[] headers)
+        {
+            var restRequest = new RestRequest(resource, method) { Timeout = NetworkOptions.timeOut };
+            restRequest = AddToRequest(restRequest, null, parameterJson, queryParams, urlSegments, headers);
+
+            return restRequest;
         }
-        public class RestManager
+
+        private RestRequest AddToRequest(RestRequest restRequest, object token, string parameterJson, QueryParam[] queryParams, UrlSegment[] urlSegments, Header[] headers)
         {
-            private static RestSharp.IRestClient CreateClient()
+            if (urlSegments != null)
             {
-                var restClient = new IRestClient(NetworkOptions.serverUrl) { Timeout = NetworkOptions.timeOut };
-                return restClient;
-            }
-            public async Task<TResponse<T>> GetResponse<T>(string resource, Method method, string parameterJson = null, QueryParam[] queryParams = null, UrlSegment[] urlSegments = null, Header[] headers = null)
-            {
-                TResponse<T> resp = null;
-                try
+                foreach (var urlSegment in urlSegments)
                 {
-                    var client = CreateClient();
-                    var restRequest = CreateRequest(resource, method, parameterJson, queryParams, urlSegments, headers);
-                    var response = await client.ExecuteTaskAsync(restRequest);
-
-                    resp = JsonConvert.DeserializeObject<TResponse<T>>(response.Content);
+                    restRequest.AddUrlSegment(urlSegment.Name, urlSegment.Value);
                 }
-                catch (Exception e)
-                {
-                    resp = new TResponse<T> { Message = e.ToString(), Status = 404, Data = default };
-                }
-
-
-                return resp;
             }
 
-            private RestRequest CreateRequest(string resource, Method method, string parameterJson, QueryParam[] queryParams, UrlSegment[] urlSegments, Header[] headers)
+            if (headers != null)
             {
-                var restRequest = new RestRequest(resource, method) { Timeout = NetworkOptions.timeOut };
-                restRequest = AddToRequest(restRequest, null, parameterJson, queryParams, urlSegments, headers);
-
-                return restRequest;
+                foreach (var header in headers)
+                {
+                    restRequest.AddHeader(header.Name, header.Value);
+                }
             }
 
-            private RestRequest AddToRequest(RestRequest restRequest, object token, string parameterJson, QueryParam[] queryParams, UrlSegment[] urlSegments, Header[] headers)
+            if (queryParams != null)
             {
-                if (urlSegments != null)
+                foreach (var queryParam in queryParams)
                 {
-                    foreach (var urlSegment in urlSegments)
-                    {
-                        restRequest.AddUrlSegment(urlSegment.Name, urlSegment.Value);
-                    }
+                    restRequest.AddParameter(queryParam.Name, queryParam.Value);
                 }
-
-                if (headers != null)
-                {
-                    foreach (var header in headers)
-                    {
-                        restRequest.AddHeader(header.Name, header.Value);
-                    }
-                }
-
-                if (queryParams != null)
-                {
-                    foreach (var queryParam in queryParams)
-                    {
-                        restRequest.AddParameter(queryParam.Name, queryParam.Value);
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(parameterJson))
-                {
-                    restRequest.AddHeader("Content-Type", "application/json");
-                    restRequest.AddParameter("application/json", parameterJson, ParameterType.RequestBody);
-                }
-                return restRequest;
             }
+
+            if (!string.IsNullOrEmpty(parameterJson))
+            {
+                restRequest.AddHeader("Content-Type", "application/json");
+                restRequest.AddParameter("application/json", parameterJson, ParameterType.RequestBody);
+            }
+            return restRequest;
         }
     }
 }

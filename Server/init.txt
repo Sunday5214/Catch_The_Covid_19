@@ -1,0 +1,11 @@
+등록된 학생인지 확인 하는 API
+학생을 등록하는 API
+온도를 측정한 결과를 저장하는 API
+
+ERD
+
+멤버명렬 테이블
+Idx(int) 반(int) 번호(int) 이름(string) 신분(bool)
+
+측정값 저장 테이블
+idx(int) 멤버idx(int) 측정시각(datetime), 측정된온도(float)

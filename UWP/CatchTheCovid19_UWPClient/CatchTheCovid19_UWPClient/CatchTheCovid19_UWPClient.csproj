@@ -122,7 +122,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\CheckMemberCard.cs" />
+    <Compile Include="Model\CheckTemperature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\CheckMemberCardViewModel.cs" />
+    <Compile Include="ViewModel\CheckTemperatureViewModel.cs" />
     <Compile Include="View\CheckMemberCardView.xaml.cs">
       <DependentUpon>CheckMemberCardView.xaml</DependentUpon>
     </Compile>

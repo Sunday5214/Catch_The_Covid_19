@@ -1,7 +1,9 @@
 ﻿using CatchTheCovid19.Serial;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CatchTheCovid19.Temperature
 {
@@ -14,11 +16,11 @@ namespace CatchTheCovid19.Temperature
 
         public TemperatureManager()
         {
-            ConnectBarcodeRaspi();
+            ConnectTemperatureArudu();
         }
-        public async void ConnectBarcodeRaspi()
+        public async void ConnectTemperatureArudu()
         {
-            //정확한 디바이스 이름 파악되면 바꿀것
+            //정확한 디바이스 이름 파악되면 바꿀것   
             if ((await serialCommunicator.FindPortsDevice()) == true)
             {
                 Debug.WriteLine("포트찾음");

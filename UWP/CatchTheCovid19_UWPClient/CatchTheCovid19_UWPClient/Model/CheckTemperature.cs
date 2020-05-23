@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CatchTheCovid19_UWPClient.Model
 {
-    class CheckTemperature
+    public class CheckTemperature
     {
     }
 }

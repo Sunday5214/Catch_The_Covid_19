@@ -9,6 +9,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="바코드를 인식시켜 주세요" Grid.Row="0" FontSize="40" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 50"/>
+        <TextBlock Text="{Binding Name}" Grid.Row="0" FontSize="90" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 0 0 0"/>
+        <TextBlock Text="{Binding ClassRoom}" Grid.Row="1" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding Promiss}" Grid.Row="2" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 </Page>

@@ -154,7 +154,7 @@ namespace CatchTheCovid19.Serial
         /// 데이터를 보낼때 쓰는 메소드
         /// </summary>
         /// <param name="sendData"></param>
-        public async void SendSerial(string sendData)
+        public async Task<bool> SendSerial(string sendData)
         {
             try
             {
@@ -164,16 +164,25 @@ namespace CatchTheCovid19.Serial
                     dataWriteObject = new DataWriter(serialPort.OutputStream);
 
                     //Launch the WriteAsync task to perform the write
-                    await WriteAsync(sendData);
+                    if((await WriteAsync(sendData)) == true)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
                     Debug.WriteLine("디바이스 선택과정에서 문제발생");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                return false;
             }
             finally
             {
@@ -190,7 +199,7 @@ namespace CatchTheCovid19.Serial
         /// WriteAsync: Task that asynchronously writes data from the input text box 'sendText' to the OutputStream 
         /// </summary>
         /// <returns></returns>
-        private async Task WriteAsync(string sendData)
+        private async Task<bool> WriteAsync(string sendData)
         {
             Task<UInt32> storeAsyncTask;
 
@@ -206,12 +215,18 @@ namespace CatchTheCovid19.Serial
                 if (bytesWritten > 0)
                 {
                     Debug.WriteLine("보내짐");
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
                 //sendText.Text = "";
             }
             else
             {
                 Debug.WriteLine("공백");
+                return false;
                 //status.Text = "Enter the text you want to write and then click on 'WRITE'";
             }
         }

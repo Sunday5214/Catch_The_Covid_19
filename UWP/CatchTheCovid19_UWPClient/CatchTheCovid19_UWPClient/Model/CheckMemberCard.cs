@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CatchTheCovid19_UWPClient.Model
 {
-    class CheckMemberCard
+    public class CheckMemberCard
     {
+        
     }
 }

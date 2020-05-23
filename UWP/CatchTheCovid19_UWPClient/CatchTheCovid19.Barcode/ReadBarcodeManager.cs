@@ -5,7 +5,7 @@ namespace CatchTheCovid19.Barcode
 {
     public class ReadBarcodeManager
     {
-        SerialCommunicator serialCommunicator = new SerialCommunicator();
+        SerialCommunicator serialCommunicator = new SerialCommunicator("COM6");
 
         public delegate void ReadComplete(string data);
         public event ReadComplete ReadCompleteEvent;
@@ -16,8 +16,9 @@ namespace CatchTheCovid19.Barcode
         }
         public async void ConnectBarcodeRasp()
         {
-           var deviceList =  await serialCommunicator.ListAvailablePorts();
-           //deviceList.
+            //정확한 디바이스 이름 파악되면 바꿀것
+           await serialCommunicator.FindPortsDevice();
+
         }
     }
 }

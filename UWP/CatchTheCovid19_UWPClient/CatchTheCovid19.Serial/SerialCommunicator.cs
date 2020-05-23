@@ -19,34 +19,84 @@ namespace CatchTheCovid19.Serial
         DataReader dataReaderObject = null;
 
         private CancellationTokenSource ReadCancellationTokenSource;
+        private DeviceInformation Device = null;
+        private string comport = "";
 
         public delegate void ListenComplete(string data);
         public event ListenComplete ListenCompleteEvent;
+
+
+        public SerialCommunicator(string comPort)
+        {
+            comport = comPort;
+        }
+
+        public SerialCommunicator()
+        {
+
+        }
 
         /// <summary>
         /// 연결된 디바이스의 리스트를 수집해서 리턴해주는 메소드
         /// </summary>
         /// <returns></returns>
-        public async Task<ObservableCollection<DeviceInformation>> ListAvailablePorts()
+        public async Task<bool> FindPortsDevice()
         {
-            ObservableCollection<DeviceInformation> listOfDevices = new ObservableCollection<DeviceInformation>();
+            try
+            {
+                string aqs = SerialDevice.GetDeviceSelector(comport);
+                var dis = await DeviceInformation.FindAllAsync(aqs);
+                Device = dis[0];
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+        }
 
+        public async Task FindDevicebyName(string deviceName)
+        {
             try
             {
                 string aqs = SerialDevice.GetDeviceSelector();
                 var dis = await DeviceInformation.FindAllAsync(aqs);
 
-
-                for (int i = 0; i < dis.Count; i++)
+                foreach(var device in dis)
                 {
-                    listOfDevices.Add(dis[i]);
+                    if (deviceName == device.Name)
+                    {
+                        Device = device;
+                        break;
+                    }
                 }
-                return listOfDevices;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public async Task FindDevicebyId(string deviceId)
+        {
+            try
+            {
+                string aqs = SerialDevice.GetDeviceSelector();
+                var dis = await DeviceInformation.FindAllAsync(aqs);
+
+                foreach (var device in dis)
+                {
+                    if (deviceId == device.Id)
+                    {
+                        Device = device;
+                        break;
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                return null;
             }
         }
 
@@ -54,13 +104,13 @@ namespace CatchTheCovid19.Serial
         /// 컴포트를 인자로주면 Serial을 Connect하는 메소드
         /// </summary>
         /// <param name="comport"></param>
-        public async void ConnectSerial(DeviceInformation comport)
+        public async Task<bool> ConnectSerial(uint baudrate)
         {
 
             try
             {
-                serialPort = await SerialDevice.FromIdAsync(comport.Id);
-                if (serialPort == null) return;
+                serialPort = await SerialDevice.FromIdAsync(Device.Id);
+                if (serialPort == null) return false;
 
                 // Disable the 'Connect' button 
                // comPortInput.IsEnabled = false;
@@ -68,7 +118,7 @@ namespace CatchTheCovid19.Serial
                 // Configure serial settings
                 serialPort.WriteTimeout = TimeSpan.FromMilliseconds(1000);
                 serialPort.ReadTimeout = TimeSpan.FromMilliseconds(1000);
-                serialPort.BaudRate = 9600;
+                serialPort.BaudRate = baudrate;
                 serialPort.Parity = SerialParity.None;
                 serialPort.StopBits = SerialStopBitCount.One;
                 serialPort.DataBits = 8;
@@ -90,12 +140,13 @@ namespace CatchTheCovid19.Serial
 
                 // Enable 'WRITE' button to allow sending data
                 //sendTextButton.IsEnabled = true;
-
+                return true;
                 //Listen();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+                return false;
             }
         }
 
@@ -168,7 +219,7 @@ namespace CatchTheCovid19.Serial
         /// <summary>
         /// 시리얼을 통해 데이터를 듣는 메소드
         /// </summary>
-        public async void Listen()
+        public async Task Listen()
         {
             try
             {
@@ -185,6 +236,7 @@ namespace CatchTheCovid19.Serial
             }
             catch (TaskCanceledException tce)
             {
+                Debug.Write(tce);
                 //status.Text = "Reading task was cancelled, closing device and cleaning up";
                 CloseDevice();
             }
@@ -272,7 +324,7 @@ namespace CatchTheCovid19.Serial
                 //status.Text = "";
                 CancelReadTask();
                 CloseDevice();
-                await ListAvailablePorts();
+                await FindPortsDevice();
             }
             catch (Exception ex)
             {

@@ -37,12 +37,10 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
         private async Task SearchMember(string data)
         {
-            QueryParam[] queryParam = new QueryParam[1];
-            queryParam[0] = new QueryParam("cardId", data);
-            (var respData, var respStatus) = await restManager.GetResponse<CheckMemberCard>("/searchCard", Method.GET, null, queryParam);
-            if (respStatus == HttpStatusCode.OK)
+            var respData = await restManager.GetResponse<CheckMemberCard>("/searchCard?cardId="+data, Method.POST);
+            if (respData.respStatus == HttpStatusCode.OK)
             {
-                CheckMemberCard = respData;
+                CheckMemberCard = respData.respData;
             }
             else
             {

@@ -9,7 +9,7 @@ namespace CatchTheCovid19.Temperature
 {
     public class TemperatureManager
     {
-        SerialCommunicator serialCommunicator = new SerialCommunicator("COM4");
+        SerialCommunicator serialCommunicator = new SerialCommunicator("COM10");
 
         public delegate void ReadComplete(string data);
         public event ReadComplete ReadCompleteEvent;
@@ -21,13 +21,13 @@ namespace CatchTheCovid19.Temperature
         public async void ConnectTemperatureArudu()
         {
             //정확한 디바이스 이름 파악되면 바꿀것   
-            if ((await serialCommunicator.FindPortsDevice()) == true)
+            if ((await serialCommunicator.FindDevicebyName("USB")) == true)
             {
                 Debug.WriteLine("포트찾음");
                 if ((await serialCommunicator.ConnectSerial(115200)) == true)
                 {
                     Debug.WriteLine("성공적으로 연결됨");
-                    serialCommunicator.BUFFSIZE = 10;
+                    serialCommunicator.BUFFSIZE = 4;
                     serialCommunicator.ListenCompleteEvent += SerialCommunicator_ListenCompleteEvent;
                     GetSerialData();
 

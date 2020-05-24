@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -23,6 +24,8 @@ namespace CatchTheCovid19.Serial
         private CancellationTokenSource ReadCancellationTokenSource;
         private DeviceInformation Device = null;
         private string comport = "";
+
+        private static int count = 0;
 
         public delegate void ListenComplete(string data);
         public event ListenComplete ListenCompleteEvent;
@@ -75,12 +78,19 @@ namespace CatchTheCovid19.Serial
             {
                 string aqs = SerialDevice.GetDeviceSelector();
                 var dis = await DeviceInformation.FindAllAsync(aqs);
+                var a = dis.ToList();
+                if (count == 1)
+                {
+                    Device = dis[2];
+                    return true;
+                }
 
-                foreach(var device in dis)
+                foreach (var device in dis)
                 {
                     if (device.Name.Contains(deviceName))
                     {
                         Device = device;
+                        count = 1;
                         return true;
                     }
                 }
@@ -88,8 +98,9 @@ namespace CatchTheCovid19.Serial
             }
             catch(Exception ex)
             {
-                return false;
                 Debug.WriteLine(ex);
+                return false;
+
             }
         }
 

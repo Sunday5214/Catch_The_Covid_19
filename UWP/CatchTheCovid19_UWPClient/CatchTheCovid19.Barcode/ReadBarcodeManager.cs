@@ -20,9 +20,9 @@ namespace CatchTheCovid19.Barcode
         }
         public async void ConnectBarcodeRaspi()
         {
-            await serialCommunicator.ShowComList();
+            //await serialCommunicator.ShowComList();
             //정확한 디바이스 이름 파악되면 바꿀것
-            if ((await serialCommunicator.FindPortsDevice()) == true)
+            if ((await serialCommunicator.FindDevicebyName("USB")) == true)
             {
                 Debug.WriteLine("포트찾음");
                 if((await serialCommunicator.ConnectSerial(115200)) == true)

@@ -6,7 +6,7 @@ namespace CatchTheCovid19.IRestClient.Option
 {
     public class NetworkOptions
     {
-        public static string serverUrl { get; set; } = "http://did.dodam.b1nd.com";
+        public static string serverUrl { get; set; } = "http://10.80.162.106:8080";
         public static int timeOut { get; set; } = 30000;
     }
 }

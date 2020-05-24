@@ -25,6 +25,28 @@ namespace CatchTheCovid19_UWPClient
         public MainPage()
         {
             this.InitializeComponent();
+            Loaded += MainPage_Loaded;
+        }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
+            ctrlTemperature.ChangeScreenEvent += CtrlTemperature_ChangeScreenEvent;
+        }
+
+        private void CtrlTemperature_ChangeScreenEvent()
+        {
+            ctrlCheckMember.Init();
+            ctrlCheckMember.Visibility = Visibility.Visible;
+     
+            ctrlTemperature.Visibility = Visibility.Collapsed;
+        }
+
+        private void CtrlCheckMember_ChangeScreenEvent()
+        {
+            ctrlCheckMember.Visibility = Visibility.Collapsed;
+
+            ctrlTemperature.Visibility = Visibility.Visible;
         }
     }
 }

@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\IsStudentToStringConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -171,14 +172,24 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Core">
+      <Version>7.2.0.1422</Version>
+    </PackageReference>
+    <PackageReference Include="RestSharp">
+      <Version>106.11.4</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CatchTheCovid19.Barcode\CatchTheCovid19.Barcode.csproj">
       <Project>{5b590246-6ade-4312-8138-429aa4c13dfb}</Project>
       <Name>CatchTheCovid19.Barcode</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CatchTheCovid19.TTemperature\CatchTheCovid19.Temperature.csproj">
-      <Project>{f99b8019-96ba-4c60-9cfd-1ab8a529b406}</Project>
+    <ProjectReference Include="..\CatchTheCovid19.RestClient\CatchTheCovid19.RestClient.csproj">
+      <Project>{c64db691-e2e3-4165-9e87-ca816ae04d0d}</Project>
+      <Name>CatchTheCovid19.RestClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CatchTheCovid19.Temperature\CatchTheCovid19.Temperature.csproj">
+      <Project>{aa331fef-4a97-4d04-ace5-ad58a252bec6}</Project>
       <Name>CatchTheCovid19.Temperature</Name>
     </ProjectReference>
   </ItemGroup>

@@ -9,14 +9,14 @@ namespace CatchTheCovid19.Temperature
 {
     public class TemperatureManager
     {
-        SerialCommunicator serialCommunicator = new SerialCommunicator("COM6");
+        SerialCommunicator serialCommunicator = new SerialCommunicator("COM4");
 
         public delegate void ReadComplete(string data);
         public event ReadComplete ReadCompleteEvent;
 
         public TemperatureManager()
         {
-            ConnectTemperatureArudu();
+            //ConnectTemperatureArudu();
         }
         public async void ConnectTemperatureArudu()
         {
@@ -24,18 +24,19 @@ namespace CatchTheCovid19.Temperature
             if ((await serialCommunicator.FindPortsDevice()) == true)
             {
                 Debug.WriteLine("포트찾음");
-                if ((await serialCommunicator.ConnectSerial(9600)) == true)
+                if ((await serialCommunicator.ConnectSerial(115200)) == true)
                 {
                     Debug.WriteLine("성공적으로 연결됨");
+                    serialCommunicator.BUFFSIZE = 10;
                     serialCommunicator.ListenCompleteEvent += SerialCommunicator_ListenCompleteEvent;
-                    await GetSerialData();
+                    GetSerialData();
 
                 }
                 else
                 {
                     Debug.WriteLine("연결실패");
                 }
-            }
+            } 
             else
             {
                 Debug.WriteLine("포트검색불가");
@@ -48,9 +49,9 @@ namespace CatchTheCovid19.Temperature
             ReadCompleteEvent?.Invoke(data);
         }
 
-        public async Task GetSerialData()
+        public void GetSerialData()
         {
-            await serialCommunicator.Listen();
+            serialCommunicator.Listen();
         }
 
         public async Task SendSerialData(string data)

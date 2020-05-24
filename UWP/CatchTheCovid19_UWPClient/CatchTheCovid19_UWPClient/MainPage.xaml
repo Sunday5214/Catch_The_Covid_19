@@ -10,6 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <views:CheckMemberCard/>
+        <views:CheckTemperatureView x:Name="ctrlTemperature"/>
+        <views:CheckMemberCardView x:Name="ctrlCheckMember"/>
+
     </Grid>
 </Page>

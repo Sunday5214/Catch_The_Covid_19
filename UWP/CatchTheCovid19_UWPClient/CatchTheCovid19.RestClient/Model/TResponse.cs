@@ -14,4 +14,8 @@ namespace CatchTheCovid19.IRestClient.Model
         [JsonProperty("data")]
         public T Data { get; set; }
     }
+    public sealed class Nothing
+    {
+        public static Nothing AtAll => null;
+    }
 }

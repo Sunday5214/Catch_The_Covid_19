@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CatchTheCovid19.Serial\CatchTheCovid19.Serial.csproj" />
+  </ItemGroup>
+
 </Project>

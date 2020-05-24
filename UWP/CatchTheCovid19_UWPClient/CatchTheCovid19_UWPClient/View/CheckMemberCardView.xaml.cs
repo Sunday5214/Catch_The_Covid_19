@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -20,11 +21,50 @@ namespace CatchTheCovid19_UWPClient.View
     /// <summary>
     /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
     /// </summary>
-    public sealed partial class CheckMemberCard : Page
+    public sealed partial class CheckMemberCardView : Page
     {
-        public CheckMemberCard()
+        public delegate void ChangeScreen();
+        public event ChangeScreen ChangeScreenEvent;
+
+        public CheckMemberCardView()
         {
             this.InitializeComponent();
+            Loaded += CheckMemberCard_Loaded;
+        }
+
+        private void CheckMemberCard_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = App.checkMemberCardViewModel;
+            App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
+            //App.checkMemberCardViewModel.StartReadCard();
+        }
+
+        private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Model.CheckMemberCard member)
+        {
+            await ShowData(member);
+        }
+
+        private async Task ShowData(Model.CheckMemberCard member)
+        {
+            tbDesc.Visibility = Visibility.Collapsed;
+            tbName.Visibility = Visibility.Visible;
+            tbClassRoom.Visibility = Visibility.Visible;
+            tbIsStudent.Visibility = Visibility.Visible;
+            
+            await Task.Delay(2000);
+            App.checkTemperatureViewModel.SetMemberData(member);
+            App.checkTemperatureViewModel.StartReadTemperature();
+            ChangeScreenEvent?.Invoke();
+
+        }
+
+        public void Init()
+        {
+            tbDesc.Visibility = Visibility.Visible;
+            tbName.Visibility = Visibility.Collapsed;
+            tbClassRoom.Visibility = Visibility.Collapsed;
+            tbIsStudent.Visibility = Visibility.Collapsed;
+            
         }
     }
 }

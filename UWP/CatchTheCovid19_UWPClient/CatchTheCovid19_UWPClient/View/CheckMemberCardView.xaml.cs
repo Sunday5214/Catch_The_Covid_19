@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CatchTheCovid10.Member;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,9 +40,9 @@ namespace CatchTheCovid19_UWPClient.View
             //App.checkMemberCardViewModel.StartReadCard();
         }
 
-        private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Model.CheckMemberCard member)
+        private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Member member)
         {
-            if (member != null) 
+            if (member != null)
             {
                 await ShowData(member);
             }
@@ -49,11 +50,9 @@ namespace CatchTheCovid19_UWPClient.View
             {
                 tbDesc.Text = "네트워크 오류가 발생했습니다. \n마지막 사람부터 다시 측정해주세요";
             }
-
-
         }
 
-        private async Task ShowData(Model.CheckMemberCard member)
+        private async Task ShowData(Member member)
         {
             tbDesc.Visibility = Visibility.Collapsed;
             tbName.Visibility = Visibility.Visible;

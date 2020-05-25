@@ -180,6 +180,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CatchTheCovid10.Member\CatchTheCovid10.Member.csproj">
+      <Project>{4009BCEC-68A8-42BD-90D0-6E944E755061}</Project>
+      <Name>CatchTheCovid10.Member</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CatchTheCovid19.Barcode\CatchTheCovid19.Barcode.csproj">
       <Project>{5b590246-6ade-4312-8138-429aa4c13dfb}</Project>
       <Name>CatchTheCovid19.Barcode</Name>

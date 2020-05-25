@@ -1,4 +1,5 @@
-﻿using CatchTheCovid19.IRestClient.Model;
+﻿using CatchTheCovid10.Member;
+using CatchTheCovid19.IRestClient.Model;
 using CatchTheCovid19.RestManager;
 using CatchTheCovid19.Temperature;
 using CatchTheCovid19_UWPClient.Model;
@@ -24,8 +25,8 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
 
 
-        private CheckMemberCard _member = new CheckMemberCard();
-        public CheckMemberCard Member
+        private Member _member = new Member();
+        public Member Member
         {
             get => _member;
             set => SetProperty(ref _member, value);
@@ -53,7 +54,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         public async Task AddData(float data)
         {
             QueryParam[] queryParam = new QueryParam[2];
-            queryParam[0] = new QueryParam("Idx", Member.Id);
+            queryParam[0] = new QueryParam("Idx", Member.Idx);
             queryParam[1] = new QueryParam("temp", data);
             (_, var respStatus) = await restManager.GetResponse<Nothing>("/insertRecord", Method.GET, null, queryParam);
             if (respStatus == HttpStatusCode.OK)
@@ -72,7 +73,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             //await temperatureManager.SendSerialData("1");
         }
 
-        public void SetMemberData(CheckMemberCard checkMember)
+        public void SetMemberData(Member checkMember)
         {
             Member = checkMember;
         }

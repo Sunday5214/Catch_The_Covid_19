@@ -30,6 +30,7 @@ namespace CatchTheCovid19_UWPClient
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            App.memberManager.GetMemberData();
             ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
             ctrlTemperature.ChangeScreenEvent += CtrlTemperature_ChangeScreenEvent;
         }

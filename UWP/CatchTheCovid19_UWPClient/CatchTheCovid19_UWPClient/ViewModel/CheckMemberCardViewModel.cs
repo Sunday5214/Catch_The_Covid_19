@@ -1,4 +1,5 @@
-﻿using CatchTheCovid19.Barcode;
+﻿using CatchTheCovid10.Member;
+using CatchTheCovid19.Barcode;
 using CatchTheCovid19.RestManager;
 using CatchTheCovid19_UWPClient.Model;
 using Prism.Mvvm;
@@ -18,11 +19,11 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         ReadBarcodeManager barcodeManager = new ReadBarcodeManager();
         RestManager restManager = new RestManager();
 
-        public delegate void BarcodeReadComplete(CheckMemberCard member);
+        public delegate void BarcodeReadComplete(Member member);
         public event BarcodeReadComplete BarcodeReadCompleteEvent;
 
-        private CheckMemberCard _checkMemberData = new CheckMemberCard();
-        public CheckMemberCard CheckMemberCard
+        private Member _checkMemberData = new Member();
+        public Member CheckMemberCard
         {
             get => _checkMemberData;
             set => SetProperty(ref _checkMemberData, value);
@@ -37,22 +38,24 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
         private async Task SearchMember(string data)
         {
-            var respData = await restManager.GetResponse<CheckMemberCard>("/searchCard?cardId="+data, Method.GET);
-            if (respData.respStatus == HttpStatusCode.Accepted)
+            await Task.Run(() =>
             {
-                CheckMemberCard = respData.respData;
-                BarcodeReadCompleteEvent?.Invoke(CheckMemberCard);
-            }
-            else
-            {
-                BarcodeReadCompleteEvent?.Invoke(null);
-            }
+                var respData = MemberManager.GetMember(data);
+                if (respData != null)
+                {
+                    CheckMemberCard = respData;
+                    BarcodeReadCompleteEvent?.Invoke(CheckMemberCard);
+                }
+                else
+                {
+                    BarcodeReadCompleteEvent?.Invoke(null);
+                }
+            });
         }
 
         private async void BarcodeManager_ReadCompleteEvent(string data)
         {
             await SearchMember(data);
-            
         }
 
         public async void StartReadCard()

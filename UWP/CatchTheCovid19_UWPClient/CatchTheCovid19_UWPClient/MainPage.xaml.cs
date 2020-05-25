@@ -44,6 +44,7 @@ namespace CatchTheCovid19_UWPClient
 
         private void CtrlCheckMember_ChangeScreenEvent()
         {
+            ctrlCheckMember.Init();
             ctrlCheckMember.Visibility = Visibility.Collapsed;
 
             ctrlTemperature.Visibility = Visibility.Visible;

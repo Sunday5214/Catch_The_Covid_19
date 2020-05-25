@@ -37,21 +37,22 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
         private async Task SearchMember(string data)
         {
-            var respData = await restManager.GetResponse<CheckMemberCard>("/searchCard?cardId="+data, Method.POST);
-            if (respData.respStatus == HttpStatusCode.OK)
+            var respData = await restManager.GetResponse<CheckMemberCard>("/searchCard?cardId="+data, Method.GET);
+            if (respData.respStatus == HttpStatusCode.Accepted)
             {
                 CheckMemberCard = respData.respData;
+                BarcodeReadCompleteEvent?.Invoke(CheckMemberCard);
             }
             else
             {
-                
+                BarcodeReadCompleteEvent?.Invoke(null);
             }
         }
 
         private async void BarcodeManager_ReadCompleteEvent(string data)
         {
             await SearchMember(data);
-            BarcodeReadCompleteEvent?.Invoke(CheckMemberCard);
+            
         }
 
         public async void StartReadCard()

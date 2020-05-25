@@ -41,7 +41,16 @@ namespace CatchTheCovid19_UWPClient.View
 
         private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Model.CheckMemberCard member)
         {
-            await ShowData(member);
+            if (member != null) 
+            {
+                await ShowData(member);
+            }
+            else
+            {
+                tbDesc.Text = "네트워크 오류가 발생했습니다. \n마지막 사람부터 다시 측정해주세요";
+            }
+
+
         }
 
         private async Task ShowData(Model.CheckMemberCard member)
@@ -51,7 +60,7 @@ namespace CatchTheCovid19_UWPClient.View
             tbClassRoom.Visibility = Visibility.Visible;
             tbIsStudent.Visibility = Visibility.Visible;
             
-            await Task.Delay(2000);
+            await Task.Delay(3000);
             App.checkTemperatureViewModel.SetMemberData(member);
             App.checkTemperatureViewModel.StartReadTemperature();
             ChangeScreenEvent?.Invoke();
@@ -60,11 +69,11 @@ namespace CatchTheCovid19_UWPClient.View
 
         public void Init()
         {
+            App.checkMemberCardViewModel.CheckMemberCard = null;
             tbDesc.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
             tbClassRoom.Visibility = Visibility.Collapsed;
             tbIsStudent.Visibility = Visibility.Collapsed;
-            
         }
     }
 }

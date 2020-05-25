@@ -27,7 +27,7 @@ namespace CatchTheCovid19.Temperature
                 if ((await serialCommunicator.ConnectSerial(115200)) == true)
                 {
                     Debug.WriteLine("성공적으로 연결됨");
-                    serialCommunicator.BUFFSIZE = 4;
+                    serialCommunicator.BUFFSIZE = 5;
                     serialCommunicator.ListenCompleteEvent += SerialCommunicator_ListenCompleteEvent;
                     GetSerialData();
 

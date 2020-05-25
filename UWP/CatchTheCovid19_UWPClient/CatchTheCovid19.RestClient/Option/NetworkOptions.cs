@@ -6,7 +6,7 @@ namespace CatchTheCovid19.IRestClient.Option
 {
     public class NetworkOptions
     {
-        public static string serverUrl { get; set; } = "http://192.168.6.1:8080";
+        public static string serverUrl { get; set; } = "http://4b9967d4.ngrok.io";
         public static int timeOut { get; set; } = 30000;
     }
 }

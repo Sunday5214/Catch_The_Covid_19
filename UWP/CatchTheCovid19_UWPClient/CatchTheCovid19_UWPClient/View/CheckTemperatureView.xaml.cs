@@ -44,7 +44,7 @@ namespace CatchTheCovid19_UWPClient.View
                 tbDesc.Visibility = Visibility.Collapsed;
                 tbName.Visibility = Visibility.Visible;
                 tbTemp.Visibility = Visibility.Visible;
-                await Task.Delay(2000);
+                await Task.Delay(3000);
                 ChangeScreenEvent?.Invoke();
             }
             else
@@ -55,6 +55,8 @@ namespace CatchTheCovid19_UWPClient.View
 
         public void Init()
         {
+            App.checkTemperatureViewModel.Member = null;
+            App.checkTemperatureViewModel.Temperature = 0;
             tbDesc.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
             tbTemp.Visibility = Visibility.Collapsed;

@@ -11,6 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Core;
 
 namespace CatchTheCovid19_UWPClient.ViewModel
 {
@@ -38,7 +39,8 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
         private async Task SearchMember(string data)
         {
-            await Task.Run(() =>
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, 
+            ()=>
             {
                 var respData = MemberManager.GetMember(data);
                 if (respData != null)

@@ -23,92 +23,33 @@ namespace CatchTheCovid19_UWPClient
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public static MainPage Current;
-        public static Frame RootFrame = null;
+        CheckMemberCardView ctrlCheckMember = new CheckMemberCardView();
+        CheckTemperatureView ctrlTemperature = new CheckTemperatureView();
+
         public MainPage()
         {
-            this.InitializeComponent();
-            this.Loaded += (sender, args) =>
-            {
-                Current = this;
-                var titleBar = Windows.ApplicationModel.Core.CoreApplication.GetCurrentView().TitleBar;
-            };
+            InitializeComponent();
+            Loaded += MainPage_Loaded;
         }
-
-        public Frame AppFrame { get { return this.rootFrame; } }
-
-        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.IsSettingsSelected)
-            {
-
-            }
-            else
-            {
-                NavigationViewItem item = args.SelectedItem as NavigationViewItem;
-                NavView_Navigate(item);
-            }
-        }
-
-        private void NavView_Navigate(NavigationViewItem item)
-        {
-            switch (item.Tag)
-            {
-                case "CheckMember":
-                    rootFrame.Navigate(typeof(CheckMemberCardView)); break;
-                case "Temperature":
-                    rootFrame.Navigate(typeof(CheckTemperatureView)); break;
-            }
-        }
-
-        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            if (args.IsSettingsInvoked)
-            {
-                
-            }
-            else
-            {
-                // find NavigationViewItem with Content that equals InvokedItem
-                var item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
-                NavView_Navigate(item as NavigationViewItem);
-
-            }
-        }
-
-        private void NaviView_Loaded(object sender, RoutedEventArgs e)
-        {
-            foreach (NavigationViewItemBase item in NaviView.MenuItems)
-            {
-                if (item is NavigationViewItem && item.Tag.ToString() == "home")
-                {
-                    NaviView.SelectedItem = item;
-                    break;
-                }
-            }
-        }
-
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             App.memberManager.GetMemberData();
             ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
             ctrlTemperature.ChangeScreenEvent += CtrlTemperature_ChangeScreenEvent;
+            pivotMain.Items.Add(new PivotItem { Content = ctrlCheckMember });
+            pivotMain.Items.Add(new PivotItem { Content = ctrlTemperature });
         }
 
-        private void CtrlTemperature_ChangeScreenEvent()
+        private void CtrlTemperature_ChangeScreenEvent() 
         {
             ctrlCheckMember.Init();
-            ctrlCheckMember.Visibility = Visibility.Visible;
-     
-            ctrlTemperature.Visibility = Visibility.Collapsed;
+            pivotMain.SelectedItem = pivotMain.Items[0];
         }
 
         private void CtrlCheckMember_ChangeScreenEvent()
         {
-            ctrlCheckMember.Init();
-            ctrlCheckMember.Visibility = Visibility.Collapsed;
-
-            ctrlTemperature.Visibility = Visibility.Visible;
+            ctrlTemperature.Init();
+            pivotMain.SelectedItem = pivotMain.Items[1];
         }
     }
 }

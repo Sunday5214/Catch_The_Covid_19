@@ -31,7 +31,7 @@ namespace CatchTheCovid10.Member
 
         public static Member GetMember(string cardId)
         {
-            return (Member.Where(x => x.CardId == cardId).ToList()[0] == null ? null : Member.Where(x => x.CardId == cardId).ToList()[0]);
+            return (Member.Where(x => x.CardId == cardId) == null ? null : Member.Where(x => x.CardId == cardId).ToList()[0]);
         }
     }
 }

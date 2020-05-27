@@ -9,22 +9,9 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <NavigationView x:Name="NaviView" Loaded="NaviView_Loaded" PaneDisplayMode="Top" SelectionChanged="NavigationView_SelectionChanged" ItemInvoked="NavigationView_ItemInvoked">
-            <NavigationView.MenuItems>
-                <NavigationViewItem Content="1" Tag="CheckMember"/>
-                <NavigationViewItem Content="2" Tag="Temperature"/>
-            </NavigationView.MenuItems>
-            <Frame x:Name="rootFrame">
-                <Frame.ContentTransitions>
-                    <TransitionCollection>
-                        <NavigationThemeTransition/>
-                    </TransitionCollection>
-                </Frame.ContentTransitions>
-            </Frame>
-        </NavigationView>
-    </Grid>
-    <!--<views:CheckTemperatureView x:Name="ctrlTemperature"/>
-    <views:CheckMemberCardView x:Name="ctrlCheckMember"/>-->
+    <Pivot x:Name="pivotMain">
+
+    </Pivot>
+
 
 </Page>

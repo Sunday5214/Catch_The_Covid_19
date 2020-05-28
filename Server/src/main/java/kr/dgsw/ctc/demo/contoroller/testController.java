@@ -1,22 +1,22 @@
 package kr.dgsw.ctc.demo.contoroller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class testController {
 
-    @RequestMapping(value = "/searchCard")
+    @RequestMapping(value = "/")
     public @ResponseBody
     String home(){
-        return "index";
+        return "testOK";
     }
 
     @ResponseBody
@@ -96,6 +96,50 @@ public class testController {
         }
 
         return map;
+    }
+
+    @ResponseBody
+    @GetMapping("/allUser")
+    public List allUser(HttpServletResponse response){
+
+        int cnt = 0;
+        List json = new ArrayList();
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ctc?useUnicode=true&characterEncoding=utf8","root","root");
+            String qu = "select * from card";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(qu);
+
+            while(rs.next()) {
+                Map<String, String> map = new HashMap<>();
+
+                map.put("id",String.valueOf(rs.getInt("Idx")));
+                map.put("grade", String.valueOf(rs.getInt("grade")));
+                map.put("class", String.valueOf(rs.getInt("class")));
+                map.put("classNumber", String.valueOf(rs.getInt("classNnumber")));
+                map.put("name", rs.getString("name"));
+                map.put("student", String.valueOf(rs.getBoolean("Idx")));
+                map.put("cardId", rs.getString("cardId"));
+
+                json.add(map);
+                cnt++;
+            }
+            st.close();
+
+        }catch(Exception e){
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+
+        }
+
+        if(cnt == 0)
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        else
+            response.setStatus(HttpServletResponse.SC_OK);
+
+        return json;
     }
 
 }

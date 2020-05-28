@@ -1,10 +1,10 @@
-﻿using CatchTheCovid19.IRestClient.Model;
-using CatchTheCovid19.IRestClient.Option;
+﻿
 using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Rest = CatchTheCovid19.RestClient;
 
 namespace CatchTheCovid19.RestManager
 {
@@ -43,9 +43,9 @@ namespace CatchTheCovid19.RestManager
     }
     public class RestManager
     {
-        private static RestClient CreateClient()
+        private static RestSharp.RestClient CreateClient()
         {
-            var restClient = new RestClient(NetworkOptions.serverUrl) { Timeout = NetworkOptions.timeOut };
+            var restClient = new RestSharp.RestClient(Rest.Option.NetworkOptions.serverUrl) { Timeout = Rest.Option.NetworkOptions.timeOut };
             return restClient;
         }
         public async Task<(T respData, HttpStatusCode respStatus)> GetResponse<T>(string resource, Method method, string parameterJson = null, QueryParam[] queryParams = null, UrlSegment[] urlSegments = null, Header[] headers = null)
@@ -61,7 +61,7 @@ namespace CatchTheCovid19.RestManager
 
         private RestRequest CreateRequest(string resource, Method method, string parameterJson, QueryParam[] queryParams, UrlSegment[] urlSegments, Header[] headers)
         {
-            var restRequest = new RestRequest(resource, method) { Timeout = NetworkOptions.timeOut };
+            var restRequest = new RestRequest(resource, method) { Timeout = Rest.Option.NetworkOptions.timeOut };
             restRequest = AddToRequest(restRequest, null, parameterJson, queryParams, urlSegments, headers);
 
             return restRequest;

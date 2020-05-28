@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatchTheCovid19.IRestClient.Model
+namespace CatchTheCovid19.RestClient.Model
 {
     public class TResponse<T>
     {

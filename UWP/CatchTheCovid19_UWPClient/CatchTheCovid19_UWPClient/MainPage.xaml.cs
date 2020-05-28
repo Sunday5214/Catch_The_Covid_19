@@ -34,12 +34,19 @@ namespace CatchTheCovid19_UWPClient
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             App.memberManager.GetMemberData();
-           
+
+            ctrlSelectTime.ChangeScreenEvent += CtrlSelectTime_ChangeScreenEvent;
             ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
             ctrlTemperature.ChangeScreenEvent += CtrlTemperature_ChangeScreenEvent;
             pivotMain.Items.Add(new PivotItem { Content = ctrlSelectTime });
-            pivotMain.Items.Add(new PivotItem { Content = ctrlCheckMember });
+            pivotMain.Items.Add(new PivotItem { Content = ctrlCheckMember });      
             pivotMain.Items.Add(new PivotItem { Content = ctrlTemperature });
+            pivotMain.SelectedItem = pivotMain.Items[0];
+        }
+
+        private void CtrlSelectTime_ChangeScreenEvent()
+        {
+            pivotMain.SelectedItem = pivotMain.Items[1];
         }
 
         private void CtrlTemperature_ChangeScreenEvent() 

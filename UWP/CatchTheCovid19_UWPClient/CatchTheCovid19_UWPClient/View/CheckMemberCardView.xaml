@@ -9,17 +9,20 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <converter:IsStudentToStringConverter x:Key="IsStudentToStringConverter"/>
+        
     </Page.Resources>
-    
-    
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.6*"/>
             <RowDefinition Height="0.2*"/>
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
+        <TextBox x:Name="tbBarInput" Grid.Row="0" KeyDown="tbBarInput_KeyDown"/>
         <TextBlock x:Name="tbDesc" Text="바코드를 인식시켜 주세요" Grid.Row="0" FontSize="40" VerticalAlignment="Bottom" 
                    HorizontalAlignment="Center" Margin="0 0 0 50" Visibility="Visible"/>
+        
         <TextBlock x:Name="tbName" Text="{Binding CheckMemberCard.Name}" Grid.Row="0" FontSize="90" VerticalAlignment="Center" 
                    HorizontalAlignment="Center" Margin="0 0 0 0" Visibility="Collapsed"/>
         <TextBlock x:Name="tbClassRoom" Grid.Row="1" FontSize="40" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">

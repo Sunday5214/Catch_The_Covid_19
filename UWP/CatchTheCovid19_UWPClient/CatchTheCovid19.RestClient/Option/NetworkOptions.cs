@@ -7,7 +7,7 @@ namespace CatchTheCovid19.RestClient.Option
 {
     public class NetworkOptions
     {
-        public static string serverUrl { get; set; } = "http://e30fac91.ngrok.io";
+        public static string serverUrl { get; set; } = "http://192.168.0.64:8080";
         public static TimeEnum nowTime { get; set; }
         public static int timeOut { get; set; } = 30000;
     }

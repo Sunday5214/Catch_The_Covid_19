@@ -23,6 +23,8 @@ namespace CatchTheCovid19_UWPClient.View
     /// </summary>
     public sealed partial class SelectTimeView : Page
     {
+        public delegate void ChangeScreen();
+        public event ChangeScreen ChangeScreenEvent;
         public SelectTimeView()
         {
             this.InitializeComponent();
@@ -31,21 +33,25 @@ namespace CatchTheCovid19_UWPClient.View
         private void btnUp_Click(object sender, RoutedEventArgs e)
         {
             NetworkOptions.nowTime = TimeEnum.UP;
+            ChangeScreenEvent?.Invoke();
         }
 
         private void btnBreakFast_Click(object sender, RoutedEventArgs e)
         {
             NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+            ChangeScreenEvent?.Invoke();
         }
 
         private void btnLunch_Click(object sender, RoutedEventArgs e)
         {
             NetworkOptions.nowTime = TimeEnum.LUNCH;
+            ChangeScreenEvent?.Invoke();
         }
 
         private void btnDinner_Click(object sender, RoutedEventArgs e)
         {
             NetworkOptions.nowTime = TimeEnum.DINNDER;
+            ChangeScreenEvent?.Invoke();
         }
     }
 }

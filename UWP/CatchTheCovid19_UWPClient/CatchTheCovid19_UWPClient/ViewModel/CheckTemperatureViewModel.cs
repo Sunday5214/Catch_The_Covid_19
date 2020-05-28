@@ -1,5 +1,5 @@
 ﻿using CatchTheCovid10.Member;
-using CatchTheCovid19.IRestClient.Model;
+using CatchTheCovid19.RestClient.Model;
 using CatchTheCovid19.RestManager;
 using CatchTheCovid19.Temperature;
 using CatchTheCovid19_UWPClient.Model;

@@ -38,11 +38,17 @@ namespace App2
         public MainPage()
         {
             this.InitializeComponent();
-            string selector = HidDevice.GetDeviceSelector(usagePage, usageId, vid, pid);
+            Init();
 
+        } 
+
+        public async void Init() 
+        {
+            string selector = HidDevice.GetDeviceSelector(usagePage, usageId, vid, pid);
+            await GetDevice(selector);
             if (myDevices.Any())
             {
-                myHidDevice = await HidDevice.FromIdAsync(myDevices[1].Id, FileAccessMode.Read);
+               await GetHidDevice();
             }
 
             if (myHidDevice != null)
@@ -52,10 +58,12 @@ namespace App2
                     // read report
                 };
             }
-
         }
-
-        public async void GetDevice(string selector)
+        public async Task GetHidDevice()
+        {
+            myHidDevice = await HidDevice.FromIdAsync(myDevices[1].Id, FileAccessMode.ReadWrite);
+        }
+        public async Task GetDevice(string selector)
         {
             myDevices = await DeviceInformation.FindAllAsync(selector);
         }

@@ -35,22 +35,23 @@ namespace CatchTheCovid19_UWPClient.View
 
         private void CheckMemberCard_Loaded(object sender, RoutedEventArgs e)
         {
+            tbBarInput.Focus(FocusState.Programmatic);
             DataContext = App.checkMemberCardViewModel;
-            App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
+            //App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
             //App.checkMemberCardViewModel.StartReadCard();
         }
 
-        private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Member member)
-        {
-            if (member != null)
-            {
-                await ShowData(member);
-            }
-            else
-            {
-                tbDesc.Text = "네트워크 오류가 발생했습니다. \n마지막 사람부터 다시 측정해주세요";
-            }
-        }
+        //private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Member member)
+        //{
+        //    if (member != null)
+        //    {
+        //        await ShowData(member);
+        //    }
+        //    else
+        //    {
+        //        tbDesc.Text = "네트워크 오류가 발생했습니다. \n마지막 사람부터 다시 측정해주세요";
+        //    }
+        //}
 
         private async Task ShowData(Member member)
         {
@@ -73,6 +74,15 @@ namespace CatchTheCovid19_UWPClient.View
             tbName.Visibility = Visibility.Collapsed;
             tbClassRoom.Visibility = Visibility.Collapsed;
             tbIsStudent.Visibility = Visibility.Collapsed;
+        }
+
+        private async void tbBarInput_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if(e.Key == Windows.System.VirtualKey.Enter)
+            {
+                Member member = MemberManager.GetMember(tbBarInput.Text);
+                await ShowData(member);
+            }
         }
     }
 }

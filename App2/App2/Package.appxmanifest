@@ -46,9 +46,10 @@
   <Capabilities>
     <Capability Name="internetClient" />
     <DeviceCapability Name="humaninterfacedevice">
-      <Device Id="vidpid:AC90 3002">
+      <Device Id="vidpid:AC90 3002 usb">
         <Function Type="usage:0001 0006"/>
       </Device>
     </DeviceCapability>
+    <DeviceCapability Name="lowLevel"/>
   </Capabilities>
 </Package>

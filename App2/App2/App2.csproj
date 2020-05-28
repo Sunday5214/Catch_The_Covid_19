@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{947E1552-A250-4F87-861E-A793A53DF314}</ProjectGuid>
+    <ProjectGuid>{C1592CF8-78D6-4950-BA50-8810FBB58F58}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CatchTheCovid19_UWPClient</RootNamespace>
-    <AssemblyName>CatchTheCovid19_UWPClient</AssemblyName>
+    <RootNamespace>App2</RootNamespace>
+    <AssemblyName>App2</AssemblyName>
     <DefaultLanguage>ko-KR</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
@@ -119,25 +119,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converter\IsStudentToStringConverter.cs" />
-    <Compile Include="Converter\TemperatureToColorConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\CheckMemberCard.cs" />
-    <Compile Include="Model\CheckTemperature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\CheckMemberCardViewModel.cs" />
-    <Compile Include="ViewModel\CheckTemperatureViewModel.cs" />
-    <Compile Include="View\CheckMemberCardView.xaml.cs">
-      <DependentUpon>CheckMemberCardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\CheckTemperatureView.xaml.cs">
-      <DependentUpon>CheckTemperatureView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\SelectTimeView.xaml.cs">
-      <DependentUpon>SelectTimeView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -163,47 +148,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\CheckMemberCardView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\CheckTemperatureView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SelectTimeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
-    <PackageReference Include="Prism.Core">
-      <Version>7.2.0.1422</Version>
-    </PackageReference>
-    <PackageReference Include="RestSharp">
-      <Version>106.11.4</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CatchTheCovid10.Member\CatchTheCovid10.Member.csproj">
-      <Project>{4009BCEC-68A8-42BD-90D0-6E944E755061}</Project>
-      <Name>CatchTheCovid10.Member</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CatchTheCovid19.Barcode\CatchTheCovid19.Barcode.csproj">
-      <Project>{5b590246-6ade-4312-8138-429aa4c13dfb}</Project>
-      <Name>CatchTheCovid19.Barcode</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CatchTheCovid19.RestClient\CatchTheCovid19.RestClient.csproj">
-      <Project>{c64db691-e2e3-4165-9e87-ca816ae04d0d}</Project>
-      <Name>CatchTheCovid19.RestClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CatchTheCovid19.Temperature\CatchTheCovid19.Temperature.csproj">
-      <Project>{aa331fef-4a97-4d04-ace5-ad58a252bec6}</Project>
-      <Name>CatchTheCovid19.Temperature</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

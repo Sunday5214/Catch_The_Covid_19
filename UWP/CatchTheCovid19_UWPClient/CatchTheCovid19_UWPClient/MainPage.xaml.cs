@@ -25,7 +25,7 @@ namespace CatchTheCovid19_UWPClient
     {
         CheckMemberCardView ctrlCheckMember = new CheckMemberCardView();
         CheckTemperatureView ctrlTemperature = new CheckTemperatureView();
-
+        SelectTimeView ctrlSelectTime = new SelectTimeView();
         public MainPage()
         {
             InitializeComponent();
@@ -34,8 +34,10 @@ namespace CatchTheCovid19_UWPClient
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             App.memberManager.GetMemberData();
+           
             ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
             ctrlTemperature.ChangeScreenEvent += CtrlTemperature_ChangeScreenEvent;
+            pivotMain.Items.Add(new PivotItem { Content = ctrlSelectTime });
             pivotMain.Items.Add(new PivotItem { Content = ctrlCheckMember });
             pivotMain.Items.Add(new PivotItem { Content = ctrlTemperature });
         }
@@ -43,13 +45,13 @@ namespace CatchTheCovid19_UWPClient
         private void CtrlTemperature_ChangeScreenEvent() 
         {
             ctrlCheckMember.Init();
-            pivotMain.SelectedItem = pivotMain.Items[0];
+            pivotMain.SelectedItem = pivotMain.Items[1];
         }
 
         private void CtrlCheckMember_ChangeScreenEvent()
         {
             ctrlTemperature.Init();
-            pivotMain.SelectedItem = pivotMain.Items[1];
+            pivotMain.SelectedItem = pivotMain.Items[2];
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CatchTheCovid19_UWPClient.View;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,35 @@ namespace CatchTheCovid19_UWPClient
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        CheckMemberCardView ctrlCheckMember = new CheckMemberCardView();
+        CheckTemperatureView ctrlTemperature = new CheckTemperatureView();
+        SelectTimeView ctrlSelectTime = new SelectTimeView();
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            Loaded += MainPage_Loaded;
+        }
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            App.memberManager.GetMemberData();
+           
+            ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
+            ctrlTemperature.ChangeScreenEvent += CtrlTemperature_ChangeScreenEvent;
+            pivotMain.Items.Add(new PivotItem { Content = ctrlSelectTime });
+            pivotMain.Items.Add(new PivotItem { Content = ctrlCheckMember });
+            pivotMain.Items.Add(new PivotItem { Content = ctrlTemperature });
+        }
+
+        private void CtrlTemperature_ChangeScreenEvent() 
+        {
+            ctrlCheckMember.Init();
+            pivotMain.SelectedItem = pivotMain.Items[1];
+        }
+
+        private void CtrlCheckMember_ChangeScreenEvent()
+        {
+            ctrlTemperature.Init();
+            pivotMain.SelectedItem = pivotMain.Items[2];
         }
     }
 }

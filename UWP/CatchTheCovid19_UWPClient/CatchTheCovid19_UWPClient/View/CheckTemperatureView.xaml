@@ -5,10 +5,25 @@
     xmlns:local="using:CatchTheCovid19_UWPClient.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converter="using:CatchTheCovid19_UWPClient.Converter"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Page.Resources>
+        <converter:TemperatureToColorConverter x:Key="TemperatureToColorConverter"/>
+    </Page.Resources>
 
+    <Grid Background="{Binding Temperature, Converter={StaticResource TemperatureToColorConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="이마를 측정기에 5cm간격을 두고 잠시만 기다려주세요" FontSize="40" Margin="0 0 0 50" x:Name="tbDesc"
+                   VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="0" Visibility="Visible"/>
+        <TextBlock Text="{Binding Member.Name}" FontSize="90" Margin="0 0 0 0" Visibility="Collapsed"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" x:Name="tbName"/>
+        <TextBlock Text="{Binding Temperature}" FontSize="50" Margin="0 0 0 0" Visibility="Collapsed"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" x:Name="tbTemp"/>
     </Grid>
 </Page>

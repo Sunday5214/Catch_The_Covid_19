@@ -3,6 +3,7 @@ using CatchTheCovid19.IRestClient.Option;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CatchTheCovid19.RestManager
@@ -47,24 +48,15 @@ namespace CatchTheCovid19.RestManager
             var restClient = new RestClient(NetworkOptions.serverUrl) { Timeout = NetworkOptions.timeOut };
             return restClient;
         }
-        public async Task<TResponse<T>> GetResponse<T>(string resource, Method method, string parameterJson = null, QueryParam[] queryParams = null, UrlSegment[] urlSegments = null, Header[] headers = null)
+        public async Task<(T respData, HttpStatusCode respStatus)> GetResponse<T>(string resource, Method method, string parameterJson = null, QueryParam[] queryParams = null, UrlSegment[] urlSegments = null, Header[] headers = null)
         {
-            TResponse<T> resp = null;
-            try
-            {
-                var client = CreateClient();
-                var restRequest = CreateRequest(resource, method, parameterJson, queryParams, urlSegments, headers);
-                var response = await client.ExecuteAsync(restRequest);
+            T resp = default;
+            var client = CreateClient();
+            var restRequest = CreateRequest(resource, method, parameterJson, queryParams, urlSegments, headers);
+            var response = await client.ExecuteAsync(restRequest);
+            resp = JsonConvert.DeserializeObject<T>(response.Content);
 
-                resp = JsonConvert.DeserializeObject<TResponse<T>>(response.Content);
-            }
-            catch (Exception e)
-            {
-                resp = new TResponse<T> { Message = e.ToString(), Status = 404, Data = default };
-            }
-
-
-            return resp;
+            return (resp, response.StatusCode);
         }
 
         private RestRequest CreateRequest(string resource, Method method, string parameterJson, QueryParam[] queryParams, UrlSegment[] urlSegments, Header[] headers)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -15,12 +16,16 @@ namespace CatchTheCovid19.Serial
         /// Private variables
         /// </summary>
         private SerialDevice serialPort = null;
+        public uint BUFFSIZE = 0;
+
         DataWriter dataWriteObject = null;
         DataReader dataReaderObject = null;
 
         private CancellationTokenSource ReadCancellationTokenSource;
         private DeviceInformation Device = null;
         private string comport = "";
+
+        private static int count = 0;
 
         public delegate void ListenComplete(string data);
         public event ListenComplete ListenCompleteEvent;
@@ -56,25 +61,46 @@ namespace CatchTheCovid19.Serial
             }
         }
 
-        public async Task FindDevicebyName(string deviceName)
+        public async Task ShowComList()
+        {
+            string aqs = SerialDevice.GetDeviceSelector();
+            var dis = await DeviceInformation.FindAllAsync(aqs);
+
+            foreach (var device in dis)
+            {
+                Debug.WriteLine(device.Name +" / "+ device.Id + " / " + device.Kind);
+            }
+        }
+
+        public async Task<bool> FindDevicebyName(string deviceName)
         {
             try
             {
                 string aqs = SerialDevice.GetDeviceSelector();
                 var dis = await DeviceInformation.FindAllAsync(aqs);
-
-                foreach(var device in dis)
+                var a = dis.ToList();
+                if (count == 1)
                 {
-                    if (deviceName == device.Name)
+                    Device = dis[2];
+                    return true;
+                }
+
+                foreach (var device in dis)
+                {
+                    if (device.Name.Contains(deviceName))
                     {
                         Device = device;
-                        break;
+                        count = 1;
+                        return true;
                     }
                 }
+                return false;
             }
             catch(Exception ex)
             {
                 Debug.WriteLine(ex);
+                return false;
+
             }
         }
 
@@ -116,20 +142,14 @@ namespace CatchTheCovid19.Serial
                // comPortInput.IsEnabled = false;
 
                 // Configure serial settings
-                serialPort.WriteTimeout = TimeSpan.FromMilliseconds(1000);
-                serialPort.ReadTimeout = TimeSpan.FromMilliseconds(1000);
+                serialPort.WriteTimeout = TimeSpan.FromMilliseconds(10000);
+                serialPort.ReadTimeout = TimeSpan.FromMilliseconds(10000);
                 serialPort.BaudRate = baudrate;
                 serialPort.Parity = SerialParity.None;
                 serialPort.StopBits = SerialStopBitCount.One;
                 serialPort.DataBits = 8;
                 serialPort.Handshake = SerialHandshake.None;
 
-                // Display configured settings
-                //status.Text = "Serial port configured successfully: ";
-                //status.Text += serialPort.BaudRate + "-";
-                //status.Text += serialPort.DataBits + "-";
-                //status.Text += serialPort.Parity.ToString() + "-";
-                //status.Text += serialPort.StopBits;
 
                 // Set the RcvdText field to invoke the TextChanged callback
                 // The callback launches an async Read task to wait for data
@@ -140,8 +160,9 @@ namespace CatchTheCovid19.Serial
 
                 // Enable 'WRITE' button to allow sending data
                 //sendTextButton.IsEnabled = true;
-                return true;
                 //Listen();
+                return true;
+                //;
             }
             catch (Exception ex)
             {
@@ -234,7 +255,7 @@ namespace CatchTheCovid19.Serial
         /// <summary>
         /// 시리얼을 통해 데이터를 듣는 메소드
         /// </summary>
-        public async Task Listen()
+        public async void Listen()
         {
             try
             {
@@ -279,7 +300,7 @@ namespace CatchTheCovid19.Serial
         {
             Task<UInt32> loadAsyncTask;
 
-            uint ReadBufferLength = 1024;
+            uint ReadBufferLength = BUFFSIZE;
 
             // If task cancellation was requested, comply
             cancellationToken.ThrowIfCancellationRequested();
@@ -294,7 +315,7 @@ namespace CatchTheCovid19.Serial
 
                 // Launch the task and wait
                 UInt32 bytesRead = await loadAsyncTask;
-                if (bytesRead > 0)
+                if (bytesRead >= BUFFSIZE)
                 {
                     ListenCompleteEvent?.Invoke(dataReaderObject.ReadString(bytesRead));
                 }

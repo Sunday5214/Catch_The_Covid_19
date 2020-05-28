@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CatchTheCovid10.Member;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -20,11 +22,57 @@ namespace CatchTheCovid19_UWPClient.View
     /// <summary>
     /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
     /// </summary>
-    public sealed partial class CheckMemberCard : Page
+    public sealed partial class CheckMemberCardView : Page
     {
-        public CheckMemberCard()
+        public delegate void ChangeScreen();
+        public event ChangeScreen ChangeScreenEvent;
+
+        public CheckMemberCardView()
         {
             this.InitializeComponent();
+            Loaded += CheckMemberCard_Loaded;
+        }
+
+        private void CheckMemberCard_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataContext = App.checkMemberCardViewModel;
+            App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
+            //App.checkMemberCardViewModel.StartReadCard();
+        }
+
+        private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Member member)
+        {
+            if (member != null)
+            {
+                await ShowData(member);
+            }
+            else
+            {
+                tbDesc.Text = "네트워크 오류가 발생했습니다. \n마지막 사람부터 다시 측정해주세요";
+            }
+        }
+
+        private async Task ShowData(Member member)
+        {
+            tbDesc.Visibility = Visibility.Collapsed;
+            tbName.Visibility = Visibility.Visible;
+            tbClassRoom.Visibility = Visibility.Visible;
+            tbIsStudent.Visibility = Visibility.Visible;
+            
+            await Task.Delay(3000);
+            App.checkTemperatureViewModel.SetMemberData(member);
+            App.checkTemperatureViewModel.StartReadTemperature();
+            ChangeScreenEvent?.Invoke();
+
+        }
+
+        public void Init()
+        {
+            App.checkMemberCardViewModel.CheckMemberCard = null;
+            tbDesc.Visibility = Visibility.Visible;
+            tbName.Visibility = Visibility.Collapsed;
+            tbClassRoom.Visibility = Visibility.Collapsed;
+            tbIsStudent.Visibility = Visibility.Collapsed;
         }
     }
 }

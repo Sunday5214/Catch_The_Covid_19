@@ -14,20 +14,14 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using CatchTheCovid19.Barcode;
-using CatchTheCovid19_UWPClient.ViewModel;
-using CatchTheCovid10.Member;
 
-namespace CatchTheCovid19_UWPClient
+namespace App2
 {
     /// <summary>
     /// 기본 애플리케이션 클래스를 보완하는 애플리케이션별 동작을 제공합니다.
     /// </summary>
     sealed partial class App : Application
     {
-        public static CheckMemberCardViewModel checkMemberCardViewModel = null;
-        public static CheckTemperatureViewModel checkTemperatureViewModel = null;
-        public static MemberManager memberManager = null;
         /// <summary>
         /// Singleton 애플리케이션 개체를 초기화합니다. 이것은 실행되는 작성 코드의 첫 번째
         /// 줄이며 따라서 main() 또는 WinMain()과 논리적으로 동일합니다.
@@ -35,15 +29,7 @@ namespace CatchTheCovid19_UWPClient
         public App()
         {
             this.InitializeComponent();
-            SingleTonInit();
             this.Suspending += OnSuspending;
-        }
-
-        private void SingleTonInit()
-        {
-            checkMemberCardViewModel = new CheckMemberCardViewModel();
-            checkTemperatureViewModel = new CheckTemperatureViewModel();
-            memberManager = new MemberManager();
         }
 
         /// <summary>

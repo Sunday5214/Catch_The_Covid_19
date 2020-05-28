@@ -7,26 +7,30 @@ namespace CatchTheCovid19.Barcode
 {
     public class ReadBarcodeManager
     {
-        SerialCommunicator serialCommunicator = new SerialCommunicator("COM6");
+        SerialCommunicator serialCommunicator = new SerialCommunicator("COM9");
 
         public delegate void ReadComplete(string data);
         public event ReadComplete ReadCompleteEvent;
 
+
+
         public ReadBarcodeManager()
         {
-            ConnectBarcodeRaspi();
+
         }
         public async void ConnectBarcodeRaspi()
         {
+            //await serialCommunicator.ShowComList();
             //정확한 디바이스 이름 파악되면 바꿀것
-            if((await serialCommunicator.FindPortsDevice()) == true)
+            if ((await serialCommunicator.FindDevicebyName("USB")) == true)
             {
                 Debug.WriteLine("포트찾음");
-                if((await serialCommunicator.ConnectSerial(9600)) == true)
+                if((await serialCommunicator.ConnectSerial(115200)) == true)
                 {
                     Debug.WriteLine("성공적으로 연결됨");
+                    serialCommunicator.BUFFSIZE = 10;
                     serialCommunicator.ListenCompleteEvent += SerialCommunicator_ListenCompleteEvent;
-                    await GetSerialData();
+                    GetSerialData();
 
                 }
                 else
@@ -43,12 +47,13 @@ namespace CatchTheCovid19.Barcode
         private void SerialCommunicator_ListenCompleteEvent(string data)
         {
             Debug.WriteLine(data + "받음");
+
             ReadCompleteEvent?.Invoke(data);
         }
 
-        public async Task GetSerialData()
+        public void GetSerialData()
         {
-            await serialCommunicator.Listen();
+            serialCommunicator.Listen();
         }
 
         public async Task SendSerialData(string data)

@@ -42,7 +42,7 @@ namespace CatchTheCovid19.Temperature
                 Debug.WriteLine("포트검색불가");
             }
         }
-
+        
         private void SerialCommunicator_ListenCompleteEvent(string data)
         {
             Debug.WriteLine(data + "받음");

@@ -19,7 +19,7 @@
             <RowDefinition Height="0.2*"/>
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="tbBarInput" Grid.Row="0" KeyDown="tbBarInput_KeyDown"/>
+        <TextBox x:Name="tbBarInput" Grid.Row="0" KeyDown="tbBarInput_KeyDown" Width="1" Height="1" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
         <TextBlock x:Name="tbDesc" Text="바코드를 인식시켜 주세요" Grid.Row="0" FontSize="40" VerticalAlignment="Bottom" 
                    HorizontalAlignment="Center" Margin="0 0 0 50" Visibility="Visible"/>
         

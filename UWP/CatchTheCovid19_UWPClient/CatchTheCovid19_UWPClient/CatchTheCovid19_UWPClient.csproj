@@ -192,17 +192,13 @@
       <Project>{4009BCEC-68A8-42BD-90D0-6E944E755061}</Project>
       <Name>CatchTheCovid10.Member</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CatchTheCovid19.Barcode\CatchTheCovid19.Barcode.csproj">
-      <Project>{5b590246-6ade-4312-8138-429aa4c13dfb}</Project>
-      <Name>CatchTheCovid19.Barcode</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CatchTheCovid19.RestClient\CatchTheCovid19.RestClient.csproj">
       <Project>{c64db691-e2e3-4165-9e87-ca816ae04d0d}</Project>
       <Name>CatchTheCovid19.RestClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CatchTheCovid19.Temperature\CatchTheCovid19.Temperature.csproj">
-      <Project>{aa331fef-4a97-4d04-ace5-ad58a252bec6}</Project>
-      <Name>CatchTheCovid19.Temperature</Name>
+    <ProjectReference Include="..\CatchTheCovid19.Serial\CatchTheCovid19.Serial.csproj">
+      <Project>{56B1B5F9-F796-4746-8492-D414B2BA00F9}</Project>
+      <Name>CatchTheCovid19.Serial</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

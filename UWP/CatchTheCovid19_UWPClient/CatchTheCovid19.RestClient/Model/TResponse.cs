@@ -18,4 +18,14 @@ namespace CatchTheCovid19.RestClient.Model
     {
         public static Nothing AtAll => null;
     }
+
+    public class Default
+    {
+        [JsonProperty("code")]
+        public string Code
+        {
+            get;
+            set;
+        }
+    }
 }

@@ -1,7 +1,8 @@
 ﻿using CatchTheCovid10.Member;
 using CatchTheCovid19.RestClient.Model;
+using CatchTheCovid19.RestClient.Option;
 using CatchTheCovid19.RestManager;
-using CatchTheCovid19.Temperature;
+using CatchTheCovid19.Serial;
 using CatchTheCovid19_UWPClient.Model;
 using Prism.Mvvm;
 using RestSharp;
@@ -12,18 +13,42 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Core;
 
 namespace CatchTheCovid19_UWPClient.ViewModel
 {
     public class CheckTemperatureViewModel : BindableBase
     {
-        TemperatureManager temperatureManager = new TemperatureManager();
         RestManager restManager = new RestManager();
+
+        private object _lock = new object();
 
         public delegate void TeamperatureReadComplete(bool success);
         public event TeamperatureReadComplete TeamperatureReadCompleteEvent;
 
+        SerialRTU serialRTU = new SerialRTU("COM6", 19200, "Decimal", "8", "1", "0", "1000");
 
+        public CheckTemperatureViewModel()
+        {
+            serialRTU.TeamperatureReadCompleteEvent += SerialRTU_TeamperatureReadCompleteEvent;
+
+        }
+
+        private async void SerialRTU_TeamperatureReadCompleteEvent(List<double> datas)
+        {
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () =>
+            {
+                AddDataServer(datas[4]);
+                serialRTU.StopPoll();
+            });
+
+        }
+
+        private async void AddDataServer(double data)
+        {
+            await AddData(data);
+        }
 
         private Member _member = new Member();
         public Member Member
@@ -32,31 +57,21 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             set => SetProperty(ref _member, value);
         }
 
-        private float _temperature;
-        public float Temperature
+        private double _temperature;
+        public double Temperature
         {
             get => _temperature;
             set => SetProperty(ref _temperature, value);
         }
 
-        public CheckTemperatureViewModel()
+        public async Task AddData(double data)
         {
-            temperatureManager.ReadCompleteEvent += TemperatureManager_ReadCompleteEvent;
-            temperatureManager.ConnectTemperatureArudu();
-        }
-
-        private async void TemperatureManager_ReadCompleteEvent(string data)
-        {
-            Temperature = float.Parse(data);
-            await AddData(float.Parse(data));
-        }
-
-        public async Task AddData(float data)
-        {
-            QueryParam[] queryParam = new QueryParam[2];
+            Temperature = data;
+            QueryParam[] queryParam = new QueryParam[3];
             queryParam[0] = new QueryParam("Idx", Member.Idx);
-            queryParam[1] = new QueryParam("temp", data);
-            (_, var respStatus) = await restManager.GetResponse<Nothing>("/insertRecord", Method.GET, null, queryParam);
+            queryParam[1] = new QueryParam("code", (int)NetworkOptions.nowTime);
+            queryParam[2] = new QueryParam("temp", data);
+            (_, var respStatus) = await restManager.GetResponse<Default>("/insertRecord", Method.GET, null, queryParam);
             if (respStatus == HttpStatusCode.OK)
             {
                 TeamperatureReadCompleteEvent?.Invoke(true);
@@ -65,17 +80,20 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             {
                 TeamperatureReadCompleteEvent?.Invoke(false);
             }
+            //http://10.80.162.7:8080/insertRecord?Idx=0&code=0&temp=36.50
         }
 
-        public async void StartReadTemperature()
+        public void GetTemperatureData()
         {
-            Debug.WriteLine("온도 측정시작 : 1보냄");
-            //await temperatureManager.SendSerialData("1");
+            serialRTU.StartPoll();
         }
+
+
 
         public void SetMemberData(Member checkMember)
         {
             Member = checkMember;
+
         }
     }
 }

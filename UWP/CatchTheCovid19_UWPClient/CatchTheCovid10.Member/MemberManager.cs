@@ -25,7 +25,10 @@ namespace CatchTheCovid10.Member
             }
             else
             {
-                Debug.WriteLine("네트워크 오류 멤버가 불러와지지 않음");
+                Member = new List<Member>
+                {
+                    new Member{ Class=3, Grade=3, CardId="S000000289", ClassNumber=5, Idx=0, IsStudent=true, Name="김태오"}
+                };
             }
         }
 

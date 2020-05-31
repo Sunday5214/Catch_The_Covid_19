@@ -11,7 +11,8 @@ namespace CatchTheCovid19_UWPClient.Converter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            double data = (double)value;
+            double data = System.Convert.ToDouble(value);
+            if (data == 0.0) return "#000000";
             if(data >= 37.5)
             {
                 return "#FF0000";

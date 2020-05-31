@@ -1,5 +1,4 @@
 ﻿using CatchTheCovid10.Member;
-using CatchTheCovid19.Barcode;
 using CatchTheCovid19.RestManager;
 using CatchTheCovid19_UWPClient.Model;
 using Prism.Mvvm;
@@ -17,9 +16,6 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 {
     public class CheckMemberCardViewModel : BindableBase
     {
-        ReadBarcodeManager barcodeManager = new ReadBarcodeManager();
-        RestManager restManager = new RestManager();
-
         public delegate void BarcodeReadComplete(Member member);
         public event BarcodeReadComplete BarcodeReadCompleteEvent;
 
@@ -29,20 +25,14 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             get => _checkMemberData;
             set => SetProperty(ref _checkMemberData, value);
         }
-        
+       
 
-        public CheckMemberCardViewModel()
-        {
-            barcodeManager.ReadCompleteEvent += BarcodeManager_ReadCompleteEvent;
-            barcodeManager.ConnectBarcodeRaspi();
-        }
-
-        private async Task SearchMember(string data)
+        public async Task SearchMember(string cardId)
         {
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, 
             ()=>
             {
-                var respData = MemberManager.GetMember(data);
+                var respData = MemberManager.GetMember(cardId);
                 if (respData != null)
                 {
                     CheckMemberCard = respData;
@@ -53,16 +43,6 @@ namespace CatchTheCovid19_UWPClient.ViewModel
                     BarcodeReadCompleteEvent?.Invoke(null);
                 }
             });
-        }
-
-        private async void BarcodeManager_ReadCompleteEvent(string data)
-        {
-            await SearchMember(data);
-        }
-
-        public async void StartReadCard()
-        {
-            await barcodeManager.SendSerialData("1");
         }
     }
 }

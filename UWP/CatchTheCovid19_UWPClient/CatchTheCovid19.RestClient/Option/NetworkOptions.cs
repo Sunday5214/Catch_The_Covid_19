@@ -7,7 +7,7 @@ namespace CatchTheCovid19.RestClient.Option
 {
     public class NetworkOptions
     {
-        public static string serverUrl { get; set; } = "http://192.168.0.64:8080";
+        public static string serverUrl { get; set; } = "http://10.80.162.7:8080";
         public static TimeEnum nowTime { get; set; }
         public static int timeOut { get; set; } = 30000;
     }

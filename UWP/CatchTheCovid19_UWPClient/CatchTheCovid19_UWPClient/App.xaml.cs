@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using CatchTheCovid19.Barcode;
 using CatchTheCovid19_UWPClient.ViewModel;
 using CatchTheCovid10.Member;
 //AC90, PID_3002

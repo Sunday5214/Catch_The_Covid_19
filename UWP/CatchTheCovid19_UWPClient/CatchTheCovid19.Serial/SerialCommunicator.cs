@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -25,7 +26,7 @@ namespace CatchTheCovid19.Serial
         private DeviceInformation Device = null;
         private string comport = "";
 
-        private static int count = 0;
+        
 
         public delegate void ListenComplete(string data);
         public event ListenComplete ListenCompleteEvent;
@@ -49,9 +50,9 @@ namespace CatchTheCovid19.Serial
         {
             try
             {
-                string aqs = SerialDevice.GetDeviceSelector(comport);
+                string aqs = SerialDevice.GetDeviceSelector();
                 var dis = await DeviceInformation.FindAllAsync(aqs);
-                Device = dis[0];
+                Device = dis[2];
                 return true;
             }
             catch (Exception ex)
@@ -78,19 +79,18 @@ namespace CatchTheCovid19.Serial
             {
                 string aqs = SerialDevice.GetDeviceSelector();
                 var dis = await DeviceInformation.FindAllAsync(aqs);
-                var a = dis.ToList();
-                if (count == 1)
-                {
-                    Device = dis[2];
-                    return true;
-                }
+                //var a = dis.ToList();
+                //if (count == 1)
+                //{
+                //    Device = dis[2];
+                //    return true;
+                //}
 
                 foreach (var device in dis)
                 {
                     if (device.Name.Contains(deviceName))
                     {
                         Device = device;
-                        count = 1;
                         return true;
                     }
                 }
@@ -148,7 +148,8 @@ namespace CatchTheCovid19.Serial
                 serialPort.Parity = SerialParity.None;
                 serialPort.StopBits = SerialStopBitCount.One;
                 serialPort.DataBits = 8;
-                serialPort.Handshake = SerialHandshake.None;
+                serialPort.Handshake = SerialHandshake.RequestToSend;
+                serialPort.StopBits = SerialStopBitCount.One;
 
 
                 // Set the RcvdText field to invoke the TextChanged callback
@@ -217,6 +218,52 @@ namespace CatchTheCovid19.Serial
         }
 
         /// <summary>
+        /// 데이터를 보낼때 쓰는 메소드
+        /// </summary>
+        /// <param name="sendData"></param>
+        public async Task<bool> SendSerial8bit(byte[] sendData)
+        {
+            try
+            {
+                if (serialPort != null)
+                {
+                    // Create the DataWriter object and attach to OutputStream
+                    dataWriteObject = new DataWriter(serialPort.OutputStream);
+
+                    //Launch the WriteAsync task to perform the write
+                    if ((await Write8bitsAsync(sendData)) == true)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("디바이스 선택과정에서 문제발생");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
+            }
+            finally
+            {
+                // Cleanup once complete
+                if (dataWriteObject != null)
+                {
+                    dataWriteObject.DetachStream();
+                    dataWriteObject = null;
+                }
+            }
+        }
+
+       
+        /// <summary>
         /// WriteAsync: Task that asynchronously writes data from the input text box 'sendText' to the OutputStream 
         /// </summary>
         /// <returns></returns>
@@ -228,7 +275,6 @@ namespace CatchTheCovid19.Serial
             {
                 // Load the text from the sendText input text box to the dataWriter object
                 dataWriteObject.WriteString(sendData);
-
                 // Launch an async task to complete the write operation
                 storeAsyncTask = dataWriteObject.StoreAsync().AsTask();
 
@@ -236,6 +282,41 @@ namespace CatchTheCovid19.Serial
                 if (bytesWritten > 0)
                 {
                     Debug.WriteLine("보내짐");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                //sendText.Text = "";
+            }
+            else
+            {
+                Debug.WriteLine("공백");
+                return false;
+                //status.Text = "Enter the text you want to write and then click on 'WRITE'";
+            }
+        }
+
+        /// <summary>
+        /// WriteAsync: Task that asynchronously writes data from the input text box 'sendText' to the OutputStream 
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> Write8bitsAsync(byte[] sendData)
+        {
+            Task<UInt32> storeAsyncTask;
+
+            if (sendData.ToString().Length != 0)
+            {
+                // Load the text from the sendText input text box to the dataWriter object
+                dataWriteObject.WriteBytes(sendData);
+                // Launch an async task to complete the write operation
+                storeAsyncTask = dataWriteObject.StoreAsync().AsTask();
+
+                UInt32 bytesWritten = await storeAsyncTask;
+                if (bytesWritten > 0)
+                {
+                    //Debug.WriteLine("보내짐");
                     return true;
                 }
                 else
@@ -291,6 +372,42 @@ namespace CatchTheCovid19.Serial
             }
         }
 
+
+        public async void ListenByte()
+        {
+            try
+            {
+                if (serialPort != null)
+                {
+                    dataReaderObject = new DataReader(serialPort.InputStream);
+
+                    // keep reading the serial input
+                    while (true)
+                    {
+                       await ReadAsyncByte(ReadCancellationTokenSource.Token);
+                    }
+                }
+            }
+            catch (TaskCanceledException tce)
+            {
+                Debug.Write(tce);
+                //status.Text = "Reading task was cancelled, closing device and cleaning up";
+                CloseDevice();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                // Cleanup once complete
+                if (dataReaderObject != null)
+                {
+                    dataReaderObject.DetachStream();
+                    dataReaderObject = null;
+                }
+            }
+        }
         /// <summary>
         /// 버퍼에 있는 데이터를 읽어들이고 받은 데이터를 이벤트를 통해 전달하는 메소드
         /// </summary>
@@ -322,6 +439,33 @@ namespace CatchTheCovid19.Serial
             }
         }
 
+        private async Task ReadAsyncByte(CancellationToken cancellationToken)
+        {
+            Task<UInt32> loadAsyncTask;
+
+            uint ReadBufferLength = BUFFSIZE;
+            
+            // If task cancellation was requested, comply
+            cancellationToken.ThrowIfCancellationRequested();
+
+            // Set InputStreamOptions to complete the asynchronous read operation when one or more bytes is available
+            dataReaderObject.InputStreamOptions = InputStreamOptions.Partial;
+
+            using (var childCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+            {
+                // Create a task object to wait for data on the serialPort.InputStream
+                loadAsyncTask = dataReaderObject.LoadAsync(ReadBufferLength).AsTask(childCancellationTokenSource.Token);
+
+                // Launch the task and wait
+                UInt32 bytesRead = await loadAsyncTask;
+                byte[] data = new byte[bytesRead];
+                if (bytesRead >= BUFFSIZE)
+                {
+                    dataReaderObject.ReadBytes(data);
+                   //ListenCompleteEvent?.Invoke();
+                }
+            }
+        }
 
         /// <summary>
         /// 쓰레드를 종료시키는 메소드

@@ -37,21 +37,21 @@ namespace CatchTheCovid19_UWPClient.View
         {
             tbBarInput.Focus(FocusState.Programmatic);
             DataContext = App.checkMemberCardViewModel;
-            //App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
+            App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
             //App.checkMemberCardViewModel.StartReadCard();
         }
 
-        //private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Member member)
-        //{
-        //    if (member != null)
-        //    {
-        //        await ShowData(member);
-        //    }
-        //    else
-        //    {
-        //        tbDesc.Text = "네트워크 오류가 발생했습니다. \n마지막 사람부터 다시 측정해주세요";
-        //    }
-        //}
+        private async void CheckMemberCardViewModel_BarcodeReadCompleteEvent(Member member)
+        {
+            if (member != null)
+            {
+                await ShowData(member);
+            }
+            else
+            {
+                tbDesc.Text = "등록되지 않은 멤버입니다.";
+            }
+        }
 
         private async Task ShowData(Member member)
         {
@@ -59,16 +59,19 @@ namespace CatchTheCovid19_UWPClient.View
             tbName.Visibility = Visibility.Visible;
             tbClassRoom.Visibility = Visibility.Visible;
             tbIsStudent.Visibility = Visibility.Visible;
+         
             
             await Task.Delay(3000);
-            App.checkTemperatureViewModel.SetMemberData(member);
-            App.checkTemperatureViewModel.StartReadTemperature();
             ChangeScreenEvent?.Invoke();
+            App.checkTemperatureViewModel.SetMemberData(member);
+            App.checkTemperatureViewModel.GetTemperatureData();
+            
 
         }
 
         public void Init()
         {
+            tbBarInput.Focus(FocusState.Programmatic);
             App.checkMemberCardViewModel.CheckMemberCard = null;
             tbDesc.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
@@ -80,8 +83,9 @@ namespace CatchTheCovid19_UWPClient.View
         {
             if(e.Key == Windows.System.VirtualKey.Enter)
             {
-                Member member = MemberManager.GetMember(tbBarInput.Text);
-                await ShowData(member);
+                await App.checkMemberCardViewModel.SearchMember(tbBarInput.Text);
+                
+                //await ShowData(App.checkMemberCardViewModel.CheckMemberCard);
             }
         }
     }

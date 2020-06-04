@@ -8,19 +8,16 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <Style TargetType="Button" x:Key="btnStyle">
-            <Setter Property="Margin" Value="5 0 5 0"/>
-            <Setter Property="Width" Value="300"/>
-            <Setter Property="Height" Value="160"/>
-            <Setter Property="FontSize" Value="30"/>
-        </Style>
-    </Page.Resources>
-    
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <Button x:Name="btnUp" Content="기상" Style="{StaticResource btnStyle}" Click="btnUp_Click"/>
-        <Button x:Name="btnBreakFast" Content="아침" Style="{StaticResource btnStyle}" Click="btnBreakFast_Click"/>
-        <Button x:Name="btnLunch" Content="점심" Style="{StaticResource btnStyle}" Click="btnLunch_Click"/>
-        <Button x:Name="btnDinner" Content="저녁" Style="{StaticResource btnStyle}" Click="btnDinner_Click"/>
-    </StackPanel>
+    <Grid>
+        <ListView x:Name="lvTime" SelectionMode="Single" SelectionChanged="ListView_SelectionChanged"
+                  VerticalAlignment="Center" HorizontalAlignment="Center">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+    </Grid>
 </Page>

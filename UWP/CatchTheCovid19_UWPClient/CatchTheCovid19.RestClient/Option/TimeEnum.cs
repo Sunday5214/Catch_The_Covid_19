@@ -6,9 +6,11 @@ namespace CatchTheCovid19.RestClient.Option
 {
     public enum TimeEnum
     {
-        UP = 0,
+        DEFAULT,
         BREAKFAST,
         LUNCH,
-        DINNDER
+        DINNDER,
+        IN,
+        OUT
     }
 }

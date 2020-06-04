@@ -1,4 +1,4 @@
-﻿using CatchTheCovid10.Member;
+﻿using CatchTheCovid10.InitData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

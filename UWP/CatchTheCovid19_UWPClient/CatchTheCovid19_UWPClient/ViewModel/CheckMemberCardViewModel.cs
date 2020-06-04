@@ -1,4 +1,4 @@
-﻿using CatchTheCovid10.Member;
+﻿using CatchTheCovid10.InitData;
 using CatchTheCovid19.RestManager;
 using CatchTheCovid19_UWPClient.Model;
 using Prism.Mvvm;

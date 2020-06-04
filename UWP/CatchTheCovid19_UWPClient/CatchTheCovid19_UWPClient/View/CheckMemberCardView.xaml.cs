@@ -1,4 +1,4 @@
-﻿using CatchTheCovid10.Member;
+﻿using CatchTheCovid10.InitData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +7,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
+using Windows.UI.Input.Preview.Injection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,7 +28,7 @@ namespace CatchTheCovid19_UWPClient.View
     {
         public delegate void ChangeScreen();
         public event ChangeScreen ChangeScreenEvent;
-
+        //TextBox tbxBarInput = new TextBox();
         public CheckMemberCardView()
         {
             this.InitializeComponent();
@@ -35,7 +37,7 @@ namespace CatchTheCovid19_UWPClient.View
 
         private void CheckMemberCard_Loaded(object sender, RoutedEventArgs e)
         {
-            tbBarInput.Focus(FocusState.Programmatic);
+            TabInput();
             DataContext = App.checkMemberCardViewModel;
             App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
             //App.checkMemberCardViewModel.StartReadCard();
@@ -55,6 +57,7 @@ namespace CatchTheCovid19_UWPClient.View
 
         private async Task ShowData(Member member)
         {
+
             tbDesc.Visibility = Visibility.Collapsed;
             tbName.Visibility = Visibility.Visible;
             tbClassRoom.Visibility = Visibility.Visible;
@@ -71,20 +74,36 @@ namespace CatchTheCovid19_UWPClient.View
 
         public void Init()
         {
-            tbBarInput.Focus(FocusState.Programmatic);
+           
             App.checkMemberCardViewModel.CheckMemberCard = null;
             tbDesc.Visibility = Visibility.Visible;
+           
             tbName.Visibility = Visibility.Collapsed;
             tbClassRoom.Visibility = Visibility.Collapsed;
             tbIsStudent.Visibility = Visibility.Collapsed;
+
+            TabInput();
+            //MakeInputTbx();
+            //tbxBarInput.IsFocusEngaged = true;
+
+        }
+        private void TabInput()
+        {
+            InputInjector inputInjector = InputInjector.TryCreate();
+            var tab = new InjectedInputKeyboardInfo();
+            tab.VirtualKey = (ushort)(VirtualKey.Tab);
+            tab.KeyOptions = InjectedInputKeyOptions.None;
+            inputInjector.InjectKeyboardInput(new[] { tab });
         }
 
-        private async void tbBarInput_KeyDown(object sender, KeyRoutedEventArgs e)
+        private async void tbxBarInput_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if(e.Key == Windows.System.VirtualKey.Enter)
+            if (e.Key == VirtualKey.Enter)
             {
-                await App.checkMemberCardViewModel.SearchMember(tbBarInput.Text);
-                
+                await App.checkMemberCardViewModel.SearchMember(tbxBarInput.Text);
+                tbxBarInput.Text = "";
+
+                //tbxBarInput.Focus(FocusState.Programmatic);
                 //await ShowData(App.checkMemberCardViewModel.CheckMemberCard);
             }
         }

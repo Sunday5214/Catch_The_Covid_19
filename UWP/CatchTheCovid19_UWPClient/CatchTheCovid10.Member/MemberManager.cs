@@ -6,16 +6,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CatchTheCovid10.Member
+namespace CatchTheCovid10.InitData
 {
     public class MemberManager
-    {
+    { 
+    
         RestManager restManager = new RestManager();
         public static List<Member> Member
         {
             get;
             set;
         }
+
         public async void GetMemberData()
         {
             var resp = await restManager.GetResponse<List<Member>>("/allUser", Method.GET);
@@ -34,7 +36,20 @@ namespace CatchTheCovid10.Member
 
         public static Member GetMember(string cardId)
         {
-            return (Member.Where(x => x.CardId == cardId) == null ? null : Member.Where(x => x.CardId == cardId).ToList()[0]);
+            if(cardId.Length > 10)
+            {
+                if (cardId.Contains("S"))
+                {
+                    cardId = cardId.Substring(0, 10);
+                }
+                else if (cardId.Contains("T"))
+                {
+                    cardId = cardId.Substring(0, 8);
+                }
+            }
+            var data = (Member.Where(x => x.CardId == cardId) == null ? null : Member.Where(x => x.CardId == cardId).ToList()[0]);
+            return data;
+
         }
     }
 }

@@ -7,11 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="using:CatchTheCovid19_UWPClient.View"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">  
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Pivot x:Name="pivotMain">
+    <Grid>
+        <Pivot x:Name="pivotMain" Margin="0 -50 0 0">
 
-    </Pivot>
+        </Pivot>
+    </Grid>
+
 
 
 </Page>

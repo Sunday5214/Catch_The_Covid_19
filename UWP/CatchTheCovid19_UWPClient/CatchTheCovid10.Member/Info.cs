@@ -1,14 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using CatchTheCovid19.RestClient.Option;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CatchTheCovid10.InitData
 {
-    public class Member
+    public class Info
     {
-        [JsonProperty("student")]
-        public bool IsStudent
+        [JsonProperty("codes")]
+        public List<string> Codes
         {
             get;
             set;
@@ -20,21 +21,9 @@ namespace CatchTheCovid10.InitData
             get;
             set;
         }
-        [JsonProperty("cardId")]
-        public string CardId
-        {
-            get;
-            set;
-        }
 
-        [JsonProperty("name")]
-        public string Name
-        {
-            get;
-            set;
-        }
-        [JsonProperty("id")]
-        public int Idx
+        [JsonProperty("check")]
+        public int Check 
         {
             get;
             set;
@@ -47,11 +36,12 @@ namespace CatchTheCovid10.InitData
             set;
         }
 
-        [JsonProperty("classNumber")]
-        public int ClassNumber
+        [JsonProperty("uncheck")]
+        public int Uncheck
         {
             get;
             set;
         }
     }
+
 }

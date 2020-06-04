@@ -50,8 +50,6 @@ namespace CatchTheCovid19.Serial
         //DispatcherTimer timer = new DispatcherTimer();
 
 
-
-
         public void StartPoll()
         {
             pollCount = 0;

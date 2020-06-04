@@ -1,4 +1,4 @@
-﻿using CatchTheCovid10.Member;
+﻿using CatchTheCovid10.InitData;
 using CatchTheCovid19.RestClient.Model;
 using CatchTheCovid19.RestClient.Option;
 using CatchTheCovid19.RestManager;
@@ -21,7 +21,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
     {
         RestManager restManager = new RestManager();
 
-        private object _lock = new object();
+       
 
         public delegate void TeamperatureReadComplete(bool success);
         public event TeamperatureReadComplete TeamperatureReadCompleteEvent;
@@ -71,7 +71,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             queryParam[0] = new QueryParam("Idx", Member.Idx);
             queryParam[1] = new QueryParam("code", (int)NetworkOptions.nowTime);
             queryParam[2] = new QueryParam("temp", data);
-            (_, var respStatus) = await restManager.GetResponse<Default>("/insertRecord", Method.GET, null, queryParam);
+                (_, var respStatus) = await restManager.GetResponse<Default>("/insertRecord", Method.GET, null, queryParam);
             if (respStatus == HttpStatusCode.OK)
             {
                 TeamperatureReadCompleteEvent?.Invoke(true);

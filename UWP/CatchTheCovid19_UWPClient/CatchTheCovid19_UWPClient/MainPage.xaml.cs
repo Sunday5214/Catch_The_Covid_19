@@ -34,6 +34,7 @@ namespace CatchTheCovid19_UWPClient
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             App.memberManager.GetMemberData();
+            
 
             ctrlSelectTime.ChangeScreenEvent += CtrlSelectTime_ChangeScreenEvent;
             ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
@@ -52,12 +53,14 @@ namespace CatchTheCovid19_UWPClient
         private void CtrlTemperature_ChangeScreenEvent() 
         {
             ctrlCheckMember.Init();
+   
             pivotMain.SelectedItem = pivotMain.Items[1];
         }
 
         private void CtrlCheckMember_ChangeScreenEvent()
         {
             ctrlTemperature.Init();
+
             pivotMain.SelectedItem = pivotMain.Items[2];
         }
     }

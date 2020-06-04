@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using CatchTheCovid19.RestClient.Option;
+using CatchTheCovid10.InitData;
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -28,29 +29,40 @@ namespace CatchTheCovid19_UWPClient.View
         public SelectTimeView()
         {
             this.InitializeComponent();
+            Loaded += SelectTimeView_Loaded;
         }
 
-        private void btnUp_Click(object sender, RoutedEventArgs e)
+        private async void SelectTimeView_Loaded(object sender, RoutedEventArgs e)
         {
-            NetworkOptions.nowTime = TimeEnum.UP;
-            ChangeScreenEvent?.Invoke();
+            await App.infoManager.GetInfoData();
+            //DataContext = App.infoManager;
+            foreach(var item in InfoManager.Infos.Codes)
+            {
+                lvTime.Items.Add(item);
+            }
         }
 
-        private void btnBreakFast_Click(object sender, RoutedEventArgs e)
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            NetworkOptions.nowTime = TimeEnum.BREAKFAST;
-            ChangeScreenEvent?.Invoke();
-        }
-
-        private void btnLunch_Click(object sender, RoutedEventArgs e)
-        {
-            NetworkOptions.nowTime = TimeEnum.LUNCH;
-            ChangeScreenEvent?.Invoke();
-        }
-
-        private void btnDinner_Click(object sender, RoutedEventArgs e)
-        {
-            NetworkOptions.nowTime = TimeEnum.DINNDER;
+            var list = sender as ListView;
+            switch ((string)list.SelectedItem)
+            {
+                case "아침":
+                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    break;
+                case "점심":
+                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    break;
+                case "저녁":
+                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    break;
+                case "입실":
+                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    break;
+                case "퇴실":
+                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    break;
+            }
             ChangeScreenEvent?.Invoke();
         }
     }

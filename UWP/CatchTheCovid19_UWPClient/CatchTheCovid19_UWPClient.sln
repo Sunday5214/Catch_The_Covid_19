@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchTheCovid19.Serial", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchTheCovid19.RestClient", "CatchTheCovid19.RestClient\CatchTheCovid19.RestClient.csproj", "{C64DB691-E2E3-4165-9E87-CA816AE04D0D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchTheCovid10.Member", "CatchTheCovid10.Member\CatchTheCovid10.Member.csproj", "{4009BCEC-68A8-42BD-90D0-6E944E755061}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchTheCovid10.InitData", "CatchTheCovid10.Member\CatchTheCovid10.InitData.csproj", "{4009BCEC-68A8-42BD-90D0-6E944E755061}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

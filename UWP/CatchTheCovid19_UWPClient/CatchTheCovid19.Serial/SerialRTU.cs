@@ -47,9 +47,6 @@ namespace CatchTheCovid19.Serial
 
         modbus mb = new modbus();
 
-        //DispatcherTimer timer = new DispatcherTimer();
-
-
         public void StartPoll()
         {
             pollCount = 0;
@@ -78,6 +75,11 @@ namespace CatchTheCovid19.Serial
 
             Debug.WriteLine(mb.modbusStatus);
 
+        }
+
+        public void GetSerialPorts()
+        {
+           var data = mb.GetSeiralPorts();
         }
         public void StopPoll()
         {
@@ -170,6 +172,11 @@ namespace CatchTheCovid19.Serial
         #endregion
 
         #region Open / Close Procedures
+        public string[] GetSeiralPorts()
+        {
+            return SerialPort.GetPortNames();
+        }
+
         public bool Open(string portName, int baudRate, int databits, Parity parity, StopBits stopBits)
         {
             //Ensure port isn't already opened:

@@ -11,10 +11,7 @@
     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
         <StackPanel Orientation="Horizontal">
             <Button Content="시작" Width="100" Height="30"
-                VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click"/>
-            <Button Content="ㅁㄴㅇㄹ" Click="Button_Click_1">
-                
-            </Button>
+                VerticalAlignment="Center" HorizontalAlignment="Center" />
         </StackPanel>
 
         <TextBlock x:Name="tbData" Text="" VerticalAlignment="Center" FontSize="70"

@@ -1,10 +1,11 @@
 ﻿using CatchTheCovid19.I2C;
-using CatchTheCovid19.Serial;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.I2c;
 using Windows.Foundation;
@@ -35,35 +36,25 @@ namespace App2
 
             //serialRTU.TeamperatureReadCompleteEvent += SerialRTU_TeamperatureReadCompleteEvent;
         }
-        public async void SetI2C()
-        {
-            string aqs = I2cDevice.GetDeviceSelector();
-            var dis = await DeviceInformation.FindAllAsync(aqs).AsTask();
-            var settings = new I2cConnectionSettings(0x04);
-            var device = await I2cDevice.FromIdAsync(dis[0].Id, settings);
-            I2CManager = new I2CManager(LoadData, ref device);
-           // AirInfoService service = new AirInfoService(LoadData, ref device);
-            await I2CManager.StartI2C();
 
-
-        }
-        private async void LoadData(object sender, string data)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.High, () =>
+            VL53L0XSensor sensor = new VL53L0XSensor();
+            await sensor.InitializeAsync();
+
+            while (true)
             {
-                tbData.Text = data;
-            });
+                var dis = sensor.ReadDistance();
+                Debug.WriteLine("distance : " + dis + " mm");
 
-        }
+                //var res = sensor.Read();
+                //Debug.WriteLine("ambient count : " + res.Ambient);
+                //Debug.WriteLine("signal count : " + res.Signal);
+                //Debug.WriteLine("distance : " + res.Distance + " mm");
+                //Debug.WriteLine("status : " + res.Status);
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SetI2C();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-         //   serialRTU.GetSerialPorts();
+                await Task.Delay(2000);
+            }
         }
     }
 }

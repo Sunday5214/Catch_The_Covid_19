@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Devices.Gpio;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -81,7 +82,7 @@ namespace CatchTheCovid19_UWPClient.View
             tbName.Visibility = Visibility.Collapsed;
             tbClassRoom.Visibility = Visibility.Collapsed;
             tbIsStudent.Visibility = Visibility.Collapsed;
-
+            BarCodeReadOn();
             TabInput();
             //MakeInputTbx();
             //tbxBarInput.IsFocusEngaged = true;
@@ -94,6 +95,17 @@ namespace CatchTheCovid19_UWPClient.View
             tab.VirtualKey = (ushort)(VirtualKey.Tab);
             tab.KeyOptions = InjectedInputKeyOptions.None;
             inputInjector.InjectKeyboardInput(new[] { tab });
+        }
+
+        public void BarCodeReadOn()
+        {
+            GpioController gpio = GpioController.GetDefault();
+            if (gpio == null) return;
+            using (GpioPin pin = gpio.OpenPin(4))
+            {
+                pin.Write(GpioPinValue.Low);
+                pin.SetDriveMode(GpioPinDriveMode.Output);
+            }
         }
 
         private async void tbxBarInput_KeyDown(object sender, KeyRoutedEventArgs e)

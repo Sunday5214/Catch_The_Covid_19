@@ -188,6 +188,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\test\App2\CatchTheCovid19.I2C\CatchTheCovid19.I2C.csproj">
+      <Project>{D1758653-C8B1-42E4-BFCF-C53153600B85}</Project>
+      <Name>CatchTheCovid19.I2C</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CatchTheCovid10.Member\CatchTheCovid10.InitData.csproj">
       <Project>{4009BCEC-68A8-42BD-90D0-6E944E755061}</Project>
       <Name>CatchTheCovid10.InitData</Name>

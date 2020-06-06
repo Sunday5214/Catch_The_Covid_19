@@ -155,10 +155,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Projects\Catch_The_Covid_19\UWP\CatchTheCovid19_UWPClient\CatchTheCovid19.Serial\CatchTheCovid19.Serial.csproj">
-      <Project>{0A340B3A-5273-444A-AA3C-D0C2278EE7FC}</Project>
-      <Name>CatchTheCovid19.Serial</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CatchTheCovid19.I2C\CatchTheCovid19.I2C.csproj">
       <Project>{D20CD8B0-5F23-43C8-B827-0DAB7BE5FA75}</Project>
       <Name>CatchTheCovid19.I2C</Name>

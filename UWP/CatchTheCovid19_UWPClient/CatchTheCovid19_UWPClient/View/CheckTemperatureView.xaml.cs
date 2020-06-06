@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Devices.Gpio;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -52,9 +53,19 @@ namespace CatchTheCovid19_UWPClient.View
                 tbDesc.Text = "네트워크 문제가 발생했습니다.\n네트워크 상태를 체크후 마지막 사람부터 다시 측정해주세요";
             }
         }
-
+        public void BarCodeReadOff()
+        {
+            GpioController gpio = GpioController.GetDefault();
+            if (gpio == null) return;
+            using (GpioPin pin = gpio.OpenPin(4))
+            {
+                pin.Write(GpioPinValue.High);
+                pin.SetDriveMode(GpioPinDriveMode.Output);
+            }
+        }
         public void Init()
         {
+            BarCodeReadOff();
             App.checkTemperatureViewModel.Member = null;
             App.checkTemperatureViewModel.Temperature = 0;
             tbDesc.Visibility = Visibility.Visible;

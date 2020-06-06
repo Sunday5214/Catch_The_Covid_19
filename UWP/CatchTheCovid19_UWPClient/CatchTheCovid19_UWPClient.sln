@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchTheCovid19.RestClient"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchTheCovid10.InitData", "CatchTheCovid10.Member\CatchTheCovid10.InitData.csproj", "{4009BCEC-68A8-42BD-90D0-6E944E755061}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatchTheCovid19.I2C", "..\..\test\App2\CatchTheCovid19.I2C\CatchTheCovid19.I2C.csproj", "{D1758653-C8B1-42E4-BFCF-C53153600B85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,26 @@ Global
 		{4009BCEC-68A8-42BD-90D0-6E944E755061}.Release|x64.Build.0 = Release|Any CPU
 		{4009BCEC-68A8-42BD-90D0-6E944E755061}.Release|x86.ActiveCfg = Release|Any CPU
 		{4009BCEC-68A8-42BD-90D0-6E944E755061}.Release|x86.Build.0 = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|ARM.Build.0 = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|x64.Build.0 = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Debug|x86.Build.0 = Debug|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|ARM.ActiveCfg = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|ARM.Build.0 = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|ARM64.Build.0 = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|x64.ActiveCfg = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|x64.Build.0 = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|x86.ActiveCfg = Release|Any CPU
+		{D1758653-C8B1-42E4-BFCF-C53153600B85}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

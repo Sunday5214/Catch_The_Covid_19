@@ -1,4 +1,5 @@
 ﻿using CatchTheCovid10.InitData;
+using CatchTheCovid19.I2C;
 using CatchTheCovid19.RestClient.Model;
 using CatchTheCovid19.RestClient.Option;
 using CatchTheCovid19.RestManager;
@@ -26,23 +27,68 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         public delegate void TeamperatureReadComplete(bool success);
         public event TeamperatureReadComplete TeamperatureReadCompleteEvent;
 
-        SerialRTU serialRTU = new SerialRTU("COM6", 19200, "Decimal", "8", "1", "0", "1000");
+        SerialCommunicator serial = new SerialCommunicator();
 
         public CheckTemperatureViewModel()
         {
-            serialRTU.TeamperatureReadCompleteEvent += SerialRTU_TeamperatureReadCompleteEvent;
-
+            serial.ListenCompleteEvent += Serial_ListenCompleteEvent;
+            serial.BUFFSIZE = 6;
+            Connect();
+        }
+        private async void Connect()
+        {
+            await serial.FindDevicebyName("Serial");
+            await serial.ConnectSerial(9600);
         }
 
-        private async void SerialRTU_TeamperatureReadCompleteEvent(List<double> datas)
+        private async void Serial_ListenCompleteEvent(string data)
         {
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
-                AddDataServer(datas[4]);
-                serialRTU.StopPoll();
+                AddDataServer(double.Parse(data));
+                //serial.StopPoll();
             });
+        }
 
+        private int _distanceData;
+        public int DistanceData
+        {
+            get => _distanceData;
+            set => SetProperty(ref _distanceData, value);
+        }
+
+        public async Task StartI2C()
+        {
+            await GetData();
+        }
+
+        private int map(int x, int in_min, int in_max, int out_min, int out_max)
+        {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+
+        private int constrain(int amt, int low, int high)
+        {
+            return amt < low ? low : (amt > high ? high : amt);
+        }
+
+        public async Task GetData()
+        {
+            VL53L0XSensor sensor = new VL53L0XSensor();
+            await sensor.InitializeAsync();
+            bool IsSixCm = false;
+            int data = -1;
+            while (!IsSixCm)
+            {
+                data = sensor.ReadDistance();
+                DistanceData = map(constrain(data, 6, 100), 100, 6, 1, 100);
+                if (DistanceData == 100)
+                {
+                    IsSixCm = true;
+                    GetTemperatureData();
+                }
+            }
         }
 
         private async void AddDataServer(double data)
@@ -83,9 +129,10 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             //http://10.80.162.7:8080/insertRecord?Idx=0&code=0&temp=36.50
         }
 
-        public void GetTemperatureData()
+        public async void GetTemperatureData()
         {
-            serialRTU.StartPoll();
+            //serialRTU.StartPoll();
+            await serial.SendSerial("1");
         }
 
 

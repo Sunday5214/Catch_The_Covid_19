@@ -29,10 +29,11 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
         SerialCommunicator serial = new SerialCommunicator();
 
+ 
         public CheckTemperatureViewModel()
         {
             serial.ListenCompleteEvent += Serial_ListenCompleteEvent;
-            serial.BUFFSIZE = 6;
+            serial.BUFFSIZE = 5;
             Connect();
         }
         private async void Connect()
@@ -82,12 +83,14 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             while (!IsSixCm)
             {
                 data = sensor.ReadDistance();
-                DistanceData = map(constrain(data, 6, 100), 100, 6, 1, 100);
-                if (DistanceData == 100)
+                DistanceData = map(constrain(data, 12, 100), 100, 12, 1, 100);
+              
+                if (DistanceData <= 90 && DistanceData >= 80)
                 {
                     IsSixCm = true;
                     GetTemperatureData();
                 }
+                await Task.Delay(200);
             }
         }
 

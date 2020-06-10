@@ -33,28 +33,56 @@ namespace App2
         public MainPage()
         {
             this.InitializeComponent();
-
+        
             //serialRTU.TeamperatureReadCompleteEvent += SerialRTU_TeamperatureReadCompleteEvent;
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        private int _distanceData;
+        public int DistanceData
+        {
+            get => _distanceData;
+            set => _distanceData = value;
+        }
+
+        private int map(int x, int in_min, int in_max, int out_min, int out_max)
+        {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+
+        private int constrain(int amt, int low, int high)
+        {
+            return amt < low ? low : (amt > high ? high : amt);
+        }
+        private async Task Start()
         {
             VL53L0XSensor sensor = new VL53L0XSensor();
             await sensor.InitializeAsync();
 
-            while (true)
+            bool IsSixCm = false;
+            int data = -1;
+
+            while (!IsSixCm)
             {
-                var dis = sensor.ReadDistance();
-                Debug.WriteLine("distance : " + dis + " mm");
+                data = sensor.ReadDistance();
+                data = map(constrain(data, 10, 100), 100, 10, 10, 100);
+                Debug.WriteLine(data);
+                pbdata.Value = data;
 
-                //var res = sensor.Read();
-                //Debug.WriteLine("ambient count : " + res.Ambient);
-                //Debug.WriteLine("signal count : " + res.Signal);
-                //Debug.WriteLine("distance : " + res.Distance + " mm");
-                //Debug.WriteLine("status : " + res.Status);
-
-                await Task.Delay(2000);
+                
+                if (pbdata.Value >= 80)
+                {
+                    IsSixCm = true;
+                    break;    
+                    //GetTemperatureData();
+                }
+                await Task.Delay(200);
             }
+            Debug.WriteLine("만땅");
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            await Start();
         }
     }
 }

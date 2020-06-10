@@ -63,11 +63,13 @@ namespace CatchTheCovid19_UWPClient.View
                 pin.SetDriveMode(GpioPinDriveMode.Output);
             }
         }
-        public void Init()
+        public async void Init()
         {
-            BarCodeReadOff();
+            //BarCodeReadOff();
+            
             App.checkTemperatureViewModel.Member = null;
             App.checkTemperatureViewModel.Temperature = 0;
+            await App.checkTemperatureViewModel.StartI2C();
             tbDesc.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
             tbTemp.Visibility = Visibility.Collapsed;

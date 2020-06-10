@@ -1,4 +1,5 @@
 ﻿using CatchTheCovid19.I2C;
+using CatchTheCovid19.Serial;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +30,7 @@ namespace App2
     {
         // SerialRTU serialRTU = new SerialRTU("UART0", 19200, "Decimal", "8", "1", "0", "1000");
         I2CManager I2CManager;
-
+        SerialCommunicator serial = new SerialCommunicator();
         public MainPage()
         {
             this.InitializeComponent();

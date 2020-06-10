@@ -68,7 +68,7 @@ namespace CatchTheCovid19_UWPClient.View
             await Task.Delay(3000);
             ChangeScreenEvent?.Invoke();
             App.checkTemperatureViewModel.SetMemberData(member);
-            App.checkTemperatureViewModel.GetTemperatureData();
+            //App.checkTemperatureViewModel.GetTemperatureData();
             
 
         }

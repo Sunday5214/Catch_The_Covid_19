@@ -40,6 +40,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         {
             await serial.FindDevicebyName("Serial");
             await serial.ConnectSerial(9600);
+            serial.Listen();
         }
 
         private async void Serial_ListenCompleteEvent(string data)

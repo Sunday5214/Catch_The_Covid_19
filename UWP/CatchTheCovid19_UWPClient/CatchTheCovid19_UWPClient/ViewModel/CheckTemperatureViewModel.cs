@@ -49,6 +49,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             () =>
             {
                 AddDataServer(double.Parse(data));
+                TeamperatureReadCompleteEvent?.Invoke(true);
                 //serial.StopPoll();
             });
         }

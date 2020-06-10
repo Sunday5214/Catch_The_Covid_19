@@ -78,7 +78,7 @@ namespace CatchTheCovid19_UWPClient.View
            
             App.checkMemberCardViewModel.CheckMemberCard = null;
             tbDesc.Visibility = Visibility.Visible;
-           
+            
             tbName.Visibility = Visibility.Collapsed;
             tbClassRoom.Visibility = Visibility.Collapsed;
             tbIsStudent.Visibility = Visibility.Collapsed;

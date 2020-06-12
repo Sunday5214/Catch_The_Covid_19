@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
+using Windows.Devices.Gpio;
 using Windows.Devices.I2c;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -29,61 +30,118 @@ namespace App2
     public sealed partial class MainPage : Page
     {
         // SerialRTU serialRTU = new SerialRTU("UART0", 19200, "Decimal", "8", "1", "0", "1000");
-        I2CManager I2CManager;
-        SerialCommunicator serial = new SerialCommunicator();
+        //I2CManager I2CManager;
+        //SerialCommunicator serial = new SerialCommunicator();
         public MainPage()
         {
             this.InitializeComponent();
-        
+           // GG();
+            //serial.ListenCompleteEvent += Serial_ListenCompleteEvent;
+            //serial.BUFFSIZE = 5;
+            //Connect();
             //serialRTU.TeamperatureReadCompleteEvent += SerialRTU_TeamperatureReadCompleteEvent;
         }
 
-        private int _distanceData;
-        public int DistanceData
+        public async void GG()
         {
-            get => _distanceData;
-            set => _distanceData = value;
+            await BarCodeReadOn();
+            await Task.Delay(1000);
+           // await BarCodeReadOff();
         }
 
-        private int map(int x, int in_min, int in_max, int out_min, int out_max)
+        public async Task BarCodeReadOn()
         {
-            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-        }
-
-        private int constrain(int amt, int low, int high)
-        {
-            return amt < low ? low : (amt > high ? high : amt);
-        }
-        private async Task Start()
-        {
-            VL53L0XSensor sensor = new VL53L0XSensor();
-            await sensor.InitializeAsync();
-
-            bool IsSixCm = false;
-            int data = -1;
-
-            while (!IsSixCm)
+            await Task.Run(() =>
             {
-                data = sensor.ReadDistance();
-                data = map(constrain(data, 10, 100), 100, 10, 10, 100);
-                Debug.WriteLine(data);
-                pbdata.Value = data;
+                GpioController gpio = GpioController.GetDefault();
 
-                
-                if (pbdata.Value >= 80)
+                if (gpio == null) return;
+                using (GpioPin pin = gpio.OpenPin(4))
                 {
-                    IsSixCm = true;
-                    break;    
-                    //GetTemperatureData();
+                    pin.Write(GpioPinValue.High);
+                    pin.SetDriveMode(GpioPinDriveMode.Output);
                 }
-                await Task.Delay(200);
-            }
-            Debug.WriteLine("만땅");
+            });
+
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        public async Task BarCodeReadOff()
         {
-            await Start();
+            await Task.Run(() =>
+            {
+                GpioController gpio = GpioController.GetDefault();
+
+                if (gpio == null) return;
+                using (GpioPin pin = gpio.OpenPin(4))
+                {
+                    pin.Write(GpioPinValue.Low);
+                    pin.SetDriveMode(GpioPinDriveMode.Output);
+                }
+            });
+
+        }
+        //public async void GetTemperatureData()
+        //{
+        //    //serialRTU.StartPoll();
+        //    //await serial.SendSerial("1");
+        //}
+        //private async void Connect()
+        //{
+        //    await serial.FindDevicebyName("Serial");
+        //    await serial.ConnectSerial(9600);
+        //}
+        //private void Serial_ListenCompleteEvent(string data)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //private int _distanceData;
+        //public int DistanceData
+        //{
+        //    get => _distanceData;
+        //    set => _distanceData = value;
+        //}
+
+        //private int map(int x, int in_min, int in_max, int out_min, int out_max)
+        //{
+        //    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        //}
+
+        //private int constrain(int amt, int low, int high)
+        //{
+        //    return amt < low ? low : (amt > high ? high : amt);
+        //}
+        //private async Task Start()
+        //{
+        //    VL53L0XSensor sensor = new VL53L0XSensor();
+        //    await sensor.InitializeAsync();
+
+        //    bool IsSixCm = false;
+        //    int data = -1;
+
+        //    while (!IsSixCm)
+        //    {
+        //        data = sensor.ReadDistance();
+        //        data = map(constrain(data, 10, 100), 100, 10, 10, 100);
+        //        Debug.WriteLine(data);
+        //        pbdata.Value = data;
+
+
+        //        if (pbdata.Value >= 80)
+        //        {
+        //            IsSixCm = true;
+        //            GetTemperatureData();
+        //           // break;    
+        //            //GetTemperatureData();
+        //        }
+        //        await Task.Delay(200);
+        //    }
+        //    Debug.WriteLine("만땅");
+        //}
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            GG();
         }
     }
 }

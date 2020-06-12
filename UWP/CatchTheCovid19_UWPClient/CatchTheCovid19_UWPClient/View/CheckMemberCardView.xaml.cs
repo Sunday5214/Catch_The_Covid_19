@@ -82,7 +82,7 @@ namespace CatchTheCovid19_UWPClient.View
             tbName.Visibility = Visibility.Collapsed;
             tbClassRoom.Visibility = Visibility.Collapsed;
             tbIsStudent.Visibility = Visibility.Collapsed;
-            BarCodeReadOn();
+            //BarCodeReadOn();
             TabInput();
             //MakeInputTbx();
             //tbxBarInput.IsFocusEngaged = true;
@@ -100,6 +100,7 @@ namespace CatchTheCovid19_UWPClient.View
         public void BarCodeReadOn()
         {
             GpioController gpio = GpioController.GetDefault();
+            
             if (gpio == null) return;
             using (GpioPin pin = gpio.OpenPin(4))
             {

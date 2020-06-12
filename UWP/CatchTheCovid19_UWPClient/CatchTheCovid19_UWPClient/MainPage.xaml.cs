@@ -47,13 +47,15 @@ namespace CatchTheCovid19_UWPClient
 
         private void CtrlSelectTime_ChangeScreenEvent()
         {
+            ctrlCheckMember.Init();
+            ctrlCheckMember.BarCodeReadOn();
             pivotMain.SelectedItem = pivotMain.Items[1];
         }
 
         private void CtrlTemperature_ChangeScreenEvent() 
         {
             ctrlCheckMember.Init();
-   
+            ctrlCheckMember.BarCodeReadOn();
             pivotMain.SelectedItem = pivotMain.Items[1];
         }
 

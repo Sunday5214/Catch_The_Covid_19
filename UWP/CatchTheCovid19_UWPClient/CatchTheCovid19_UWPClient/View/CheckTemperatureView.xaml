@@ -30,7 +30,7 @@
             
             <!--<TextBlock Text="{Binding Distance}" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
             <ProgressBar Value="{Binding DistanceData}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="50"
-                     Margin="280 350 0 0">
+                     Margin="280 350 0 0" x:Name="pbdata">
                 <ProgressBar.RenderTransform>
                     <CompositeTransform Rotation="-90"/>
                 </ProgressBar.RenderTransform>

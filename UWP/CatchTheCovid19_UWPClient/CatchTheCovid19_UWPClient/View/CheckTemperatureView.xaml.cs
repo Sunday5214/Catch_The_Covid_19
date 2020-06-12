@@ -37,12 +37,13 @@ namespace CatchTheCovid19_UWPClient.View
             DataContext = App.checkTemperatureViewModel;
             App.checkTemperatureViewModel.TeamperatureReadCompleteEvent += CheckTemperatureViewModel_TeamperatureReadCompleteEvent;
         }
-
+       
         private async void CheckTemperatureViewModel_TeamperatureReadCompleteEvent(bool success)
         {
             if (success)
             {
                 tbDesc.Visibility = Visibility.Collapsed;
+                pbdata.Visibility = Visibility.Collapsed;
                 tbName.Visibility = Visibility.Visible;
                 tbTemp.Visibility = Visibility.Visible;
                 await Task.Delay(3000);
@@ -71,6 +72,7 @@ namespace CatchTheCovid19_UWPClient.View
             App.checkTemperatureViewModel.Temperature = 0;
             await App.checkTemperatureViewModel.StartI2C();
             tbDesc.Visibility = Visibility.Visible;
+            pbdata.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
             tbTemp.Visibility = Visibility.Collapsed;
 

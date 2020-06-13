@@ -8,7 +8,7 @@ namespace CatchTheCovid10.InitData
 {
     public class Info
     {
-        [JsonProperty("codes")]
+        [JsonProperty("Codes")]
         public List<string> Codes
         {
             get;

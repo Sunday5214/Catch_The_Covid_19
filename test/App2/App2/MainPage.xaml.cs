@@ -35,50 +35,52 @@ namespace App2
         public MainPage()
         {
             this.InitializeComponent();
-           // GG();
+            // GG();
             //serial.ListenCompleteEvent += Serial_ListenCompleteEvent;
             //serial.BUFFSIZE = 5;
             //Connect();
             //serialRTU.TeamperatureReadCompleteEvent += SerialRTU_TeamperatureReadCompleteEvent;
         }
-
+        bool IsReadComplete = false;
         public async void GG()
         {
             await BarCodeReadOn();
-            await Task.Delay(1000);
-           // await BarCodeReadOff();
+            // await BarCodeReadOff();
         }
 
         public async Task BarCodeReadOn()
         {
-            await Task.Run(() =>
+            GpioController gpio = GpioController.GetDefault();
+            if (gpio == null) return;
+            using (GpioPin pin = gpio.OpenPin(4))
             {
-                GpioController gpio = GpioController.GetDefault();
-
-                if (gpio == null) return;
-                using (GpioPin pin = gpio.OpenPin(4))
+                while (!IsReadComplete)
                 {
-                    pin.Write(GpioPinValue.High);
-                    pin.SetDriveMode(GpioPinDriveMode.Output);
+                    await Task.Run(() =>
+                    {
+                        pin.Write(GpioPinValue.Low);
+                        pin.SetDriveMode(GpioPinDriveMode.Output);
+                        Task.Delay(3000);
+
+
+                    });
+
+
                 }
-            });
+
+            }
 
         }
 
-        public async Task BarCodeReadOff()
+        public void BarCodeReadOff()
         {
-            await Task.Run(() =>
+            GpioController gpio = GpioController.GetDefault();
+            if (gpio == null) return;
+            using (GpioPin pin = gpio.OpenPin(4))
             {
-                GpioController gpio = GpioController.GetDefault();
-
-                if (gpio == null) return;
-                using (GpioPin pin = gpio.OpenPin(4))
-                {
-                    pin.Write(GpioPinValue.Low);
-                    pin.SetDriveMode(GpioPinDriveMode.Output);
-                }
-            });
-
+                pin.Write(GpioPinValue.High);
+                pin.SetDriveMode(GpioPinDriveMode.Output);
+            }
         }
         //public async void GetTemperatureData()
         //{
@@ -142,6 +144,16 @@ namespace App2
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             GG();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            IsReadComplete = true;
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

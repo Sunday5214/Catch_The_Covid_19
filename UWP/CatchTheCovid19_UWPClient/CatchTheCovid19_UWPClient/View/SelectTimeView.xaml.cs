@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using CatchTheCovid19.RestClient.Option;
 using CatchTheCovid10.InitData;
-using Windows.Devices.Gpio;
+
 
 // 빈 페이지 항목 템플릿에 대한 설명은 https://go.microsoft.com/fwlink/?LinkId=234238에 나와 있습니다.
 
@@ -35,7 +24,7 @@ namespace CatchTheCovid19_UWPClient.View
 
         private async void SelectTimeView_Loaded(object sender, RoutedEventArgs e)
         {
-            BarCodeReadOff();
+           // BarCodeReadOff();
             await App.infoManager.GetInfoData();
 
             //DataContext = App.infoManager;
@@ -44,16 +33,14 @@ namespace CatchTheCovid19_UWPClient.View
                 lvTime.Items.Add(item);
             }
         }
-        public void BarCodeReadOff()
-        {
-            GpioController gpio = GpioController.GetDefault();
-            if (gpio == null) return;
-            using (GpioPin pin = gpio.OpenPin(4))
-            {
-                pin.Write(GpioPinValue.High);
-                pin.SetDriveMode(GpioPinDriveMode.Output);
-            }
-        }
+        //public void BarCodeReadOff()
+        //{
+        //    GpioController gpio = GpioController.GetDefault();
+        //    if (gpio == null) return;
+        //    GpioPin pin = gpio.OpenPin(4);
+        //    pin.Write(GpioPinValue.High);
+        //    pin.SetDriveMode(GpioPinDriveMode.Output);
+        //}
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var list = sender as ListView;

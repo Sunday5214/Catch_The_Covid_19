@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Input.Preview.Injection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -29,6 +31,8 @@ namespace CatchTheCovid19_UWPClient.View
     {
         public delegate void ChangeScreen();
         public event ChangeScreen ChangeScreenEvent;
+
+        bool IsReadComplete = false;
         //TextBox tbxBarInput = new TextBox();
         public CheckMemberCardView()
         {
@@ -73,19 +77,23 @@ namespace CatchTheCovid19_UWPClient.View
 
         }
 
-        public void Init()
+        public async Task Init()
         {
-           
-            App.checkMemberCardViewModel.CheckMemberCard = null;
-            tbDesc.Visibility = Visibility.Visible;
-            
-            tbName.Visibility = Visibility.Collapsed;
-            tbClassRoom.Visibility = Visibility.Collapsed;
-            tbIsStudent.Visibility = Visibility.Collapsed;
-            //BarCodeReadOn();
-            TabInput();
-            //MakeInputTbx();
-            //tbxBarInput.IsFocusEngaged = true;
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () =>
+            {
+                IsReadComplete = false;
+                App.checkMemberCardViewModel.CheckMemberCard = null;
+                tbDesc.Visibility = Visibility.Visible;
+
+                tbName.Visibility = Visibility.Collapsed;
+                tbClassRoom.Visibility = Visibility.Collapsed;
+                tbIsStudent.Visibility = Visibility.Collapsed;
+                //BarCodeReadOn();
+                TabInput();
+                //MakeInputTbx();
+                //tbxBarInput.IsFocusEngaged = true;
+            });
 
         }
         private void TabInput()
@@ -97,22 +105,54 @@ namespace CatchTheCovid19_UWPClient.View
             inputInjector.InjectKeyboardInput(new[] { tab });
         }
 
-        public void BarCodeReadOn()
+        public async Task BarCodeReadOn()
         {
             GpioController gpio = GpioController.GetDefault();
-            
             if (gpio == null) return;
             using (GpioPin pin = gpio.OpenPin(4))
             {
-                pin.Write(GpioPinValue.Low);
+                while (true)
+                {
+                    await Task.Run(() =>
+                    {
+                        pin.Write(GpioPinValue.High);
+                        pin.SetDriveMode(GpioPinDriveMode.Output);
+                    });
+                    await Task.Run(() =>
+                    {
+                        pin.Write(GpioPinValue.Low);
+                        pin.SetDriveMode(GpioPinDriveMode.Output);
+                        Task.Delay(2000);
+                    });
+
+                    if (IsReadComplete)
+                    {
+                        break;
+                    }
+
+               
+                }
+                
+
+            }
+            BarCodeReadOff();
+
+        }
+        public void BarCodeReadOff()
+        {
+            GpioController gpio = GpioController.GetDefault();
+            if (gpio == null) return;
+            using (GpioPin pin = gpio.OpenPin(4))
+            {
+                pin.Write(GpioPinValue.High);
                 pin.SetDriveMode(GpioPinDriveMode.Output);
             }
         }
-
         private async void tbxBarInput_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter)
             {
+                IsReadComplete = true;
                 await App.checkMemberCardViewModel.SearchMember(tbxBarInput.Text);
                 tbxBarInput.Text = "";
 

@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Devices.Gpio;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -42,10 +42,14 @@ namespace CatchTheCovid19_UWPClient.View
         {
             if (success)
             {
-                tbDesc.Visibility = Visibility.Collapsed;
-                pbdata.Visibility = Visibility.Collapsed;
-                tbName.Visibility = Visibility.Visible;
-                tbTemp.Visibility = Visibility.Visible;
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                () =>
+                {
+                    tbDesc.Visibility = Visibility.Collapsed;
+                    pbdata.Visibility = Visibility.Collapsed;
+                    tbName.Visibility = Visibility.Visible;
+                    tbTemp.Visibility = Visibility.Visible;
+                });
                 await Task.Delay(3000);
                 ChangeScreenEvent?.Invoke();
             }
@@ -54,16 +58,7 @@ namespace CatchTheCovid19_UWPClient.View
                 tbDesc.Text = "네트워크 문제가 발생했습니다.\n네트워크 상태를 체크후 마지막 사람부터 다시 측정해주세요";
             }
         }
-        public void BarCodeReadOff()
-        {
-            GpioController gpio = GpioController.GetDefault();
-            if (gpio == null) return;
-            using (GpioPin pin = gpio.OpenPin(4))
-            {
-                pin.Write(GpioPinValue.High);
-                pin.SetDriveMode(GpioPinDriveMode.Output);
-            }
-        }
+
         public async void Init()
         {
             //BarCodeReadOff();

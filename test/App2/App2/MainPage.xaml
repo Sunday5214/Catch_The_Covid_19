@@ -18,9 +18,14 @@
             </ProgressBar>
             <Button Content="시작" Width="100" Height="30" Click="Button_Click"
                 VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Button Content="종료" Width="100" Height="30" Click="Button_Click_1"
+                VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <Button Content="시작" Width="100" Height="30" Click="Button_Click_2"
+                VerticalAlignment="Center" HorizontalAlignment="Center" />
         </StackPanel>
 
         <TextBlock x:Name="tbData" Text="" VerticalAlignment="Center" FontSize="70"
                    HorizontalAlignment="Center" Margin="0 30 0 0"/>
+        
     </StackPanel>
 </Page>

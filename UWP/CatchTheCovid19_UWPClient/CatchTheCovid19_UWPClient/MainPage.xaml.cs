@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -45,18 +47,29 @@ namespace CatchTheCovid19_UWPClient
             pivotMain.SelectedItem = pivotMain.Items[0];
         }
 
-        private void CtrlSelectTime_ChangeScreenEvent()
+        private async void CtrlSelectTime_ChangeScreenEvent()
         {
-            ctrlCheckMember.Init();
-            ctrlCheckMember.BarCodeReadOn();
-            pivotMain.SelectedItem = pivotMain.Items[1];
+            await ctrlCheckMember.Init();
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () =>
+            {
+                pivotMain.SelectedItem = pivotMain.Items[1];
+            });
+            await ctrlCheckMember.BarCodeReadOn();
+            
         }
 
-        private void CtrlTemperature_ChangeScreenEvent() 
+        private async void CtrlTemperature_ChangeScreenEvent() 
         {
-            ctrlCheckMember.Init();
-            ctrlCheckMember.BarCodeReadOn();
-            pivotMain.SelectedItem = pivotMain.Items[1];
+            await ctrlCheckMember.Init();
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () =>
+            {
+                pivotMain.SelectedItem = pivotMain.Items[1];
+            });
+
+            await ctrlCheckMember.BarCodeReadOn();
+            
         }
 
         private void CtrlCheckMember_ChangeScreenEvent()

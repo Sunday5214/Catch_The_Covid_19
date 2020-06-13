@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.IO.Ports" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
       <HintPath>..\..\..\..\..\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
     </Reference>

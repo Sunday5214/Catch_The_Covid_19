@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/list.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!-- <script src="../../server.js"></script> -->
+    <!-- <script src="../js/newList.js"></script> -->
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Create two variable with the names of the months and days in an array
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August",
+                "September", "October", "November", "December"
+            ];
+            var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
+            // Create a newDate() object
+            var newDate = new Date();
+            // Extract the current date from Date object
+            newDate.setDate(newDate.getDate());
+            // Output the day, date, month and year   
+            $('#Date').html(dayNames[newDate.getDay()] + " " + newDate.getDate() + ' ' + monthNames[newDate
+                .getMonth()] + ' ' + newDate.getFullYear());
+
+            setInterval(function () {
+                // Create a newDate() object and extract the seconds of the current time on the visitor's
+                var seconds = new Date().getSeconds();
+                // Add a leading zero to seconds value
+                $("#sec").html((seconds < 10 ? "0" : "") + seconds);
+            }, 1000);
+
+            setInterval(function () {
+                // Create a newDate() object and extract the minutes of the current time on the visitor's
+                var minutes = new Date().getMinutes();
+                // Add a leading zero to the minutes value
+                $("#min").html((minutes < 10 ? "0" : "") + minutes);
+            }, 1000);
+
+            setInterval(function () {
+                // Create a newDate() object and extract the hours of the current time on the visitor's
+                var hours = new Date().getHours();
+                // Add a leading zero to the hours value
+                $("#hours").html((hours < 10 ? "0" : "") + hours);
+            }, 1000);
+        });
+    </script>
+
+    <!-- ----------------- 상단 ------------------ -->
+    <div id="header">
+        <!-- 시계와날짜, 타이틀, 현황카드 -->
+        <div id="one">
+            <!-- 시계와날짜, 타이틀 -->
+            <div id="title">
+                <!--제목-->
+                <h1 id="headFont">Hot-Check</h1>
+
+                <!-- 실시간 시계-->
+                <div class="clock">
+                    <div id="Date"></div>
+                    <div id="timer">
+                        <span id="hours"></span>
+                        <span class="point">:</span>
+                        <span id="min"></span>
+                        <span class="point">:</span>
+                        <span id="sec"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- 카드 -->
+            <div class="calorie__count">
+
+                <div class="calorie__count__remaining">
+                    <span class="js-count" id="count_remained">0</span>
+                    미확인
+                </div>
+
+                <div class="calorie__count__consumed">
+                    <span class="js-count" id="count_consumed">0</span>
+                    완료
+                </div>
+
+            </div>
+        </div>
+
+        <!--현재 측정된 학생의 비율(도넛 그래프)-->
+        <div id="calorie-counter" class="qwertyuio">
+            <div class="chart chart--calorie js-chart" data-goal="180" data-count="149">
+                <!-- 요기에서 data-goal과 data-count값을 바꿔주면 됩니당 -->
+                <div class="chart__container">
+                    <svg class="chart__background" x="0px" y="0px" height="220px" viewBox="0 0 220 220">
+                        <g>
+                            <path
+                                d="M110,210c-55.1,0-100-44.9-100-100C10,54.9,54.9,10,110,10s100,44.9,100,100C210,165.1,165.1,210,110,210z" />
+                        </g>
+                    </svg>
+
+                    <svg class="chart__foreground" x="0px" y="0px" height="220px" viewBox="0 0 220 220">
+                        <g>
+                            <path
+                                d="M110,210c-55.1,0-100-44.9-100-100C10,54.9,54.9,10,110,10s100,44.9,100,100C210,165.1,165.1,210,110,210z" />
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="chart__count">
+                    <div>
+                        <span class="js-count" id="percent"></span> %</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ----------------- 도넛 그래프 끝 ------------------ -->
+        </div>
+
+        <!-- 학생 개개인의 정보 -->
+        <div id="profile">
+            <div class="codeNum">
+                cardId(바코드 Id) <br><br>
+            </div>
+            <div class="student-info">
+                <!-- 이름 | 가나다랄 <br>
+                학번 | 3333 <br>
+                <br> -->
+                <!-- 최근 열 체크 <br> <span id="temp"></span> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ----------------- select박스 ------------------ -->
+    <div id="select">
+
+        <div id="select_date">
+            <div class="select-style">
+                <input type="date" id="SelectDate" name="trip-start"
+                        value="2018-07-22"
+                        min="2020-01-01" 
+                        max="2020-12-01">
+            </div>
+        </div>
+
+        <div id="select_grade">
+            <div class="select-style">
+                <select id="id_grade">
+                    <option value="0">학년</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="select_class">
+            <div class="select-style">
+                <select id="id_class">
+                    <option value="0">반</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="select_time">
+            <div class="select-style">
+                <select id="id_time">
+                    <option value="0">시간</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="filter">조회</button>
+    </div>
+
+    <!-- ----------------- 테이블 ------------------ -->
+    <!-- <div id="tables">
+        <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                    <th>날짜</th>
+                    <th>학년</th>
+                    <th>반</th>
+                    <th>번호</th>
+                    <th>이름</th>
+                    <th>체온</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tbl-content">
+            <table cellpadding="0" cellspacing="0" id="record">
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+
+    <div id="table">
+        <div class="tableheader">
+            <div class="section">날짜</div>
+            <div class="section">학년</div>
+            <div class="section">반</div>
+            <div class="section">번호</div>
+            <div class="section">이름</div>
+            <div class="section">체온</div>
+        </div>
+        <div class="tablebody">
+
+        </div>
+    </div>
+
+    <script src="../js/chart.js"></script>
+    <script src="../js/callApi.js"></script>
+</body>
+
+</html>

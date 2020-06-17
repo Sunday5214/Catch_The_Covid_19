@@ -1,11 +1,15 @@
 ﻿using CatchTheCovid19.I2C;
 using CatchTheCovid19.Serial;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Gpio;
@@ -29,6 +33,11 @@ namespace App2
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        VideoCapture capture;
+        Mat frame;
+        Bitmap image;
+        private Thread camera;
+        int isCameraRunning = 0;
         // SerialRTU serialRTU = new SerialRTU("UART0", 19200, "Decimal", "8", "1", "0", "1000");
         //I2CManager I2CManager;
         //SerialCommunicator serial = new SerialCommunicator();
@@ -41,119 +50,51 @@ namespace App2
             //Connect();
             //serialRTU.TeamperatureReadCompleteEvent += SerialRTU_TeamperatureReadCompleteEvent;
         }
-        bool IsReadComplete = false;
-        public async void GG()
+        private void CaptureCamera()
         {
-            await BarCodeReadOn();
-            // await BarCodeReadOff();
+
+            camera = new Thread(new ThreadStart(CaptureCameraCallback));
+            camera.Start();
         }
 
-        public async Task BarCodeReadOn()
+        private void CaptureCameraCallback()
         {
-            GpioController gpio = GpioController.GetDefault();
-            if (gpio == null) return;
-            using (GpioPin pin = gpio.OpenPin(4))
+            frame = new Mat();
+            capture = new VideoCapture();
+            capture.Open(1);
+
+            while (isCameraRunning == 1)
             {
-                while (!IsReadComplete)
+                capture.Read(frame);
+                if (!frame.Empty())
                 {
-                    await Task.Run(() =>
-                    {
-                        pin.Write(GpioPinValue.Low);
-                        pin.SetDriveMode(GpioPinDriveMode.Output);
-                        Task.Delay(3000);
-
-
-                    });
-
-
+                    image = BitmapConverter.ToBitmap(frame);
+                    //pictureBox1.Image = image;
                 }
-
+                image = null;
             }
 
         }
-
-        public void BarCodeReadOff()
-        {
-            GpioController gpio = GpioController.GetDefault();
-            if (gpio == null) return;
-            using (GpioPin pin = gpio.OpenPin(4))
-            {
-                pin.Write(GpioPinValue.High);
-                pin.SetDriveMode(GpioPinDriveMode.Output);
-            }
-        }
-        //public async void GetTemperatureData()
-        //{
-        //    //serialRTU.StartPoll();
-        //    //await serial.SendSerial("1");
-        //}
-        //private async void Connect()
-        //{
-        //    await serial.FindDevicebyName("Serial");
-        //    await serial.ConnectSerial(9600);
-        //}
-        //private void Serial_ListenCompleteEvent(string data)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private int _distanceData;
-        //public int DistanceData
-        //{
-        //    get => _distanceData;
-        //    set => _distanceData = value;
-        //}
-
-        //private int map(int x, int in_min, int in_max, int out_min, int out_max)
-        //{
-        //    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-        //}
-
-        //private int constrain(int amt, int low, int high)
-        //{
-        //    return amt < low ? low : (amt > high ? high : amt);
-        //}
-        //private async Task Start()
-        //{
-        //    VL53L0XSensor sensor = new VL53L0XSensor();
-        //    await sensor.InitializeAsync();
-
-        //    bool IsSixCm = false;
-        //    int data = -1;
-
-        //    while (!IsSixCm)
-        //    {
-        //        data = sensor.ReadDistance();
-        //        data = map(constrain(data, 10, 100), 100, 10, 10, 100);
-        //        Debug.WriteLine(data);
-        //        pbdata.Value = data;
-
-
-        //        if (pbdata.Value >= 80)
-        //        {
-        //            IsSixCm = true;
-        //            GetTemperatureData();
-        //           // break;    
-        //            //GetTemperatureData();
-        //        }
-        //        await Task.Delay(200);
-        //    }
-        //    Debug.WriteLine("만땅");
-        //}
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            GG();
-        }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            IsReadComplete = true;
-        }
+            if (btnData.Content.Equals("Start"))
+            {
+                CaptureCamera();
+                btnData.Content = "Stop";
+                isCameraRunning = 1;
+            }
+            else
+            {
+                if (capture.IsOpened())
+                {
+                    capture.Release();
+                }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-
+                btnData.Content = "Start";
+                isCameraRunning = 0;
+            }
         }
     }
 }

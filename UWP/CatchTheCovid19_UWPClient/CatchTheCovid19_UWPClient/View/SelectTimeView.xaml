@@ -9,11 +9,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.9*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="btnSetting" HorizontalAlignment="Right" 
+                Background="Black" VerticalAlignment="Top" Click="btnSetting_Click">
+            <SymbolIcon Symbol="Setting" Width="40" Height="40"/>
+        </Button>
         <ListView x:Name="lvTime" SelectionMode="Single" SelectionChanged="ListView_SelectionChanged"
-                  VerticalAlignment="Center" HorizontalAlignment="Center">
+                  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                         
                     </StackPanel>
                 </ItemsPanelTemplate>

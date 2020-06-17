@@ -10,18 +10,14 @@
 
     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
         <StackPanel Orientation="Horizontal">
-            <ProgressBar x:Name="pbdata" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="50"
-                     Margin="280 350 0 0">
-                <ProgressBar.RenderTransform>
-                    <CompositeTransform Rotation="-90"/>
-                </ProgressBar.RenderTransform>
-            </ProgressBar>
-            <Button Content="시작" Width="100" Height="30" Click="Button_Click"
+            <TextBlock Text="" x:Name="tb"/>
+
+            <Button x:Name="btnData" Content="Start" Width="100" Height="30" Click="Button_Click"
                 VerticalAlignment="Center" HorizontalAlignment="Center" />
-            <Button Content="종료" Width="100" Height="30" Click="Button_Click_1"
+            <!--<Button Content="종료" Width="100" Height="30" Click="Button_Click_1"
                 VerticalAlignment="Center" HorizontalAlignment="Center" />
             <Button Content="시작" Width="100" Height="30" Click="Button_Click_2"
-                VerticalAlignment="Center" HorizontalAlignment="Center" />
+                VerticalAlignment="Center" HorizontalAlignment="Center" />-->
         </StackPanel>
 
         <TextBlock x:Name="tbData" Text="" VerticalAlignment="Center" FontSize="70"

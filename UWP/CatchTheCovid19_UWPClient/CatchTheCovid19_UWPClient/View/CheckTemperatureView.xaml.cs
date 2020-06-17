@@ -59,13 +59,13 @@ namespace CatchTheCovid19_UWPClient.View
             }
         }
 
-        public async void Init()
+        public void Init()
         {
             //BarCodeReadOff();
             
             App.checkTemperatureViewModel.Member = null;
             App.checkTemperatureViewModel.Temperature = 0;
-            await App.checkTemperatureViewModel.StartI2C();
+            App.checkTemperatureViewModel.GetDistanceData();
             tbDesc.Visibility = Visibility.Visible;
             pbdata.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;

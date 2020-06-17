@@ -36,7 +36,11 @@ namespace CatchTheCovid10.InitData
 
         public static Member GetMember(string cardId)
         {
-            if(cardId.Length > 10)
+            if (Member.FindIndex(x => x.CardId == cardId) == -1)
+            {
+                return null;
+            }
+            if (cardId.Length > 10)
             {
                 if (cardId.Contains("S"))
                 {
@@ -47,6 +51,7 @@ namespace CatchTheCovid10.InitData
                     cardId = cardId.Substring(0, 8);
                 }
             }
+
             var data = (Member.Where(x => x.CardId == cardId) == null ? null : Member.Where(x => x.CardId == cardId).ToList()[0]);
             return data;
 

@@ -28,6 +28,7 @@ namespace CatchTheCovid19_UWPClient
         public static CheckTemperatureViewModel checkTemperatureViewModel = null;
         public static MemberManager memberManager = null;
         public static InfoManager infoManager = null;
+        public static SettingViewModel SettingViewModel = null;
         /// <summary>
         /// Singleton 애플리케이션 개체를 초기화합니다. 이것은 실행되는 작성 코드의 첫 번째
         /// 줄이며 따라서 main() 또는 WinMain()과 논리적으로 동일합니다.
@@ -45,6 +46,7 @@ namespace CatchTheCovid19_UWPClient
             checkTemperatureViewModel = new CheckTemperatureViewModel();
             memberManager = new MemberManager();
             infoManager = new InfoManager();
+            SettingViewModel = new SettingViewModel();
         }
 
         /// <summary>

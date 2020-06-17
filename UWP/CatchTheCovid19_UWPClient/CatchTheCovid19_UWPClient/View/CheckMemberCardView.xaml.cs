@@ -40,9 +40,9 @@ namespace CatchTheCovid19_UWPClient.View
             Loaded += CheckMemberCard_Loaded;
         }
 
-        private void CheckMemberCard_Loaded(object sender, RoutedEventArgs e)
+        private async void CheckMemberCard_Loaded(object sender, RoutedEventArgs e)
         {
-            TabInput();
+            await FocusOn();
             DataContext = App.checkMemberCardViewModel;
             App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
             //App.checkMemberCardViewModel.StartReadCard();
@@ -57,6 +57,8 @@ namespace CatchTheCovid19_UWPClient.View
             else
             {
                 tbDesc.Text = "등록되지 않은 멤버입니다.";
+                await Task.Delay(2000);
+                await Init();
             }
         }
 
@@ -74,7 +76,7 @@ namespace CatchTheCovid19_UWPClient.View
             App.checkTemperatureViewModel.SetMemberData(member);
             //App.checkTemperatureViewModel.GetTemperatureData();
             
-
+            
         }
 
         public async Task Init()
@@ -85,69 +87,80 @@ namespace CatchTheCovid19_UWPClient.View
                 IsReadComplete = false;
                 App.checkMemberCardViewModel.CheckMemberCard = null;
                 tbDesc.Visibility = Visibility.Visible;
-
+                tbDesc.Text = "바코드를 인식시켜 주세요";
                 tbName.Visibility = Visibility.Collapsed;
                 tbClassRoom.Visibility = Visibility.Collapsed;
                 tbIsStudent.Visibility = Visibility.Collapsed;
                 //BarCodeReadOn();
-                TabInput();
+               
                 //MakeInputTbx();
                 //tbxBarInput.IsFocusEngaged = true;
             });
-
+            await FocusOn();
+            //await TabInput();
         }
-        private void TabInput()
+        //private async Task TabInput()
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        //InputInjector inputInjector = InputInjector.TryCreate();
+        //        //var tab = new InjectedInputKeyboardInfo();
+        //        //tab.VirtualKey = (ushort)(VirtualKey.Tab);
+        //        //tab.KeyOptions = InjectedInputKeyOptions.None;
+        //        //inputInjector.InjectKeyboardInput(new[] { tab });
+        //        FocusOn();
+        //    });
+           
+        //}
+        private async Task FocusOn()
         {
-            InputInjector inputInjector = InputInjector.TryCreate();
-            var tab = new InjectedInputKeyboardInfo();
-            tab.VirtualKey = (ushort)(VirtualKey.Tab);
-            tab.KeyOptions = InjectedInputKeyOptions.None;
-            inputInjector.InjectKeyboardInput(new[] { tab });
-        }
-
-        public async Task BarCodeReadOn()
-        {
-            GpioController gpio = GpioController.GetDefault();
-            if (gpio == null) return;
-            using (GpioPin pin = gpio.OpenPin(4))
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () =>
             {
-                while (true)
-                {
-                    await Task.Run(() =>
-                    {
-                        pin.Write(GpioPinValue.High);
-                        pin.SetDriveMode(GpioPinDriveMode.Output);
-                    });
-                    await Task.Run(() =>
-                    {
-                        pin.Write(GpioPinValue.Low);
-                        pin.SetDriveMode(GpioPinDriveMode.Output);
-                        Task.Delay(2000);
-                    });
-
-                    if (IsReadComplete)
-                    {
-                        break;
-                    }
-
-               
-                }
-                
-
-            }
-            BarCodeReadOff();
+                tbxBarInput.Focus(FocusState.Programmatic);
+            });
 
         }
-        public void BarCodeReadOff()
-        {
-            GpioController gpio = GpioController.GetDefault();
-            if (gpio == null) return;
-            using (GpioPin pin = gpio.OpenPin(4))
-            {
-                pin.Write(GpioPinValue.High);
-                pin.SetDriveMode(GpioPinDriveMode.Output);
-            }
-        }
+        //public async Task BarCodeReadOn()
+        //{
+        //    GpioController gpio = GpioController.GetDefault();
+        //    if (gpio == null) return;
+        //    using (GpioPin pin = gpio.OpenPin(4))
+        //    {
+        //        while (true)
+        //        {
+        //            await Task.Run(() =>
+        //            {
+        //                pin.Write(GpioPinValue.High);
+        //                pin.SetDriveMode(GpioPinDriveMode.Output);
+        //            });
+        //            await Task.Run(() =>
+        //            {
+        //                pin.Write(GpioPinValue.Low);
+        //                pin.SetDriveMode(GpioPinDriveMode.Output);
+        //                Task.Delay(2000);
+        //            });
+
+        //            if (IsReadComplete)
+        //            {
+        //                break;
+        //            }
+        //        }
+       
+        //    }
+        //    BarCodeReadOff();
+
+        //}
+        //public void BarCodeReadOff()
+        //{
+        //    GpioController gpio = GpioController.GetDefault();
+        //    if (gpio == null) return;
+        //    using (GpioPin pin = gpio.OpenPin(4))
+        //    {
+        //        pin.Write(GpioPinValue.High);
+        //        pin.SetDriveMode(GpioPinDriveMode.Output);
+        //    }
+        //}
         private async void tbxBarInput_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key == VirtualKey.Enter)

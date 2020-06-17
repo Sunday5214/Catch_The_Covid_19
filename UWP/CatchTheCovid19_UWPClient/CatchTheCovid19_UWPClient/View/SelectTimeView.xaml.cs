@@ -16,6 +16,9 @@ namespace CatchTheCovid19_UWPClient.View
     {
         public delegate void ChangeScreen();
         public event ChangeScreen ChangeScreenEvent;
+
+        public delegate void ChangeScreenSetting();
+        public event ChangeScreenSetting ChangeScreenSettingEvent;
         public SelectTimeView()
         {
             this.InitializeComponent();
@@ -50,19 +53,24 @@ namespace CatchTheCovid19_UWPClient.View
                     NetworkOptions.nowTime = TimeEnum.BREAKFAST;
                     break;
                 case "점심":
-                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    NetworkOptions.nowTime = TimeEnum.LUNCH;
                     break;
                 case "저녁":
-                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    NetworkOptions.nowTime = TimeEnum.DINNDER;
                     break;
                 case "입실":
-                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    NetworkOptions.nowTime = TimeEnum.IN;
                     break;
                 case "퇴실":
-                    NetworkOptions.nowTime = TimeEnum.BREAKFAST;
+                    NetworkOptions.nowTime = TimeEnum.OUT;
                     break;
             }
             ChangeScreenEvent?.Invoke();
+        }
+
+        private void btnSetting_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeScreenSettingEvent?.Invoke();
         }
     }
 }

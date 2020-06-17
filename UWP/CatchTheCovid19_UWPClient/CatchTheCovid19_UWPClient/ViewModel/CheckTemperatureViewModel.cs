@@ -38,20 +38,29 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         }
         private async void Connect()
         {
-            await serial.FindDevicebyName("Serial");
+            await serial.FindDevicebyName("COM10");
             await serial.ConnectSerial(9600);
             serial.Listen();
         }
 
         private async void Serial_ListenCompleteEvent(string data)
         {
-            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-            () =>
+            if (data.Contains("."))
             {
                 AddDataServer(double.Parse(data));
                 TeamperatureReadCompleteEvent?.Invoke(true);
-                //serial.StopPoll();
-            });
+            }
+            else
+            {
+                DistanceData = map(int.Parse(data), 0, 150, 100, 1);
+                if (DistanceData >= 40)
+                {
+                    await StopDistanceData();
+                    GetTemperatureData();
+                }
+                //값이 바뀔때만 보내주도록
+            }
+            
         }
 
         private int _distanceData;
@@ -59,41 +68,6 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         {
             get => _distanceData;
             set => SetProperty(ref _distanceData, value);
-        }
-
-        public async Task StartI2C()
-        {
-            await GetData();
-        }
-
-        private int map(int x, int in_min, int in_max, int out_min, int out_max)
-        {
-            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-        }
-
-        private int constrain(int amt, int low, int high)
-        {
-            return amt < low ? low : (amt > high ? high : amt);
-        }
-
-        public async Task GetData()
-        {
-            VL53L0XSensor sensor = new VL53L0XSensor();
-            await sensor.InitializeAsync();
-            bool IsSixCm = false;
-            int data = -1;
-            while (!IsSixCm)
-            {
-                data = sensor.ReadDistance();
-                DistanceData = map(constrain(data, 12, 100), 100, 12, 1, 100);
-              
-                if (DistanceData <= 90 && DistanceData >= 80)
-                {
-                    IsSixCm = true;
-                    GetTemperatureData();
-                }
-                await Task.Delay(200);
-            }
         }
 
         private async void AddDataServer(double data)
@@ -134,13 +108,30 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             //http://10.80.162.7:8080/insertRecord?Idx=0&code=0&temp=36.50
         }
 
+        private int map(int x, int in_min, int in_max, int out_min, int out_max)
+        {
+            return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        }
+
+        private int constrain(int amt, int low, int high)
+        {
+            return amt < low ? low : (amt > high ? high : amt);
+        }
+
         public async void GetTemperatureData()
         {
-            //serialRTU.StartPoll();
             await serial.SendSerial("1");
         }
 
+        public async void GetDistanceData()
+        {
+            await serial.SendSerial("2");
+        }
 
+        public async Task StopDistanceData()
+        {
+            await serial.SendSerial("3");
+        }
 
         public void SetMemberData(Member checkMember)
         {

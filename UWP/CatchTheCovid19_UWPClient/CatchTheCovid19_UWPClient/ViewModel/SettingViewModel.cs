@@ -21,8 +21,8 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         public delegate void SettingComplete(bool success);
         public event SettingComplete SettingCompleteEvent;
 
-        private List<VoiceData> _voiceLists = new List<VoiceData>();
-        public List<VoiceData> VoiceLists
+        private List<string> _voiceLists = new List<string>();
+        public List<string> VoiceLists
         {
             get => _voiceLists;
             set => SetProperty(ref _voiceLists, value);
@@ -35,8 +35,8 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             set => SetProperty(ref _serverAddress, value);
         }
 
-        private VoiceData _selectedVoice = null;
-        public VoiceData SelectedVoice
+        private string _selectedVoice;
+        public string SelectedVoice
         {
             get => _selectedVoice;
             set => SetProperty(ref _selectedVoice, value);
@@ -50,13 +50,16 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
         public SettingViewModel()
         {
+            _voiceLists.Add("Taeo");
+            _voiceLists.Add("Chu");
+
             SettingOKCommand = new DelegateCommand(OnSaveSetting);
         }
 
         private void OnSaveSetting()
         {
-            SaveSetting("SelectedVoice", SelectedVoice.VoiceName);
-            SaveSetting("ServerAddress", ServerAddress);
+            SaveSetting("SelectedVoice", SelectedVoice);
+            SaveSetting("ServerAddress", "http://"+ServerAddress);
             SettingCompleteEvent?.Invoke(true);
         }
 

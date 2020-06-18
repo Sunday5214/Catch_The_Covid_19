@@ -81,6 +81,7 @@ namespace CatchTheCovid19_UWPClient.View
 
         public async Task Init()
         {
+            App.checkTemperatureViewModel.PendingBarcode();
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
@@ -96,6 +97,7 @@ namespace CatchTheCovid19_UWPClient.View
                 //MakeInputTbx();
                 //tbxBarInput.IsFocusEngaged = true;
             });
+
             await FocusOn();
             //await TabInput();
         }
@@ -168,7 +170,7 @@ namespace CatchTheCovid19_UWPClient.View
                 IsReadComplete = true;
                 await App.checkMemberCardViewModel.SearchMember(tbxBarInput.Text);
                 tbxBarInput.Text = "";
-
+                App.checkTemperatureViewModel.StopBarcode();
                 //tbxBarInput.Focus(FocusState.Programmatic);
                 //await ShowData(App.checkMemberCardViewModel.CheckMemberCard);
             }

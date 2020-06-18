@@ -18,7 +18,7 @@
             <TextBox  Height="100" Margin="30 10 30 0"
                  VerticalAlignment="Center" PlaceholderText="000.000.000.000"
                       FontSize="30" HorizontalContentAlignment="Center"
-                      Text="{Binding ServerAddress}">
+                      Text="{Binding ServerAddress, Mode=TwoWay}">
                 <TextBox.Header>
                     <TextBlock Text="서버 IP" FontSize="25"/>
                 </TextBox.Header>
@@ -27,14 +27,6 @@
             <ComboBox  Margin="30 10 0 0" Height="100" Width="300"
                  VerticalAlignment="Center" Grid.Row="0"
                  ItemsSource="{Binding VoiceLists}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"
-                                       Margin="10 0 0 0" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
                 <ComboBox.Header>
                     <TextBlock Text="목소리 선택" FontSize="25"/>
                 </ComboBox.Header>

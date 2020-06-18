@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CatchTheCovid19_UWPClient.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,6 +29,8 @@ namespace CatchTheCovid19_UWPClient.View
     {
         public delegate void ChangeScreen();
         public event ChangeScreen ChangeScreenEvent;
+        MediaPlayer mediaPlayerRed = new MediaPlayer();
+        MediaPlayer mediaPlayerGreen = new MediaPlayer();
         public CheckTemperatureView()
         {
             this.InitializeComponent();
@@ -35,6 +40,13 @@ namespace CatchTheCovid19_UWPClient.View
         private void CheckTemperatureView_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = App.checkTemperatureViewModel;
+            if(VoiceOption.VoiceName != "")
+            {
+                mediaPlayerGreen.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Green.m4a"));
+                mediaPlayerRed.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Red.m4a"));
+            }
+            mediaPlayerGreen.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Green.m4a"));
+            mediaPlayerRed.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Red.m4a"));
             App.checkTemperatureViewModel.TeamperatureReadCompleteEvent += CheckTemperatureViewModel_TeamperatureReadCompleteEvent;
         }
        
@@ -47,9 +59,19 @@ namespace CatchTheCovid19_UWPClient.View
                 {
                     tbDesc.Visibility = Visibility.Collapsed;
                     pbdata.Visibility = Visibility.Collapsed;
+                    tbMark.Visibility = Visibility.Collapsed;
                     tbName.Visibility = Visibility.Visible;
                     tbTemp.Visibility = Visibility.Visible;
+
                 });
+                if(VoiceOption.VoiceName != "" && App.checkTemperatureViewModel.Temperature > 37.5)
+                {
+                    PlayMedia("Red");
+                }
+                else
+                {
+                    PlayMedia("Green");
+                }
                 await Task.Delay(3000);
                 ChangeScreenEvent?.Invoke();
             }
@@ -59,6 +81,18 @@ namespace CatchTheCovid19_UWPClient.View
             }
         }
 
+        private void PlayMedia(string voiceName)
+        {
+            if (voiceName.Contains("Green"))
+            {
+                mediaPlayerGreen.Play();
+            }
+            else if (voiceName.Contains("Red"))
+            {
+
+                mediaPlayerRed.Play();
+            }
+        }
         public void Init()
         {
             //BarCodeReadOff();
@@ -68,6 +102,7 @@ namespace CatchTheCovid19_UWPClient.View
             App.checkTemperatureViewModel.GetDistanceData();
             tbDesc.Visibility = Visibility.Visible;
             pbdata.Visibility = Visibility.Visible;
+            tbMark.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
             tbTemp.Visibility = Visibility.Collapsed;
 

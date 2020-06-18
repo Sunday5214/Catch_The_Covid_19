@@ -8,7 +8,7 @@ namespace CatchTheCovid19_UWPClient.Model
 {
     public class VoiceData
     {
-        public string VoicePath { get; set; }
-        public string VoiceName { get; set; }
+        public string VoicePath { get; set; } = "";
+        public string VoiceName { get; set; } = "";
     }
 }

@@ -53,7 +53,8 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             else
             {
                 DistanceData = map(int.Parse(data), 0, 150, 100, 1);
-                if (DistanceData >= 40)
+                Debug.WriteLine(DistanceData);
+                if (DistanceData >= 40 && DistanceData <= 50)
                 {
                     await StopDistanceData();
                     GetTemperatureData();
@@ -131,6 +132,16 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         public async Task StopDistanceData()
         {
             await serial.SendSerial("3");
+        }
+
+        public async void PendingBarcode()
+        {
+            await serial.SendSerial("5");
+        }
+
+        public async void StopBarcode()
+        {
+            await serial.SendSerial("4");
         }
 
         public void SetMemberData(Member checkMember)

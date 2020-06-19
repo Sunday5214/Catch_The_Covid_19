@@ -3,7 +3,7 @@ let student_cnt = "0"; //전체 학생 수
 let check_cnt = "0"; //체크된 학생 수
 let timeList = []; //시간 리스트
 const BASICTEMP = 37.49; //기준온도
-const SERVEIP = "192.168.43.16:8080"; //10.80.162.7:8080
+const SERVEIP = "10.80.162.7:8080"; //192.168.43.16:8080
 
 $(document).ready(function () {
     //학년,반,타임 정보를 받아와 그려준다.

@@ -1,7 +1,6 @@
 ﻿using CatchTheCovid19.RestClient.Option;
 using CatchTheCovid19_UWPClient.Model;
 using CatchTheCovid19_UWPClient.View;
-using OpenCvSharp;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;

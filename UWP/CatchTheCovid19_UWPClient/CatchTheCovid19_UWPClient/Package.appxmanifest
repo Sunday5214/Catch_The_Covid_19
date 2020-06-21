@@ -5,18 +5,18 @@
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap mp rescap">
+  IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="2c43f0f3-765e-4d0e-8e87-e3aac254cd7e"
-    Publisher="CN=kteo"
-    Version="1.0.0.0" />
+    Name="46155TaeOKim.HotChecker"
+    Publisher="CN=F87AC6E8-4946-4073-BE19-43E056C24B28"
+    Version="1.0.2.0" />
 
-  <mp:PhoneIdentity PhoneProductId="2c43f0f3-765e-4d0e-8e87-e3aac254cd7e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="88d2f218-2808-4f3c-b6aa-76d1fffcd40d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>CatchTheCovid19_UWPClient</DisplayName>
-    <PublisherDisplayName>kteo</PublisherDisplayName>
+    <DisplayName>HotChecker</DisplayName>
+    <PublisherDisplayName>Tae O Kim</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -34,12 +34,12 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="CatchTheCovid19_UWPClient.App">
       <uap:VisualElements
-        DisplayName="CatchTheCovid19_UWPClient"
+        DisplayName="HotChecker"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="CatchTheCovid19_UWPClient"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
@@ -47,13 +47,11 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
-    <rescap:Capability Name="inputInjectionBrokered" />
     <DeviceCapability Name="serialCommunication">
       <Device Id="any">
         <Function Type="name:serialPort" />
       </Device>
     </DeviceCapability>
-    <DeviceCapability Name="lowLevel"/>
     
   </Capabilities>
 

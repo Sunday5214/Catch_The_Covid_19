@@ -96,7 +96,6 @@ namespace CatchTheCovid19_UWPClient.View
         public void Init()
         {
             //BarCodeReadOff();
-            
             App.checkTemperatureViewModel.Member = null;
             App.checkTemperatureViewModel.Temperature = 0;
             App.checkTemperatureViewModel.GetDistanceData();
@@ -105,6 +104,7 @@ namespace CatchTheCovid19_UWPClient.View
             tbMark.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
             tbTemp.Visibility = Visibility.Collapsed;
+
 
         }
     }

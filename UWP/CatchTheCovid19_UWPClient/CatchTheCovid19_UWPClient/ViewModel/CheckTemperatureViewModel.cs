@@ -1,5 +1,4 @@
 ﻿using CatchTheCovid10.InitData;
-using CatchTheCovid19.I2C;
 using CatchTheCovid19.RestClient.Model;
 using CatchTheCovid19.RestClient.Option;
 using CatchTheCovid19.RestManager;

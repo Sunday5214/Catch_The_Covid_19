@@ -8,5 +8,22 @@ namespace CatchTheCovid19_UWPClient.Model
 {
     public class CheckTemperature
     {
+        public double Temp
+        {
+            get;
+            set;
+        }
+
+        public int code
+        {
+            get;
+            set;
+        }
+
+        public int memberIdx
+        {
+            get;
+            set;
+        }
     }
 }

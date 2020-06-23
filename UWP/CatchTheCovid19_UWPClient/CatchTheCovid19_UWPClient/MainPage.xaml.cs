@@ -39,10 +39,20 @@ namespace CatchTheCovid19_UWPClient
         public MainPage()
         {
             InitializeComponent();
+            
             Loaded += MainPage_Loaded;
         }
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+
+        private void CtrlSelectTime_InvalideIPEvent()
         {
+
+            ShowMessage();
+        }
+
+        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            string notSavedData = App.SettingViewModel.GetSetting("ReqSaveData");
+            await App.checkTemperatureViewModel.AddDataNotSaved(notSavedData);
             //처음 시작일 경우
             if (!IsSettingAgain)
             {
@@ -71,7 +81,7 @@ namespace CatchTheCovid19_UWPClient
 
                 App.memberManager.GetMemberData();
 
-
+                ctrlSelectTime.InvalideIPEvent += CtrlSelectTime_InvalideIPEvent;
                 ctrlSelectTime.ChangeScreenEvent += CtrlSelectTime_ChangeScreenEvent;
                 ctrlCheckMember.ChangeScreenEvent += CtrlCheckMember_ChangeScreenEvent;
                 ctrlTemperature.ChangeScreenEvent += CtrlTemperature_ChangeScreenEvent;
@@ -88,6 +98,7 @@ namespace CatchTheCovid19_UWPClient
         private void SettingViewModel_SettingCompleteEvent(bool success)
         {
             MainPage_Loaded(null, null);
+            ctrlSelectTime.LoadSelectTimeData();
         }
 
 

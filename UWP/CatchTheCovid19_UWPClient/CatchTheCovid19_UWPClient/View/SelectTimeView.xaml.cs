@@ -17,6 +17,9 @@ namespace CatchTheCovid19_UWPClient.View
         public delegate void ChangeScreen();
         public event ChangeScreen ChangeScreenEvent;
 
+        public delegate void InvalideIP();
+        public event InvalideIP InvalideIPEvent;
+
         public delegate void ChangeScreenSetting();
         public event ChangeScreenSetting ChangeScreenSettingEvent;
         public SelectTimeView()
@@ -25,15 +28,27 @@ namespace CatchTheCovid19_UWPClient.View
             Loaded += SelectTimeView_Loaded;
         }
 
-        private async void SelectTimeView_Loaded(object sender, RoutedEventArgs e)
+        private void SelectTimeView_Loaded(object sender, RoutedEventArgs e)
         {
-           // BarCodeReadOff();
-            await App.infoManager.GetInfoData();
-
+            // BarCodeReadOff();
+            LoadSelectTimeData();
             //DataContext = App.infoManager;
-            foreach(var item in InfoManager.Infos.Codes)
+
+        }
+
+        public async void LoadSelectTimeData()
+        {
+            await App.infoManager.GetInfoData();
+            if (InfoManager.Infos == null)
             {
-                lvTime.Items.Add(item);
+                InvalideIPEvent?.Invoke();
+            }
+            else
+            {
+                foreach (var item in InfoManager.Infos.Codes)
+                {
+                    lvTime.Items.Add(item);
+                }
             }
         }
         //public void BarCodeReadOff()

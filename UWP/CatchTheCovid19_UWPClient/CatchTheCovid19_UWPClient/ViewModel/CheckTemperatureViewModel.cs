@@ -13,7 +13,10 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Data.Json;
+using Windows.Storage;
 using Windows.UI.Core;
+using Newtonsoft.Json;
 
 namespace CatchTheCovid19_UWPClient.ViewModel
 {
@@ -27,8 +30,10 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         public event TeamperatureReadComplete TeamperatureReadCompleteEvent;
 
         SerialCommunicator serial = new SerialCommunicator();
+        private List<CheckTemperature> checkTemperatures = new List<CheckTemperature>();
 
- 
+        private string json = "";
+
         public CheckTemperatureViewModel()
         {
             serial.ListenCompleteEvent += Serial_ListenCompleteEvent;
@@ -37,7 +42,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         }
         private async void Connect()
         {
-            await serial.FindDevicebyName("COM10");
+            await serial.FindDevicebyName("COM3");
             await serial.ConnectSerial(9600);
             serial.Listen();
         }
@@ -89,6 +94,11 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             set => SetProperty(ref _temperature, value);
         }
 
+        private void SaveSetting(string settingName, string data)
+        {
+            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+            localSettings.Values[settingName] = data;
+        }
         public async Task AddData(double data)
         {
             Temperature = data;
@@ -103,10 +113,29 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             }
             else
             {
-                TeamperatureReadCompleteEvent?.Invoke(false);
+                checkTemperatures.Add(new CheckTemperature { code = (int)NetworkOptions.nowTime, memberIdx = Member.Idx, Temp = data });
+                string json = JsonConvert.SerializeObject(checkTemperatures);
+                SaveSetting("ReqSaveData", json);
+                TeamperatureReadCompleteEvent?.Invoke(true);
             }
             //http://10.80.162.7:8080/insertRecord?Idx=0&code=0&temp=36.50
         }
+
+        public async Task AddDataNotSaved(object temperatures) 
+        {
+            if (temperatures == null) return;
+            List<CheckTemperature> checkTemperatures = JsonConvert.DeserializeObject<List<CheckTemperature>>(temperatures.ToString());
+            foreach(var checkTemperature in checkTemperatures)
+            {
+                QueryParam[] queryParam = new QueryParam[3];
+                queryParam[0] = new QueryParam("Idx", checkTemperature.memberIdx);
+                queryParam[1] = new QueryParam("code", checkTemperature.code);
+                queryParam[2] = new QueryParam("temp", checkTemperature.Temp);
+                (_, var respStatus) = await restManager.GetResponse<Default>("/insertRecord", Method.GET, null, queryParam);
+            }
+        }
+
+       
 
         private int map(int x, int in_min, int in_max, int out_min, int out_max)
         {

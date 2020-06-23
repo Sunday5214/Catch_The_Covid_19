@@ -9,6 +9,7 @@ namespace CatchTheCovid10.InitData
 {
     public class InfoManager
     {
+        
         RestManager restManager = new RestManager();
         public static Info Infos
         {
@@ -25,7 +26,7 @@ namespace CatchTheCovid10.InitData
             }
             else
             {
-
+                Infos = null;
             }
         }
     }

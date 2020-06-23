@@ -5,27 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
-      <HintPath>..\..\..\..\..\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime.WindowsRuntime">
-      <HintPath>..\..\..\..\..\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.WindowsRuntime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.WindowsRuntime.UI.Xaml">
-      <HintPath>..\..\..\..\..\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.WindowsRuntime.UI.Xaml.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Windows\Microsoft.NET\Framework\v4.0.30319\System.Runtime.WindowsRuntime.dll</HintPath>
+      <Aliases></Aliases>
     </Reference>
     <Reference Include="Windows">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.18362.0\Facade\windows.winmd</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.18362.0\Windows.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
     </Reference>
     <Reference Include="Windows.Foundation.FoundationContract">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.FoundationContract\3.0.0.0\Windows.Foundation.FoundationContract.winmd</HintPath>
       <IsWinMDFile>true</IsWinMDFile>
-      <Private>false</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Aliases>ffcont</Aliases>
     </Reference>
     <Reference Include="Windows.Foundation.UniversalApiContract">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.UniversalApiContract\8.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Windows Kits\10\References\10.0.18362.0\Windows.Foundation.UniversalApiContract\8.0.0.0\Windows.Foundation.UniversalApiContract.winmd</HintPath>
+      <IsWinMDFile>true</IsWinMDFile>
+      <Aliases>univerApi</Aliases>
     </Reference>
   </ItemGroup>
 

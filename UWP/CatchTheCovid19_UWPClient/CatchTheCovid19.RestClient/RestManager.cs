@@ -50,7 +50,7 @@ namespace CatchTheCovid19.RestManager
         }
         public async Task<(T respData, HttpStatusCode respStatus)> GetResponse<T>(string resource, Method method, string parameterJson = null, QueryParam[] queryParams = null, UrlSegment[] urlSegments = null, Header[] headers = null)
         {
-            T resp = default;
+            T resp = default(T);
             var client = CreateClient();
             var restRequest = CreateRequest(resource, method, parameterJson, queryParams, urlSegments, headers);
             var response = await client.ExecuteAsync(restRequest);

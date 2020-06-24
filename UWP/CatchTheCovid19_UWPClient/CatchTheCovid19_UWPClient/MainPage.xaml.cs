@@ -51,8 +51,7 @@ namespace CatchTheCovid19_UWPClient
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            string notSavedData = App.SettingViewModel.GetSetting("ReqSaveData");
-            await App.checkTemperatureViewModel.AddDataNotSaved(notSavedData);
+           
             //처음 시작일 경우
             if (!IsSettingAgain)
             {
@@ -62,6 +61,9 @@ namespace CatchTheCovid19_UWPClient
             
             string ip = App.SettingViewModel.GetSetting("ServerAddress");
             VoiceOption.VoiceName = App.SettingViewModel.GetSetting("SelectedVoice");
+
+          //  string notSavedData = App.SettingViewModel.GetSetting("ReqSaveData");
+          //  await App.checkTemperatureViewModel.AddDataNotSaved(notSavedData);
 
             if (ip == "" || ip == null || ip == "http://")
             {

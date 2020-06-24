@@ -71,7 +71,7 @@ namespace CatchTheCovid19_UWPClient.View
             tbIsStudent.Visibility = Visibility.Visible;
          
             
-            await Task.Delay(3000);
+            await Task.Delay(2000);
             ChangeScreenEvent?.Invoke();
             App.checkTemperatureViewModel.SetMemberData(member);
             //App.checkTemperatureViewModel.GetTemperatureData();

@@ -47,7 +47,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             serial.Listen();
         }
 
-        private async void Serial_ListenCompleteEvent(string data)
+        private void Serial_ListenCompleteEvent(string data)
         {
             if (data.Contains("."))
             {
@@ -56,13 +56,14 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             }
             else
             {
-                DistanceData = map(int.Parse(data), 0, 150, 100, 1);
-                Debug.WriteLine(DistanceData);
-                if (DistanceData >= 40 && DistanceData <= 50)
-                {
-                    await StopDistanceData();
-                    GetTemperatureData();
-                }
+                GetTemperatureData();
+                //DistanceData = map(int.Parse(data), 0, 150, 100, 1);
+                //Debug.WriteLine(DistanceData);
+                //if (DistanceData >= 40 && DistanceData <= 50)
+                //{
+                //    await StopDistanceData();
+                //    GetTemperatureData();
+                //}
                 //값이 바뀔때만 보내주도록
             }
             
@@ -132,6 +133,10 @@ namespace CatchTheCovid19_UWPClient.ViewModel
                 queryParam[1] = new QueryParam("code", checkTemperature.code);
                 queryParam[2] = new QueryParam("temp", checkTemperature.Temp);
                 (_, var respStatus) = await restManager.GetResponse<Default>("/insertRecord", Method.GET, null, queryParam);
+                if (respStatus == HttpStatusCode.OK)
+                {
+                    
+                }
             }
         }
 
@@ -152,15 +157,15 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             await serial.SendSerial("1");
         }
 
-        public async void GetDistanceData()
-        {
-            await serial.SendSerial("2");
-        }
+        //public async void GetDistanceData()
+        //{
+        //    await serial.SendSerial("2");
+        //}
 
-        public async Task StopDistanceData()
-        {
-            await serial.SendSerial("3");
-        }
+        //public async Task StopDistanceData()
+        //{
+        //    await serial.SendSerial("3");
+        //}
 
         public async void PendingBarcode()
         {

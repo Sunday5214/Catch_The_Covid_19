@@ -58,8 +58,8 @@ namespace CatchTheCovid19_UWPClient.View
                 () =>
                 {
                     tbDesc.Visibility = Visibility.Collapsed;
-                    pbdata.Visibility = Visibility.Collapsed;
-                    tbMark.Visibility = Visibility.Collapsed;
+                  //  pbdata.Visibility = Visibility.Collapsed;
+                  //  tbMark.Visibility = Visibility.Collapsed;
                     tbName.Visibility = Visibility.Visible;
                     tbTemp.Visibility = Visibility.Visible;
 
@@ -72,7 +72,7 @@ namespace CatchTheCovid19_UWPClient.View
                 {
                     PlayMedia("Green");
                 }
-                await Task.Delay(3000);
+                await Task.Delay(2000);
                 ChangeScreenEvent?.Invoke();
             }
             else
@@ -98,10 +98,10 @@ namespace CatchTheCovid19_UWPClient.View
             //BarCodeReadOff();
             App.checkTemperatureViewModel.Member = null;
             App.checkTemperatureViewModel.Temperature = 0;
-            App.checkTemperatureViewModel.GetDistanceData();
+            //App.checkTemperatureViewModel.GetDistanceData();
             tbDesc.Visibility = Visibility.Visible;
-            pbdata.Visibility = Visibility.Visible;
-            tbMark.Visibility = Visibility.Visible;
+            //pbdata.Visibility = Visibility.Visible;
+            //tbMark.Visibility = Visibility.Visible;
             tbName.Visibility = Visibility.Collapsed;
             tbTemp.Visibility = Visibility.Collapsed;
 

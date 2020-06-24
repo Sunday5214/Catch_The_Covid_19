@@ -33,13 +33,13 @@
             </Grid.ColumnDefinitions>
 
             <!--<TextBlock Text="{Binding Distance}" VerticalAlignment="Center" HorizontalAlignment="Center"/>-->
-            <ProgressBar Value="{Binding DistanceData}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="140" Height="50"
+            <!--<ProgressBar Value="{Binding DistanceData}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="140" Height="50"
                      Margin="0 350 0 0" x:Name="pbdata" Maximum="100" Grid.Column="1">
                 <ProgressBar.RenderTransform>
                     <CompositeTransform Rotation="-90"/>
                 </ProgressBar.RenderTransform>
             </ProgressBar>
-            <TextBlock Text="요기까지 차면 측정되요!->" HorizontalAlignment="Right" Margin="0 260 0 0" Grid.Column="0" x:Name="tbMark"/>
+            <TextBlock Text="요기까지 차면 측정되요!->" HorizontalAlignment="Right" Margin="0 260 0 0" Grid.Column="0" x:Name="tbMark"/>-->
         </Grid>
     </Grid>
 </Page>

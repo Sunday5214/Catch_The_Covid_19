@@ -262,6 +262,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CatchTehCovid19.Barcode\CatchTheCovid19.Barcode.csproj">
+      <Project>{387F1E46-CFA8-4E7D-9495-799F5EA1479D}</Project>
+      <Name>CatchTheCovid19.Barcode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CatchTheCovid10.Member\CatchTheCovid10.InitData.csproj">
       <Project>{4009BCEC-68A8-42BD-90D0-6E944E755061}</Project>
       <Name>CatchTheCovid10.InitData</Name>

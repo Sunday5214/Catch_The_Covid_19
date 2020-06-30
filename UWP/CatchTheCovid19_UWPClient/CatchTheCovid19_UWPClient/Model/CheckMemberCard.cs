@@ -1,4 +1,5 @@
-﻿using CatchTheCovid10.InitData;
+﻿using CatchTheCovid19.Barcode;
+using CatchTheCovid10.InitData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace CatchTheCovid19_UWPClient.Model
 {
     public class CheckMemberCard : Member
     {
-
+        BarcodeManager barcodeManager = new BarcodeManager();
     }
 }

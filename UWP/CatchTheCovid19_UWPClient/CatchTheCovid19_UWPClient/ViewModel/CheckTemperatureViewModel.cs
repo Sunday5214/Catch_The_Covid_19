@@ -51,7 +51,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         {
             if (data.Contains("."))
             {
-                AddDataServer(double.Parse(data));
+                AddDataServer(double.Parse(data)+0.7);
                 TeamperatureReadCompleteEvent?.Invoke(true);
             }
             else

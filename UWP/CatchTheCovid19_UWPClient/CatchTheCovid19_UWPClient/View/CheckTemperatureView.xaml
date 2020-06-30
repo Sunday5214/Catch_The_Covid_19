@@ -11,21 +11,37 @@
 
     <Page.Resources>
         <converter:TemperatureToColorConverter x:Key="TemperatureToColorConverter"/>
+        <LinearGradientBrush x:Key="gradientRed" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#C42525" Offset="0"/>
+            <GradientStop Color="#9A00FF" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="gradientBlue" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#2A25C4" Offset="0"/>
+            <GradientStop Color="#00C2FF" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="gradientGreen" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#25C481" Offset="0"/>
+            <GradientStop Color="#11FF00" Offset="1"/>
+        </LinearGradientBrush>
     </Page.Resources>
 
-    <Grid Background="{Binding Temperature, Converter={StaticResource TemperatureToColorConverter}}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*"/>
             <RowDefinition Height="0.1*"/>
             <RowDefinition Height="0.2*"/>
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="이마를 측정기에 5cm간격을 두고 잠시만 기다려주세요" FontSize="40" Margin="0 0 0 0" x:Name="tbDesc"
+        <Grid x:Name="gdGreen" Grid.Row="0" Grid.RowSpan="4" Background="{StaticResource gradientGreen}"/>
+        <Grid x:Name="gdBlue" Grid.Row="0" Grid.RowSpan="4" Background="{StaticResource gradientBlue}" Visibility="Collapsed"/>
+        <Grid x:Name="gdRed" Grid.Row="0" Grid.RowSpan="4" Background="{StaticResource gradientRed}" Visibility="Collapsed"/>
+        <TextBlock Text="이마를 측정기에 5cm간격을 두고 잠시만 기다려주세요" FontSize="50" Margin="0 0 0 0" x:Name="tbDesc"
                    VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="1" Visibility="Visible"/>
         <TextBlock Text="{Binding Member.Name}" FontSize="90" Margin="0 0 0 0" Visibility="Collapsed"
                    VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" x:Name="tbName"/>
         <TextBlock Text="{Binding Temperature}" FontSize="50" Margin="0 0 0 0" Visibility="Collapsed"
                    VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" x:Name="tbTemp"/>
+
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"/>
@@ -41,5 +57,6 @@
             </ProgressBar>
             <TextBlock Text="요기까지 차면 측정되요!->" HorizontalAlignment="Right" Margin="0 260 0 0" Grid.Column="0" x:Name="tbMark"/>-->
         </Grid>
+
     </Grid>
 </Page>

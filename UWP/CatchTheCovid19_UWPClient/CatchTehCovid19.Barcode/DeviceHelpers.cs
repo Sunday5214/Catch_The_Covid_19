@@ -12,47 +12,42 @@ namespace CatchTheCovid19.Barcode
         // the DeviceWatcher will let us see the devices as they are discovered,
         // whereas FindAllAsync returns results only after discovery is complete.
 
-        public static async Task<T> GetFirstDeviceAsync<T>(string selector, Func<string, Task<T>> convertAsync)
-            where T : class
-        {
-            var completionSource = new TaskCompletionSource<T>();
-            var pendingTasks = new List<Task>();
-            DeviceWatcher watcher = DeviceInformation.CreateWatcher(selector);
+        //public static async Task<T> GetFirstDeviceAsync<T>(string selector, Func<string, Task<T>> convertAsync)
+        //    where T : class
+        //{
+        //    var completionSource = new TaskCompletionSource<T>();
+        //    var pendingTasks = new List<Task>();
+        //    DeviceWatcher watcher = DeviceInformation.CreateWatcher(selector);
 
-            watcher.Added += (DeviceWatcher sender, DeviceInformation device) =>
-            {
-                Func<string, Task> lambda = async (id) =>
-                {
-                    T t = await convertAsync(id);
-                    if (t != null)
-                    {
-                        completionSource.TrySetResult(t);
-                    }
-                };
-                pendingTasks.Add(lambda(device.Id));
-            };
+        //    watcher.Added += (DeviceWatcher sender, DeviceInformation device) =>
+        //    {
+        //        Func<string, Task> lambda = async (id) =>
+        //        {
+        //            T t = await convertAsync(id);
+        //            if (t != null)
+        //            {
+        //                completionSource.TrySetResult(t);
+        //            }
+        //        };
+        //        pendingTasks.Add(lambda(device.Id));
+        //    };
 
-            watcher.EnumerationCompleted += async (DeviceWatcher sender, object args) =>
-            {
-                // Wait for completion of all the tasks we created in our "Added" event handler.
-                await Task.WhenAll(pendingTasks);
-                // This sets the result to "null" if no task was able to produce a device.
-                completionSource.TrySetResult(null);
-            };
+        //    watcher.EnumerationCompleted += async (DeviceWatcher sender, object args) =>
+        //    {
+        //        // Wait for completion of all the tasks we created in our "Added" event handler.
+        //        await Task.WhenAll(pendingTasks);
+        //        // This sets the result to "null" if no task was able to produce a device.
+        //        completionSource.TrySetResult(null);
+        //    };
 
-            watcher.Start();
+        //    watcher.Start();
 
-            // Wait for enumeration to complete or for a device to be found.
-            T result = await completionSource.Task;
+        //    // Wait for enumeration to complete or for a device to be found.
+        //    T result = await completionSource.Task;
 
-            watcher.Stop();
+        //    watcher.Stop();
 
-            return result;
-        }
-
-        public void add()
-        {
-
-        }
+        //    return result;
+        //}
     }
 }

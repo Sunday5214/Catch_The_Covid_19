@@ -1,6 +1,7 @@
 ﻿using CatchTheCovid19_UWPClient.Common;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -31,6 +32,7 @@ namespace CatchTheCovid19_UWPClient.View
         public event ChangeScreen ChangeScreenEvent;
         MediaPlayer mediaPlayerRed = new MediaPlayer();
         MediaPlayer mediaPlayerGreen = new MediaPlayer();
+
         public CheckTemperatureView()
         {
             this.InitializeComponent();
@@ -66,10 +68,22 @@ namespace CatchTheCovid19_UWPClient.View
                 });
                 if(VoiceOption.VoiceName != "" && App.checkTemperatureViewModel.Temperature > 37.5)
                 {
+                    gdGreen.Visibility = Visibility.Collapsed;
+                    gdBlue.Visibility = Visibility.Collapsed;
+                    gdRed.Visibility = Visibility.Visible; 
                     PlayMedia("Red");
                 }
-                else
+                else if(VoiceOption.VoiceName != "" && App.checkTemperatureViewModel.Temperature < 35)
                 {
+                    gdRed.Visibility = Visibility.Collapsed;
+                    gdGreen.Visibility = Visibility.Collapsed;
+                    gdBlue.Visibility = Visibility.Visible;
+                }
+                else 
+                {
+                    gdBlue.Visibility = Visibility.Collapsed;
+                    gdRed.Visibility = Visibility.Collapsed;
+                    gdGreen.Visibility = Visibility.Visible;
                     PlayMedia("Green");
                 }
                 await Task.Delay(2000);

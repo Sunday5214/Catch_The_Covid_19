@@ -78,6 +78,7 @@ namespace CatchTheCovid19_UWPClient.View
                     gdRed.Visibility = Visibility.Collapsed;
                     gdGreen.Visibility = Visibility.Collapsed;
                     gdBlue.Visibility = Visibility.Visible;
+
                 }
                 else 
                 {

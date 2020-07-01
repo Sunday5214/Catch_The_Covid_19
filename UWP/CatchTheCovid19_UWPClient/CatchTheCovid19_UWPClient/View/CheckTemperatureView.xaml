@@ -35,6 +35,7 @@
         <Grid x:Name="gdGreen" Grid.Row="0" Grid.RowSpan="4" Background="{StaticResource gradientGreen}"/>
         <Grid x:Name="gdBlue" Grid.Row="0" Grid.RowSpan="4" Background="{StaticResource gradientBlue}" Visibility="Collapsed"/>
         <Grid x:Name="gdRed" Grid.Row="0" Grid.RowSpan="4" Background="{StaticResource gradientRed}" Visibility="Collapsed"/>
+        <Image Source="/Assets/LargeTile.scale-400.png" Width="500" Height="250" Margin="1180,10,-180,-60" Grid.Row="3"/>
         <TextBlock Text="이마를 측정기에 5cm간격을 두고 잠시만 기다려주세요" FontSize="50" Margin="0 0 0 0" x:Name="tbDesc"
                    VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.Row="1" Visibility="Visible"/>
         <TextBlock Text="{Binding Member.Name}" FontSize="90" Margin="0 0 0 0" Visibility="Collapsed"

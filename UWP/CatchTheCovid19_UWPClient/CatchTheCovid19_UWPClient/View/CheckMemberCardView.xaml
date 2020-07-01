@@ -26,8 +26,10 @@
         <Image Source="/Assets/LargeTile.scale-400.png" Width="500" Height="250" Margin="1180,10,-180,-60" Grid.Row="2"/>
         <TextBox x:Name="tbxBarInput" Grid.Row="0" KeyDown="tbxBarInput_KeyDown" Width="1" Height="1" 
                  VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
-        <TextBlock x:Name="tbDesc" Text="바코드를 인식시켜 주세요" Grid.Row="0" FontSize="60" VerticalAlignment="Bottom" 
-                   HorizontalAlignment="Center" Margin="0 0 0 50" Visibility="Visible"/>
+        <TextBlock x:Name="tbDesc" Grid.Row="0" FontSize="60" VerticalAlignment="Bottom" 
+                   HorizontalAlignment="Center" HorizontalTextAlignment="Center" Margin="0 0 0 50" Visibility="Visible">
+            기기앞에 서서<LineBreak/>바코드를 인식시켜 주세요
+        </TextBlock>
 
         <TextBlock x:Name="tbName" Text="{Binding CheckMemberCard.Name}" Grid.Row="0" FontSize="90" VerticalAlignment="Center" 
                    HorizontalAlignment="Center" Margin="0 0 0 0" Visibility="Collapsed"/>

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Input.Preview.Injection;
@@ -32,6 +34,8 @@ namespace CatchTheCovid19_UWPClient.View
         public delegate void ChangeScreen();
         public event ChangeScreen ChangeScreenEvent;
 
+        MediaPlayer mediaPlayerBarcode = new MediaPlayer();
+
         bool IsReadComplete = false;
         //TextBox tbxBarInput = new TextBox();
         public CheckMemberCardView()
@@ -44,6 +48,7 @@ namespace CatchTheCovid19_UWPClient.View
         {
             await FocusOn();
             DataContext = App.checkMemberCardViewModel;
+            mediaPlayerBarcode.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/인식되었습니다.mp3"));
             App.checkMemberCardViewModel.BarcodeReadCompleteEvent += CheckMemberCardViewModel_BarcodeReadCompleteEvent;
             //App.checkMemberCardViewModel.StartReadCard();
         }
@@ -168,6 +173,7 @@ namespace CatchTheCovid19_UWPClient.View
             if (e.Key == VirtualKey.Enter)
             {
                 IsReadComplete = true;
+                mediaPlayerBarcode.Play();
                 await App.checkMemberCardViewModel.SearchMember(tbxBarInput.Text);
                 tbxBarInput.Text = "";
                 App.checkTemperatureViewModel.StopBarcode();

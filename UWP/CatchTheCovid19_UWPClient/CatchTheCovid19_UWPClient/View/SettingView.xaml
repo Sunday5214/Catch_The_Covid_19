@@ -29,13 +29,13 @@
                 </TextBox.Header>
             </TextBox>
 
-            <ComboBox  Margin="30 10 0 0" Height="100" Width="300"
+            <!--<ComboBox  Margin="30 10 0 0" Height="100" Width="300"
                  VerticalAlignment="Center" Grid.Row="0"
                  ItemsSource="{Binding VoiceLists}">
                 <ComboBox.Header>
                     <TextBlock Text="목소리 선택" FontSize="25"/>
                 </ComboBox.Header>
-            </ComboBox>
+            </ComboBox>-->
         </StackPanel>
         <Button x:Name="btnOk" Content="확인" HorizontalAlignment="Right"
                 VerticalAlignment="Bottom" Grid.Row="1"

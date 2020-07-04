@@ -49,15 +49,15 @@ namespace CatchTheCovid19_UWPClient.ViewModel
 
         public SettingViewModel()
         {
-            _voiceLists.Add("Taeo");
-            _voiceLists.Add("Chu");
+            //_voiceLists.Add("Taeo");
+            //_voiceLists.Add("Chu");
 
             SettingOKCommand = new DelegateCommand(OnSaveSetting);
         }
 
         private void OnSaveSetting()
         {
-            SaveSetting("SelectedVoice", SelectedVoice);
+           // SaveSetting("SelectedVoice", SelectedVoice);
             SaveSetting("ServerAddress", "http://"+ServerAddress);
             SettingCompleteEvent?.Invoke(true);
         }

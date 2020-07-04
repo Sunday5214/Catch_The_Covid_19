@@ -30,8 +30,8 @@ namespace CatchTheCovid19_UWPClient.View
     {
         public delegate void ChangeScreen();
         public event ChangeScreen ChangeScreenEvent;
-        MediaPlayer mediaPlayerRed = new MediaPlayer();
-        MediaPlayer mediaPlayerGreen = new MediaPlayer();
+   
+        MediaPlayer mediaPlayerTemperature = new MediaPlayer();
 
         public CheckTemperatureView()
         {
@@ -42,13 +42,7 @@ namespace CatchTheCovid19_UWPClient.View
         private void CheckTemperatureView_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = App.checkTemperatureViewModel;
-            if(VoiceOption.VoiceName != "")
-            {
-                mediaPlayerGreen.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Green.m4a"));
-                mediaPlayerRed.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Red.m4a"));
-            }
-            mediaPlayerGreen.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Green.m4a"));
-            mediaPlayerRed.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/" + VoiceOption.VoiceName + "Red.m4a"));
+            mediaPlayerTemperature.Source = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Voice/측정되었습니다.mp3"));
             App.checkTemperatureViewModel.TeamperatureReadCompleteEvent += CheckTemperatureViewModel_TeamperatureReadCompleteEvent;
         }
        
@@ -66,14 +60,15 @@ namespace CatchTheCovid19_UWPClient.View
                     tbTemp.Visibility = Visibility.Visible;
 
                 });
-                if(VoiceOption.VoiceName != "" && App.checkTemperatureViewModel.Temperature > 37.5)
+                TemperaturePlayMedia();
+                if (App.checkTemperatureViewModel.Temperature > 37.5)
                 {
                     gdGreen.Visibility = Visibility.Collapsed;
                     gdBlue.Visibility = Visibility.Collapsed;
                     gdRed.Visibility = Visibility.Visible; 
-                    PlayMedia("Red");
+                    //PlayMedia("Red");
                 }
-                else if(VoiceOption.VoiceName != "" && App.checkTemperatureViewModel.Temperature < 35)
+                else if(App.checkTemperatureViewModel.Temperature < 35)
                 {
                     gdRed.Visibility = Visibility.Collapsed;
                     gdGreen.Visibility = Visibility.Collapsed;
@@ -85,7 +80,7 @@ namespace CatchTheCovid19_UWPClient.View
                     gdBlue.Visibility = Visibility.Collapsed;
                     gdRed.Visibility = Visibility.Collapsed;
                     gdGreen.Visibility = Visibility.Visible;
-                    PlayMedia("Green");
+                   // PlayMedia("Green");
                 }
                 await Task.Delay(2000);
                 ChangeScreenEvent?.Invoke();
@@ -96,17 +91,10 @@ namespace CatchTheCovid19_UWPClient.View
             }
         }
 
-        private void PlayMedia(string voiceName)
+        private void TemperaturePlayMedia()
         {
-            if (voiceName.Contains("Green"))
-            {
-                mediaPlayerGreen.Play();
-            }
-            else if (voiceName.Contains("Red"))
-            {
 
-                mediaPlayerRed.Play();
-            }
+            mediaPlayerTemperature.Play();
         }
         public void Init()
         {

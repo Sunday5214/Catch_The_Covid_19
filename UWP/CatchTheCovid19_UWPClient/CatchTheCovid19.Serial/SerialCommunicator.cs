@@ -281,7 +281,7 @@ namespace CatchTheCovid19.Serial
                 UInt32 bytesWritten = await storeAsyncTask;
                 if (bytesWritten > 0)
                 {
-                    Debug.WriteLine("보내짐");
+                    Debug.WriteLine("보내짐"+sendData);
                     return true;
                 }
                 else

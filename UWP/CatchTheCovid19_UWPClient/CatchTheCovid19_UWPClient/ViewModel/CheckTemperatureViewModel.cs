@@ -42,7 +42,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         }
         private async void Connect()
         {
-            await serial.FindDevicebyName("COM3");
+            await serial.FindDevicebyName("COM10");
             await serial.ConnectSerial(9600);
             serial.Listen();
         }

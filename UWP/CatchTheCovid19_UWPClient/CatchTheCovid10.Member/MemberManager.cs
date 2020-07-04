@@ -40,6 +40,10 @@ namespace CatchTheCovid10.InitData
             {
                 return null;
             }
+            if(cardId.Length == 3)
+            {
+                cardId = Member.Where(x => x.Name == cardId) == null ? null : Member.Where(x => x.Name == cardId).ToList()[0].CardId;
+            }
             if (cardId.Length > 10)
             {
                 if (cardId.Contains("S"))

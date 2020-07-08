@@ -1,0 +1,7 @@
+﻿<Application
+    x:Class="CatchTheCovid19_UWPClient.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CatchTheCovid19_UWPClient">
+
+</Application>

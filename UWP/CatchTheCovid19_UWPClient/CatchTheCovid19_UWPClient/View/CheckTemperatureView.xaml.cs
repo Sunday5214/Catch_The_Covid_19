@@ -54,8 +54,8 @@ namespace CatchTheCovid19_UWPClient.View
                 () =>
                 {
                     tbDesc.Visibility = Visibility.Collapsed;
-                    pbdata.Visibility = Visibility.Collapsed;//no oledmode
-                    tbMark.Visibility = Visibility.Collapsed;//no oledmode
+                  //  pbdata.Visibility = Visibility.Collapsed;//no oledmode
+                  //  tbMark.Visibility = Visibility.Collapsed;//no oledmode
                     tbName.Visibility = Visibility.Visible;
                     tbTemp.Visibility = Visibility.Visible;
 
@@ -101,10 +101,10 @@ namespace CatchTheCovid19_UWPClient.View
             //BarCodeReadOff();
             App.checkTemperatureViewModel.Member = null;
             App.checkTemperatureViewModel.Temperature = 0;
-            App.checkTemperatureViewModel.GetDistanceData();//no oledmode
-            tbDesc.Visibility = Visibility.Visible;//no oledmode
-            pbdata.Visibility = Visibility.Visible;//no oledmode
-            tbMark.Visibility = Visibility.Visible;
+           // App.checkTemperatureViewModel.GetDistanceData();//no oledmode
+            tbDesc.Visibility = Visibility.Visible;
+            // pbdata.Visibility = Visibility.Visible;//no oledmode
+            //  tbMark.Visibility = Visibility.Visible;//no oledmode
             tbName.Visibility = Visibility.Collapsed;
             tbTemp.Visibility = Visibility.Collapsed;
 

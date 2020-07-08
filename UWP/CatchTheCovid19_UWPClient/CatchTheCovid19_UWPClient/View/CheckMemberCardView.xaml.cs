@@ -86,7 +86,7 @@ namespace CatchTheCovid19_UWPClient.View
 
         public async Task Init()
         {
-            // App.checkTemperatureViewModel.PendingBarcode();
+             App.checkTemperatureViewModel.PendingBarcode();
            
              await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>

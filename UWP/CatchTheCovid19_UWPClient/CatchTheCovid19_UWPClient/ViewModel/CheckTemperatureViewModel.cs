@@ -47,7 +47,7 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             serial.Listen();
         }
 
-        private void Serial_ListenCompleteEventAsync(string data)
+        private async void Serial_ListenCompleteEventAsync(string data)
         {
             if (data.Contains("."))
             {
@@ -56,15 +56,23 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             }
             else
             {
-                GetTemperatureData();
-                //DistanceData = map(int.Parse(data), 0, 150, 100, 1);//no oledmode
-                //Debug.WriteLine(DistanceData);//no oledmode
-                //if (DistanceData >= 40 && DistanceData <= 50)//no oledmode
-                //{
-                //    await StopDistanceData();//no oledmode
-                //    GetTemperatureData();//no oledmode
-                //}
-                //값이 바뀔때만 보내주도록
+                if (NetworkOptions.mode == 0)
+                {
+                    GetTemperatureData();
+                }
+                else if (NetworkOptions.mode == 1)
+                {
+                    DistanceData = map(int.Parse(data), 0, 150, 100, 1);//no oledmode
+                    Debug.WriteLine(DistanceData);//no oledmode
+                    if (DistanceData >= 40 && DistanceData <= 50)//no oledmode
+                    {
+                        await StopDistanceData();//no oledmode
+                        GetTemperatureData();//no oledmode
+                    }
+                   // 값이 바뀔때만 보내주도록
+                }
+
+
             }
             
         }
@@ -157,15 +165,15 @@ namespace CatchTheCovid19_UWPClient.ViewModel
             await serial.SendSerial("1");
         }
 
-        //public async void GetDistanceData()//no oledmode
-        //{
-        //    await serial.SendSerial("2");
-        //}
+        public async void GetDistanceData()//no oledmode
+        {
+            await serial.SendSerial("2");
+        }
 
-        //public async Task StopDistanceData()//no oledmode
-        //{
-        //    await serial.SendSerial("3");
-        //}
+        public async Task StopDistanceData()//no oledmode
+        {
+            await serial.SendSerial("3");
+        }
 
         public async void PendingBarcode()
         {

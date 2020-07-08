@@ -1,4 +1,5 @@
 ﻿using CatchTheCovid10.InitData;
+using CatchTheCovid19.RestClient.Option;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -86,7 +87,15 @@ namespace CatchTheCovid19_UWPClient.View
 
         public async Task Init()
         {
-             App.checkTemperatureViewModel.PendingBarcode();
+            if (NetworkOptions.mode == 0)
+            {
+                App.checkTemperatureViewModel.PendingBarcode();
+            }
+            else if (NetworkOptions.mode == 1)
+            {
+                //App.checkTemperatureViewModel.
+            }
+             
            
              await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
@@ -177,7 +186,15 @@ namespace CatchTheCovid19_UWPClient.View
                 mediaPlayerBarcode.Play();
                 await App.checkMemberCardViewModel.SearchMember(tbxBarInput.Text);
                 tbxBarInput.Text = "";
-                App.checkTemperatureViewModel.StopBarcode();
+                if (NetworkOptions.mode == 0)
+                {
+                    App.checkTemperatureViewModel.StopBarcode();
+                }
+                else if (NetworkOptions.mode == 1)
+                {
+                    //App.checkTemperatureViewModel.
+                }
+                
                 //tbxBarInput.Focus(FocusState.Programmatic);
                 //await ShowData(App.checkMemberCardViewModel.CheckMemberCard);
             }

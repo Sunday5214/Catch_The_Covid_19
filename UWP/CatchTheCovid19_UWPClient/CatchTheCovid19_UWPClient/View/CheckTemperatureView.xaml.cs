@@ -1,4 +1,5 @@
-﻿using CatchTheCovid19_UWPClient.Common;
+﻿using CatchTheCovid19.RestClient.Option;
+using CatchTheCovid19_UWPClient.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -53,11 +54,22 @@ namespace CatchTheCovid19_UWPClient.View
                 await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () =>
                 {
-                    tbDesc.Visibility = Visibility.Collapsed;
-                  //  pbdata.Visibility = Visibility.Collapsed;//no oledmode
-                  //  tbMark.Visibility = Visibility.Collapsed;//no oledmode
-                    tbName.Visibility = Visibility.Visible;
-                    tbTemp.Visibility = Visibility.Visible;
+                    if (NetworkOptions.mode == 0)
+                    {
+                        tbDesc.Visibility = Visibility.Collapsed;
+                        //  pbdata.Visibility = Visibility.Collapsed;//no oledmode
+                        //  tbMark.Visibility = Visibility.Collapsed;//no oledmode
+                        tbName.Visibility = Visibility.Visible;
+                        tbTemp.Visibility = Visibility.Visible;
+                    }
+                    else if(NetworkOptions.mode == 1)
+                    {
+                        tbDesc.Visibility = Visibility.Collapsed;
+                        pbdata.Visibility = Visibility.Collapsed;//no oledmode
+                        tbMark.Visibility = Visibility.Collapsed;//no oledmode
+                        tbName.Visibility = Visibility.Visible;
+                        tbTemp.Visibility = Visibility.Visible;
+                    }
 
                 });
                 TemperaturePlayMedia();
@@ -99,14 +111,28 @@ namespace CatchTheCovid19_UWPClient.View
         public void Init()
         {
             //BarCodeReadOff();
-            App.checkTemperatureViewModel.Member = null;
-            App.checkTemperatureViewModel.Temperature = 0;
-           // App.checkTemperatureViewModel.GetDistanceData();//no oledmode
-            tbDesc.Visibility = Visibility.Visible;
-            // pbdata.Visibility = Visibility.Visible;//no oledmode
-            //  tbMark.Visibility = Visibility.Visible;//no oledmode
-            tbName.Visibility = Visibility.Collapsed;
-            tbTemp.Visibility = Visibility.Collapsed;
+            if(NetworkOptions.mode == 0)
+            {
+                App.checkTemperatureViewModel.Member = null;
+                App.checkTemperatureViewModel.Temperature = 0;
+                // App.checkTemperatureViewModel.GetDistanceData();//no oledmode
+                tbDesc.Visibility = Visibility.Visible;
+                // pbdata.Visibility = Visibility.Visible;//no oledmode
+                //  tbMark.Visibility = Visibility.Visible;//no oledmode
+                tbName.Visibility = Visibility.Collapsed;
+                tbTemp.Visibility = Visibility.Collapsed;
+            }
+            else if(NetworkOptions.mode == 1)
+            {
+                App.checkTemperatureViewModel.Member = null;
+                App.checkTemperatureViewModel.Temperature = 0;
+                App.checkTemperatureViewModel.GetDistanceData();//no oledmode
+                tbDesc.Visibility = Visibility.Visible;
+                pbdata.Visibility = Visibility.Visible;//no oledmode
+                tbMark.Visibility = Visibility.Visible;//no oledmode
+                tbName.Visibility = Visibility.Collapsed;
+                tbTemp.Visibility = Visibility.Collapsed;
+            }
 
 
         }

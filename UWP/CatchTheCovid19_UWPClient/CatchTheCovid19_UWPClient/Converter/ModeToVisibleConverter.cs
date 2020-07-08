@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 namespace CatchTheCovid19_UWPClient.Converter
 {
-    public class IsStudentToStringConverter : IValueConverter
+    public class ModeToVisibleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            bool data = (bool)value;
-            if (data)
+            int data = (int)value;
+            if (data == 0)
             {
-                return "학생";
+                return Visibility.Collapsed;
             }
             else
             {
-                return "선생님";
+                return Visibility.Visible;
             }
         }
 

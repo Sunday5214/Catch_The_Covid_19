@@ -127,6 +127,7 @@
     </Compile>
     <Compile Include="Common\VoiceOption.cs" />
     <Compile Include="Converter\IsStudentToStringConverter.cs" />
+    <Compile Include="Converter\ModeToVisibleConverter.cs" />
     <Compile Include="Converter\TemperatureToColorConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

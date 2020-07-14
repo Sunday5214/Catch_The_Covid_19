@@ -49,7 +49,7 @@ namespace CatchTheCovid19_UWPClient
             ShowMessage();
         }
 
-        private async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
            
             //처음 시작일 경우
@@ -148,9 +148,9 @@ namespace CatchTheCovid19_UWPClient
             
         }
 
-        private void CtrlCheckMember_ChangeScreenEvent()
+        private async void CtrlCheckMember_ChangeScreenEvent()
         {
-            ctrlTemperature.Init();
+            await ctrlTemperature.Init();
 
             pivotMain.SelectedItem = pivotMain.Items[3];
         }

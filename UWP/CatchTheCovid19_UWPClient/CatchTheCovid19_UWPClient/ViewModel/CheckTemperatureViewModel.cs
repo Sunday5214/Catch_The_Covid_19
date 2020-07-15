@@ -110,6 +110,10 @@ namespace CatchTheCovid19_UWPClient.ViewModel
         }
         public async Task AddData(double data)
         {
+            if(data < 35)
+            {
+                data += 1.4;
+            }
             Temperature = data;
             QueryParam[] queryParam = new QueryParam[3];
             queryParam[0] = new QueryParam("Idx", Member.Idx);

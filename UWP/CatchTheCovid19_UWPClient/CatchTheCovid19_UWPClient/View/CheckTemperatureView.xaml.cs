@@ -95,7 +95,6 @@ namespace CatchTheCovid19_UWPClient.View
                     }
 
                 });
-
                 await Task.Delay(2000);
                 ChangeScreenEvent?.Invoke();
             }
